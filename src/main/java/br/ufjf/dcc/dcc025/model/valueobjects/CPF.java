@@ -6,16 +6,17 @@ public class CPF {
     private final String cpf;
 
     public CPF(String cpf) {
-        if(!isValid(cpf))
-            throw new InvalidCPFException("CPF inválido: " + cpf);
+        validaCPF(cpf);
         this.cpf = cpf;
     }
 
-    private static boolean isValid(String cpf) {
+    // Validação
+    private static void validaCPF(String cpf) {
         // implementar lógica de validação do CPF
-        return true;
+        //throw new InvalidCPFException("CPF inválido: " + cpf);
     }
 
+    // Getters
     public String getCPF() {
         return cpf;
     }

@@ -19,12 +19,12 @@ public class Paciente extends Usuario {
         this.recebeVisita = false;
     }
 
-    public void changeEndereco(Endereco endereco) {
-        this.endereco = Objects.requireNonNull(endereco, "Novo endereço obrigatório.");
+    public void alterarEndereco(Endereco novoEndereco) {
+        this.endereco = Objects.requireNonNull(novoEndereco, "Novo endereço obrigatório.");
     }
 
-    public void changeContato(Contato contato) {
-        this.contato = Objects.requireNonNull(contato, "Novo contato obrigatório.");
+    public void alterarContato(String novoNumero) {
+        this.contato.alterar(novoNumero);
     }
 
     public void hospitalizar() {

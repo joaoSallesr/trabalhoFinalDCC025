@@ -12,17 +12,24 @@ public class Email {
     }
 
     private Email(String email) {
-        if (!isValid(email))
-            throw new InvalidEmailException("Email inválido: " + email);
+        validaEmail(email);
         this.email = email;
     }
 
-    private static boolean isValid(String email) {
-        EmailValidator validator = EmailValidator.getInstance();
-        
-        return validator.isValid(email);
+    // Alteração de email
+    public void alterar(String email) {
+        validaEmail(email);
+        this.email = email;
     }
 
+    // Validação
+    private static void validaEmail(String email) {
+        EmailValidator validator = EmailValidator.getInstance();
+        if (!validator.isValid(email))
+            throw new InvalidEmailException("Email inválido: " + email);
+    }
+
+    // Getters
     public String getEmail() {
         return email;
     }

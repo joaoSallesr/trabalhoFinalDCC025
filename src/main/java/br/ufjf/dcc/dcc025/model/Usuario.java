@@ -17,12 +17,13 @@ public abstract class Usuario {
         this.id = UUID.randomUUID();
         this.nome = Objects.requireNonNull(nome, "Nome obrigatório.");
         this.cpf = Objects.requireNonNull(cpf, "CPF obrigatório.");
+        this.email = Objects.requireNonNull(email, "Email obrigatório.");
         this.senha = Objects.requireNonNull(senha, "Senha obrigatória.");
         this.ativo = true;
     }
 
-    protected void changeEmail(Email email) {
-        this.email = Objects.requireNonNull(email, "Novo email obrigatório.");
+    public void alterarEmail(String novoEmail) {
+        this.email.alterar(novoEmail);
     }
 
     public void ativar() {

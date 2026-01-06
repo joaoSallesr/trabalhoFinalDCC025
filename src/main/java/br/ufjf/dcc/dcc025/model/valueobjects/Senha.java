@@ -15,12 +15,14 @@ public class Senha {
         // 8 a 20 dígitos
 
     public Senha(String senha) {
-        if (!isValid(senha))
-            throw new InvalidPasswordException("Senha inválida.");
+        validaSenha(senha);
         this.senha = senha;
     }
 
-    private static boolean isValid(String senha) {
-        return senha != null && PADRAO_SENHA.matcher(senha).matches();
+    // Validação
+    private static void validaSenha(String senha) {
+        if (senha != null && PADRAO_SENHA.matcher(senha).matches())
+            throw new InvalidPasswordException("Senha inválida.");
+
     }
 }

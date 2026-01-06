@@ -20,52 +20,57 @@ public class Endereco {
     }
 
     private Endereco(String cep, String rua, String bairro, String cidade, int numeroCasa) {
-        if (!isCepValid(cep)) 
-            throw new InvalidAddressException("Cep inválido: " + cep + " - XXXXX-XXX / XXXXXXXX");
-        if (numeroCasa <= 0) 
-            throw new InvalidAddressException("Número de casa inválido:");
+        validaCep(cep);
+        validaNumeroCasa(numeroCasa);
 
-        this.cep = Objects.requireNonNull(cep, "CEP obrigatório.");
-        this.rua = requireNotBlank(rua, "Rua obrigatória.");
-        this.bairro = requireNotBlank(bairro, "Bairro obrigatório.");
-        this.cidade = requireNotBlank(cidade, "Cidade obrigatória.");
+        this.cep = cep;
+        this.rua = validaLocal(rua, "Rua obrigatória.");
+        this.bairro = validaLocal(bairro, "Bairro obrigatório.");
+        this.cidade = validaLocal(cidade, "Cidade obrigatória.");
         this.numeroCasa = numeroCasa;
     }
 
+    // Alteração de endereço
     public void alterarCep(String cep) {
-        if (!isCepValid(cep)) 
-            throw new InvalidAddressException("Cep inválido: " + cep + " - XXXXX-XXX / XXXXXXXX");
-        this.cep = Objects.requireNonNull(cep, "CEP obrigatório.");
+        validaCep(cep);
+        this.cep = cep;
     }
 
     public void alterarRua(String rua) {
-        this.rua = requireNotBlank(rua, "Rua obrigatória.");
+        this.rua = validaLocal(rua, "Rua obrigatória.");
     }
 
     public void alterarBairro(String bairro) {
-        this.bairro = requireNotBlank(bairro, "Bairro obrigatório.");
+        this.bairro = validaLocal(bairro, "Bairro obrigatório.");
     }
 
     public void alterarCidade(String cidade) {
-        this.cidade = requireNotBlank(cidade, "Cidade obrigatória.");
+        this.cidade = validaLocal(cidade, "Cidade obrigatória.");
     }
 
     public void alterarNumeroCasa(int numeroCasa) {
-        if (numeroCasa <= 0) 
-            throw new InvalidAddressException("Número de casa inválido:");
+        validaNumeroCasa(numeroCasa);
         this.numeroCasa = numeroCasa;
     }
 
-    private static boolean isCepValid(String cep) {
-        return cep != null && PADRAO_CEP.matcher(cep).matches();
+    // Validações
+    private static void validaCep(String cep) {
+        if(cep != null && PADRAO_CEP.matcher(cep).matches())
+            throw new InvalidAddressException("Cep inválido: " + cep + " - XXXXX-XXX / XXXXXXXX");  
     }
 
-    private static String requireNotBlank(String dado, String message) {
-        if (dado == null || dado.isBlank())
+    private static String validaLocal(String local, String message) {
+        if (local == null || local.isBlank())
            throw new InvalidAddressException(message);
-        return dado;
+        return local;
     }
 
+    private static void validaNumeroCasa(int numeroCasa) {
+        if (numeroCasa <= 0) 
+            throw new InvalidAddressException("Número de casa inválido:");
+    }
+
+    // Getters
     public String getCep() {
         return cep;
     }

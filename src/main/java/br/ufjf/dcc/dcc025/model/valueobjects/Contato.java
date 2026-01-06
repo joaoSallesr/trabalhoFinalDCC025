@@ -3,23 +3,34 @@ package br.ufjf.dcc.dcc025.model.valueobjects;
 import br.ufjf.dcc.dcc025.model.exception.InvalidPhoneNumberException;
 
 public class Contato {
-    private final String contato;
+    private String numero;
 
-    public static Contato getInstance(String contato) {
-        return new Contato(contato);
+    public static Contato getInstance(String numero) {
+        return new Contato(numero);
     }
 
-    private Contato(String contato) {
-        if (!isValid(contato))
-            throw new InvalidPhoneNumberException("Número inválido: " + contato + " - (XX) XXXXX-XXXX");
-        this.contato = contato;
+    private Contato(String numero) {
+        validaNumero(numero);
+        this.numero = numero;
     }
 
-    private static boolean isValid(String contato) {
-        return !(contato.length()>11); // alterar para regra real se necessário
+    // Alteração de número
+    public void alterar(String numero) {
+        validaNumero(numero);
+        this.numero = numero;
     }
 
-    public String getContato() {
-        return contato;
+    // Validação
+    private static void validaNumero(String numero) {
+        if (numero == null || numero.isBlank())
+            throw new InvalidPhoneNumberException("Número vazio.");
+
+        if (!numero.matches("\\d{11}"))
+            throw new InvalidPhoneNumberException("Número inválido: " + numero + " - (XX) XXXXX-XXXX");
+    }
+
+    // Getters
+    public String getNumero() {
+        return numero;
     }
 }
