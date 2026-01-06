@@ -11,7 +11,7 @@ public class CPF {
         this.cpf = cpf;
     }
 
-    private boolean isValid(String cpf) {
+    private static boolean isValid(String cpf) {
         // implementar lógica de validação do CPF
         return true;
     }

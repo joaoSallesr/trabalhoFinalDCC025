@@ -17,7 +17,7 @@ public class Email {
         this.email = email;
     }
 
-    private boolean isValid(String email) {
+    private static boolean isValid(String email) {
         EmailValidator validator = EmailValidator.getInstance();
         
         return validator.isValid(email);

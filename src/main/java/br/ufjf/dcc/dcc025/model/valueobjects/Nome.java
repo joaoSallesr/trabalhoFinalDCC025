@@ -13,7 +13,7 @@ public class Nome {
         this.sobrenome = sobrenome;
     }
 
-    private boolean isValid (String nome, String sobrenome) { 
+    private static boolean isValid (String nome, String sobrenome) { 
         return nome.length() > 1 && sobrenome.length() > 1;
     }
 

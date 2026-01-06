@@ -14,17 +14,13 @@ public class Senha {
         // Sem espaços
         // 8 a 20 dígitos
 
-    public static Senha getInstance(String senha) {
-        return new Senha(senha);
-    }
-
-    private Senha(String senha) {
+    public Senha(String senha) {
         if (!isValid(senha))
             throw new InvalidPasswordException("Senha inválida.");
         this.senha = senha;
     }
 
-    private boolean isValid(String senha) {
+    private static boolean isValid(String senha) {
         return senha != null && PADRAO_SENHA.matcher(senha).matches();
     }
 }

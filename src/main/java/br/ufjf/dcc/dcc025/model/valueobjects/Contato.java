@@ -15,7 +15,7 @@ public class Contato {
         this.contato = contato;
     }
 
-    private boolean isValid(String contato) {
+    private static boolean isValid(String contato) {
         return !(contato.length()>11); // alterar para regra real se necessário
     }
 
