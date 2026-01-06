@@ -1,7 +1,6 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
 import java.util.regex.*;
-import java.util.Objects;
 
 import br.ufjf.dcc.dcc025.model.exception.InvalidAddressException;
 
