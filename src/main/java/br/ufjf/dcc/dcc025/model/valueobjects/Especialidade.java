@@ -1,27 +1,44 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
+import java.text.Collator;
+import java.util.Locale;
+
 import br.ufjf.dcc.dcc025.model.exception.InvalidSpecialtyException;
 
-public class Especialidade {
-    private final String especialidade;
-    // criar lista de especialidades
+public enum Especialidade {
+    // Definir especialidades
+    CARDIOLOGISTA("Cardiologista"),
+    CLINICO("Clínico");
 
-    public Especialidade(String especialidade) {
-        validaEspecialidade(especialidade);
-        this.especialidade = especialidade;
+    private final String descricao;
+
+    private static final Collator COLLATOR = Collator.getInstance(Locale.forLanguageTag("pt-BR"));
+
+    static {
+        COLLATOR.setStrength(Collator.PRIMARY);
+    }
+
+    Especialidade(String descricao) {
+        this.descricao = descricao;
     }
 
     // Validação
-    private static void validaEspecialidade(String especialidade) {
-        // alterar para a validação de uma listas de especialidades
-        if (especialidade == null || especialidade.isBlank())
+    public static Especialidade fromString(String entrada) {
+        if (entrada == null || entrada.isBlank()) {
             throw new InvalidSpecialtyException("Especialidade obrigatória.");
-        if (true)
-            throw new InvalidSpecialtyException("Especialidade inválida.");
+        }
+
+        for (Especialidade especialidade : Especialidade.values()) {
+            if (COLLATOR.compare(especialidade.descricao, entrada) == 0
+                    || COLLATOR.compare(especialidade.name(), entrada) == 0) {
+                return especialidade;
+            }
+        }
+        throw new InvalidSpecialtyException("Especialidade inválida: " + entrada);
     }
 
     // Getters
-    public String getEspecialidade() {
-        return especialidade;
+    public String getDescricao() {
+        return descricao;
     }
 }

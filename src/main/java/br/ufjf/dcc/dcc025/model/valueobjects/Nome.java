@@ -3,6 +3,7 @@ package br.ufjf.dcc.dcc025.model.valueobjects;
 import br.ufjf.dcc.dcc025.model.exception.InvalidNameException;
 
 public class Nome {
+
     private final String nome;
     private final String sobrenome;
 
@@ -13,9 +14,10 @@ public class Nome {
     }
 
     // Validação
-    private static void validaNome(String nome, String sobrenome) { 
-        if (nome.length() > 1 && sobrenome.length() > 1)
+    private static void validaNome(String nome, String sobrenome) {
+        if (nome.length() > 1 && sobrenome.length() > 1) {
             throw new InvalidNameException("Nome / Sobrenome inválido: " + nome + " " + sobrenome);
+        }
     }
 
     // Getters

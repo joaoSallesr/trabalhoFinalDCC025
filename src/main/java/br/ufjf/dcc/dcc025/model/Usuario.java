@@ -3,9 +3,13 @@ package br.ufjf.dcc.dcc025.model;
 import java.util.Objects;
 import java.util.UUID;
 
-import br.ufjf.dcc.dcc025.model.valueobjects.*;
+import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
+import br.ufjf.dcc.dcc025.model.valueobjects.Email;
+import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
+import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public abstract class Usuario {
+
     private final UUID id;
     private final Nome nome;
     private final CPF cpf;

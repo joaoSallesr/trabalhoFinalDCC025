@@ -2,14 +2,19 @@ package br.ufjf.dcc.dcc025.model;
 
 import java.util.Objects;
 
-import br.ufjf.dcc.dcc025.model.valueobjects.*;
+import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
+import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
+import br.ufjf.dcc.dcc025.model.valueobjects.Email;
+import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
+import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
+import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public class Paciente extends Usuario {
+
     private Contato contato;
     private Endereco endereco;
     private boolean hospitalizado;
     private boolean recebeVisita;
-
 
     public Paciente(Nome nome, CPF cpf, Email email, Senha password, Contato contato, Endereco endereco) {
         super(nome, cpf, email, password);
@@ -38,8 +43,9 @@ public class Paciente extends Usuario {
     }
 
     public void permitirVisita() {
-        if (!hospitalizado)
+        if (!hospitalizado) {
             throw new IllegalStateException("Paciente não hospitalizado.");
+        }
         this.recebeVisita = true;
     }
 

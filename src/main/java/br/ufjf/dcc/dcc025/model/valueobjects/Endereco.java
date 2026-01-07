@@ -1,19 +1,20 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
-import java.util.regex.*;
+import java.util.regex.Pattern;
 
 import br.ufjf.dcc.dcc025.model.exception.InvalidAddressException;
 
 public class Endereco {
+
     private String cep;
     private String rua;
     private String bairro;
     private String cidade;
     private int numeroCasa;
 
-    private static final Pattern PADRAO_CEP = 
-        Pattern.compile("^(\\d{5}-\\d{3}|\\d{8})$");
-    
+    private static final Pattern PADRAO_CEP
+            = Pattern.compile("^(\\d{5}-\\d{3}|\\d{8})$");
+
     public static Endereco getInstance(String cep, String rua, String bairro, String cidade, int numeroCasa) {
         return new Endereco(cep, rua, bairro, cidade, numeroCasa);
     }
@@ -54,19 +55,22 @@ public class Endereco {
 
     // Validações
     private static void validaCep(String cep) {
-        if(cep != null && PADRAO_CEP.matcher(cep).matches())
-            throw new InvalidAddressException("Cep inválido: " + cep + " - XXXXX-XXX / XXXXXXXX");  
+        if (cep != null && PADRAO_CEP.matcher(cep).matches()) {
+            throw new InvalidAddressException("Cep inválido: " + cep + " - XXXXX-XXX / XXXXXXXX");
+        }
     }
 
     private static String validaLocal(String local, String message) {
-        if (local == null || local.isBlank())
-           throw new InvalidAddressException(message);
+        if (local == null || local.isBlank()) {
+            throw new InvalidAddressException(message);
+        }
         return local;
     }
 
     private static void validaNumeroCasa(int numeroCasa) {
-        if (numeroCasa <= 0) 
+        if (numeroCasa <= 0) {
             throw new InvalidAddressException("Número de casa inválido:");
+        }
     }
 
     // Getters

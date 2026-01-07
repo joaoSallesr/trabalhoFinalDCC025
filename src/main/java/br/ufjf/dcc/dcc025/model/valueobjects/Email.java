@@ -5,7 +5,10 @@ import org.apache.commons.validator.routines.EmailValidator;
 import br.ufjf.dcc.dcc025.model.exception.InvalidEmailException;
 
 public class Email {
+
     private String email;
+    
+    private static final EmailValidator VALIDATOR = EmailValidator.getInstance();
 
     public static Email getInstance(String email) {
         return new Email(email);
@@ -24,9 +27,9 @@ public class Email {
 
     // Validação
     private static void validaEmail(String email) {
-        EmailValidator validator = EmailValidator.getInstance();
-        if (!validator.isValid(email))
+        if (!VALIDATOR.isValid(email)) {
             throw new InvalidEmailException("Email inválido: " + email);
+        }
     }
 
     // Getters

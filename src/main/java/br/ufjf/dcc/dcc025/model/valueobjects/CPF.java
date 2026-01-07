@@ -1,8 +1,7 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
-import br.ufjf.dcc.dcc025.model.exception.InvalidCPFException;
-
 public class CPF {
+
     private final String cpf;
 
     public CPF(String cpf) {
