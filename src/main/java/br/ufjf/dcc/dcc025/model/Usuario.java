@@ -34,4 +34,25 @@ public abstract class Usuario {
     public void desativar() {
         this.ativo = false;
     }
+
+    // Getters
+    public UUID getId() {
+        return id;
+    }
+
+    public Nome getNome() {
+        return nome;
+    }
+
+    public CPF getCPF() {
+        return cpf;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public boolean getAtivo() {
+        return ativo;
+    }
 }

@@ -51,4 +51,20 @@ public class Paciente extends Usuario {
     public void bloquearVisita() {
         this.recebeVisita = false;
     }
+
+    // Getters
+    public boolean getHospitalizado() {
+        return hospitalizado;
+    }
+
+    public boolean getRecebeVisita() {
+        return recebeVisita;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+    public Endereco getEndereco() {
+        return endereco;
+    }
 }
