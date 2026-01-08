@@ -1,4 +1,4 @@
-package br.ufjf.dcc.dcc025.model;
+package br.ufjf.dcc.dcc025.view;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;

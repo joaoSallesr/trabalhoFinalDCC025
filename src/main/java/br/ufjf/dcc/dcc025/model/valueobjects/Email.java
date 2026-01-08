@@ -7,14 +7,10 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidEmailException;
 public class Email {
 
     private String email;
-    
+
     private static final EmailValidator VALIDATOR = EmailValidator.getInstance();
 
-    public static Email getInstance(String email) {
-        return new Email(email);
-    }
-
-    private Email(String email) {
+    public Email(String email) {
         validaEmail(email);
         this.email = email;
     }

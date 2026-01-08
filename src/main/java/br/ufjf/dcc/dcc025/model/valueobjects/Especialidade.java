@@ -8,6 +8,7 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidSpecialtyException;
 public enum Especialidade {
     // Definir especialidades
     CARDIOLOGISTA("Cardiologista"),
+    PEDIATRA("Pediatra"),
     CLINICO("Clínico");
 
     private final String descricao;

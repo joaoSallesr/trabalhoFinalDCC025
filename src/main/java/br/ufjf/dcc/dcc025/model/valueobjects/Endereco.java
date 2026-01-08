@@ -15,11 +15,7 @@ public class Endereco {
     private static final Pattern PADRAO_CEP
             = Pattern.compile("^(\\d{5}-\\d{3}|\\d{8})$");
 
-    public static Endereco getInstance(String cep, String rua, String bairro, String cidade, int numeroCasa) {
-        return new Endereco(cep, rua, bairro, cidade, numeroCasa);
-    }
-
-    private Endereco(String cep, String rua, String bairro, String cidade, int numeroCasa) {
+    public Endereco(String cep, String rua, String bairro, String cidade, int numeroCasa) {
         validaCep(cep);
         validaNumeroCasa(numeroCasa);
 
@@ -74,7 +70,7 @@ public class Endereco {
     }
 
     // Getters
-    public String getCep() {
+    public String getCEP() {
         return cep;
     }
 
