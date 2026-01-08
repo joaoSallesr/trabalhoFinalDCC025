@@ -11,7 +11,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
 
 public class Recepcionista extends Usuario {
 
-    public Recepcionista(Nome nome, CPF cpf, Email email, Especialidade especialidade) {
+    public Recepcionista(Nome nome, CPF cpf, Email email) {
         super(nome, cpf, email);
     }
 
@@ -21,8 +21,8 @@ public class Recepcionista extends Usuario {
         CPF novoCpf = new CPF(dados.getCPF());
         Email novoEmail = new Email(dados.getEmail());
         Contato novoContato = new Contato(dados.getNumeroContato());
-        Endereco novoEndereco = new Endereco(dados.getCEP(), dados.getRua(), dados.getBairro(), dados.getCidade(),
-                dados.getNumeroCasa());
+        Endereco novoEndereco = new Endereco(dados.getCEP(), dados.getRua(),
+                dados.getBairro(), dados.getCidade(), dados.getNumeroCasa());
 
         Paciente novoPaciente = new Paciente(novoNome, novoCpf, novoEmail, novoContato, novoEndereco);
     }
