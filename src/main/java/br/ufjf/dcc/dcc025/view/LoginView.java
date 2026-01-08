@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
 
-public class TelaLogin {
+public class LoginView {
     public static void main(String[] args) throws Exception {
         JFrame janela = new JFrame();
 
