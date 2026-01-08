@@ -6,11 +6,7 @@ public class Contato {
 
     private String numero;
 
-    public static Contato getInstance(String numero) {
-        return new Contato(numero);
-    }
-
-    private Contato(String numero) {
+    public Contato(String numero) {
         validaNumero(numero);
         this.numero = numero;
     }

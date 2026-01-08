@@ -7,7 +7,6 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
 import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
-import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public class Paciente extends Usuario {
 
@@ -16,8 +15,8 @@ public class Paciente extends Usuario {
     private boolean hospitalizado;
     private boolean recebeVisita;
 
-    public Paciente(Nome nome, CPF cpf, Email email, Senha password, Contato contato, Endereco endereco) {
-        super(nome, cpf, email, password);
+    public Paciente(Nome nome, CPF cpf, Email email, Contato contato, Endereco endereco) {
+        super(nome, cpf, email);
         this.contato = Objects.requireNonNull(contato, "Contato obrigatório.");
         this.endereco = Objects.requireNonNull(endereco, "Endereço obrigatório.");
         this.hospitalizado = false;
@@ -51,5 +50,21 @@ public class Paciente extends Usuario {
 
     public void bloquearVisita() {
         this.recebeVisita = false;
+    }
+
+    // Getters
+    public boolean getHospitalizado() {
+        return hospitalizado;
+    }
+
+    public boolean getRecebeVisita() {
+        return recebeVisita;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+    public Endereco getEndereco() {
+        return endereco;
     }
 }
