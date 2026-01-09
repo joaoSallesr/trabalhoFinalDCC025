@@ -8,5 +8,7 @@ public interface DadosUsuario {
 
     String getCPF();
 
+    String getSenha();
+
     String getEmail();
 }

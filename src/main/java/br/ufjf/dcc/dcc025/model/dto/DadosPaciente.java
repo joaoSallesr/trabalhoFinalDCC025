@@ -5,6 +5,7 @@ public class DadosPaciente implements DadosUsuario {
     private final String nome;
     private final String sobrenome;
     private final String cpf;
+    private final String senha;
     private final String email;
     private final String numeroContato;
     private final String cep;
@@ -16,12 +17,14 @@ public class DadosPaciente implements DadosUsuario {
     public DadosPaciente(
             String nome, String sobrenome,
             String cpf,
+            String senha,
             String email,
             String numeroContato,
             String cep, String rua, String bairro, String cidade, int numeroCasa) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.cpf = cpf;
+        this.senha = senha;
         this.email = email;
         this.numeroContato = numeroContato;
         this.cep = cep;
@@ -45,6 +48,11 @@ public class DadosPaciente implements DadosUsuario {
     @Override
     public String getCPF() {
         return cpf;
+    }
+
+    @Override
+    public String getSenha() {
+        return senha;
     }
 
     @Override

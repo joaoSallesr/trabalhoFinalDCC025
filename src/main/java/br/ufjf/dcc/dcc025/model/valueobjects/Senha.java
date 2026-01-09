@@ -22,9 +22,12 @@ public class Senha {
 
     // Validação
     private static void validaSenha(String senha) {
-        if (senha != null && PADRAO_SENHA.matcher(senha).matches()) {
+        if (senha != null && !PADRAO_SENHA.matcher(senha).matches()) {
             throw new InvalidPasswordException("Senha inválida.");
         }
+    }
 
+    public String getSenha() {
+        return senha;
     }
 }

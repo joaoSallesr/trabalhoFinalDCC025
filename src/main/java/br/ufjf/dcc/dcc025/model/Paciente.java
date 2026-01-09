@@ -7,6 +7,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
 import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
+import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public class Paciente extends Usuario {
 
@@ -15,8 +16,8 @@ public class Paciente extends Usuario {
     private boolean hospitalizado;
     private boolean recebeVisita;
 
-    public Paciente(Nome nome, CPF cpf, Email email, Contato contato, Endereco endereco) {
-        super(nome, cpf, email);
+    public Paciente(Nome nome, CPF cpf, Senha senha, Email email, Contato contato, Endereco endereco) {
+        super(nome, cpf, senha, email);
         this.contato = Objects.requireNonNull(contato, "Contato obrigatório.");
         this.endereco = Objects.requireNonNull(endereco, "Endereço obrigatório.");
         this.hospitalizado = false;
@@ -25,7 +26,7 @@ public class Paciente extends Usuario {
 
     // Atualização de atributos
     public void alterarContato(String novoNumero) {
-        this.contato = Objects.requireNonNull(contato, "Contato obrigatório.");
+        this.contato = Objects.requireNonNull(contato, "Novo contato obrigatório.");
     }
     public void alterarEndereco(Endereco novoEndereco) {
         this.endereco = Objects.requireNonNull(novoEndereco, "Novo endereço obrigatório.");
