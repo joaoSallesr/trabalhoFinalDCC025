@@ -65,7 +65,7 @@ public class Recepcionista extends Usuario {
         medico.desativarUsuario();
     }
 
-    // Interações com paciente
+    // Interações com usuário
     public List<Paciente> pacientesHospitalizados(List<Paciente> listaPacientes) {
         List<Paciente> hospitalizado = new ArrayList<>();
         for (Paciente paciente : listaPacientes) {

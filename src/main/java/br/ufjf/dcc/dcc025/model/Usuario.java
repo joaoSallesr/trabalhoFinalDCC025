@@ -54,6 +54,10 @@ public abstract class Usuario {
         return cpf;
     }
 
+    public Senha getSenha() {
+        return senha;
+    }
+
     public Email getEmail() {
         return email;
     }
