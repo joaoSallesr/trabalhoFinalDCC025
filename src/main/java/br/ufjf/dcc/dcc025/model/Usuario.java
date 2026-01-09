@@ -23,15 +23,16 @@ public abstract class Usuario {
         this.ativo = true;
     }
 
+    // Atualização de atributos
     public void alterarEmail(String novoEmail) {
-        this.email.alterar(novoEmail);
+        this.email = Objects.requireNonNull(email, "Email obrigatório.");
     }
 
-    public void ativar() {
+    public void ativarUsuario() {
         this.ativo = true;
     }
 
-    public void desativar() {
+    public void desativarUsuario() {
         this.ativo = false;
     }
 

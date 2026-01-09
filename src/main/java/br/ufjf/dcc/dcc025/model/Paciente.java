@@ -23,12 +23,12 @@ public class Paciente extends Usuario {
         this.recebeVisita = false;
     }
 
+    // Atualização de atributos
+    public void alterarContato(String novoNumero) {
+        this.contato = Objects.requireNonNull(contato, "Contato obrigatório.");
+    }
     public void alterarEndereco(Endereco novoEndereco) {
         this.endereco = Objects.requireNonNull(novoEndereco, "Novo endereço obrigatório.");
-    }
-
-    public void alterarContato(String novoNumero) {
-        this.contato.alterar(novoNumero);
     }
 
     public void hospitalizar() {

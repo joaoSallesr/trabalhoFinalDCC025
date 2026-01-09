@@ -22,7 +22,7 @@ public class Medico extends Usuario {
         this.especialidade = Objects.requireNonNull(especialidade, "Especialidade obrigatória.");
     }
 
-    // Alterações
+    // Atualização de atributos
     public void adicionarHorario(HorarioTrabalho novoHorario) {
         for (HorarioTrabalho horario : horariosTrabalho) {
             if (horario.getDiaTrabalho() == novoHorario.getDiaTrabalho()) {

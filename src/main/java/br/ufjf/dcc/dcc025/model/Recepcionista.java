@@ -17,7 +17,7 @@ public class Recepcionista extends Usuario {
         super(nome, cpf, email);
     }
 
-    // Cadastros (salvar esses novoUsuario em um local)
+    // Cadastros de usuário (salva dados no json dedicado ao tipo de usuário)
     public void cadastrarPaciente(DadosPaciente dados) {
         Nome novoNome = new Nome(dados.getNome(), dados.getSobrenome());
         CPF novoCpf = new CPF(dados.getCPF());
