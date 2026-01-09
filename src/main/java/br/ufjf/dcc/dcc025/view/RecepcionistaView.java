@@ -1,17 +1,28 @@
 package br.ufjf.dcc.dcc025.view;
 
-import javax.swing.*; //'*' importa todas as classes públicas desse pacote
-import java.awt.*;
+import java.awt.BorderLayout; //'*' importa todas as classes públicas desse pacote
+import java.awt.CardLayout;
+import java.awt.GridLayout;
 
-import br.ufjf.dcc.dcc025.model.Paciente;
-import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
-import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
-import br.ufjf.dcc.dcc025.model.valueobjects.Email;
-import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
-import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
-import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import br.ufjf.dcc.dcc025.controller.RecepcionistaController;
+import br.ufjf.dcc.dcc025.model.Paciente;
+import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
+import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
+import br.ufjf.dcc.dcc025.model.valueobjects.Email;
+import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
+import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
+import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public class RecepcionistaView extends JFrame {
 
@@ -192,6 +203,7 @@ public class RecepcionistaView extends JFrame {
             Paciente paciente = new Paciente(
                     nome,
                     cpf,
+                    senha,
                     email,
                     contato,
                     endereco);
