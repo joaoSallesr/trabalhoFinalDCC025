@@ -4,15 +4,9 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidPhoneNumberException;
 
 public class Contato {
 
-    private String numero;
+    private final String numero;
 
     public Contato(String numero) {
-        validaNumero(numero);
-        this.numero = numero;
-    }
-
-    // Alteração de número
-    public void alterar(String numero) {
         validaNumero(numero);
         this.numero = numero;
     }

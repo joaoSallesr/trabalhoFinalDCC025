@@ -6,11 +6,11 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidAddressException;
 
 public class Endereco {
 
-    private String cep;
-    private String rua;
-    private String bairro;
-    private String cidade;
-    private int numeroCasa;
+    private final String cep;
+    private final String rua;
+    private final String bairro;
+    private final String cidade;
+    private final int numeroCasa;
 
     private static final Pattern PADRAO_CEP
             = Pattern.compile("^(\\d{5}-\\d{3}|\\d{8})$");
@@ -23,29 +23,6 @@ public class Endereco {
         this.rua = validaLocal(rua, "Rua obrigatória.");
         this.bairro = validaLocal(bairro, "Bairro obrigatório.");
         this.cidade = validaLocal(cidade, "Cidade obrigatória.");
-        this.numeroCasa = numeroCasa;
-    }
-
-    // Alteração de endereço
-    public void alterarCep(String cep) {
-        validaCep(cep);
-        this.cep = cep;
-    }
-
-    public void alterarRua(String rua) {
-        this.rua = validaLocal(rua, "Rua obrigatória.");
-    }
-
-    public void alterarBairro(String bairro) {
-        this.bairro = validaLocal(bairro, "Bairro obrigatório.");
-    }
-
-    public void alterarCidade(String cidade) {
-        this.cidade = validaLocal(cidade, "Cidade obrigatória.");
-    }
-
-    public void alterarNumeroCasa(int numeroCasa) {
-        validaNumeroCasa(numeroCasa);
         this.numeroCasa = numeroCasa;
     }
 

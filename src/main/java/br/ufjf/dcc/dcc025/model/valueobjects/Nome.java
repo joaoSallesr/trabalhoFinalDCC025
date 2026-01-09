@@ -38,7 +38,9 @@ public class Nome {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Nome nome1 = (Nome) o;
         return Objects.equals(getNome(), nome1.getNome()) && Objects.equals(getSobrenome(), nome1.getSobrenome());
     }

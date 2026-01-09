@@ -8,9 +8,9 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidWorkingTimeException;
 
 public class HorarioTrabalho {
 
-    private DayOfWeek diaTrabalho; // Número (1 a 7 = Segunda a Domingo)
-    private LocalTime horarioComeco; // Número (aa, bb) = aa:bb
-    private LocalTime horarioFinal;
+    private final DayOfWeek diaTrabalho; // Número (1 a 7 = Segunda a Domingo)
+    private final LocalTime horarioComeco; // Número (aa, bb) = aa:bb
+    private final LocalTime horarioFinal;
 
     public HorarioTrabalho(DayOfWeek diaTrabalho, LocalTime horarioComeco, LocalTime horarioFinal) {
         validaHorario(horarioComeco, horarioFinal);

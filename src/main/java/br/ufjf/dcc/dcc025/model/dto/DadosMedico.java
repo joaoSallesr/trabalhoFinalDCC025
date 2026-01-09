@@ -1,13 +1,14 @@
 package br.ufjf.dcc.dcc025.model.dto;
 
 public class DadosMedico implements DadosUsuario {
+
     private final String nome;
     private final String sobrenome;
     private final String cpf;
     private final String email;
     private final String especialidade;
 
-    public DadosMedico (
+    public DadosMedico(
             String nome, String sobrenome,
             String cpf,
             String email,
@@ -24,7 +25,7 @@ public class DadosMedico implements DadosUsuario {
     public String getNome() {
         return nome;
     }
-    
+
     @Override
     public String getSobrenome() {
         return sobrenome;

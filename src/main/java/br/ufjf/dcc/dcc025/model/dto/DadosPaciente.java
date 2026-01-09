@@ -1,6 +1,7 @@
 package br.ufjf.dcc.dcc025.model.dto;
 
 public class DadosPaciente implements DadosUsuario {
+
     private final String nome;
     private final String sobrenome;
     private final String cpf;
