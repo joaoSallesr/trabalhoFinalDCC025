@@ -1,0 +1,32 @@
+[
+  {
+    "especialidade": "CLINICO",
+    "id": "a7f51635-49f2-4f72-ba56-d43c1b62b742",
+    "nome": {
+      "nome": "Doutor",
+      "sobrenome": "House"
+    },
+    "cpf": {
+      "cpf": "11111111111"
+    },
+    "email": {
+      "email": "house123@gmail.com"
+    },
+    "ativo": true
+  },
+  {
+    "especialidade": "PEDIATRA",
+    "id": "3b23263f-5ea8-4f8e-975c-b63a54f5f8b7",
+    "nome": {
+      "nome": "Jose",
+      "sobrenome": "Mauro"
+    },
+    "cpf": {
+      "cpf": "22222222222"
+    },
+    "email": {
+      "email": "jose.mauro@yahoo.com"
+    },
+    "ativo": true
+  }
+]

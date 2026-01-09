@@ -1,0 +1,16 @@
+[
+  {
+    "id": "07b9467c-877c-4e62-8b23-e82f154d3c99",
+    "nome": {
+      "nome": "Thiago",
+      "sobrenome": "Silva"
+    },
+    "cpf": {
+      "cpf": "12345678910"
+    },
+    "email": {
+      "email": "Thiago45@gmail.com"
+    },
+    "ativo": true
+  }
+]

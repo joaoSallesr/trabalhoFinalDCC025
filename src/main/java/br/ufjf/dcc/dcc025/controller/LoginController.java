@@ -3,6 +3,7 @@ package br.ufjf.dcc.dcc025.controller;
 import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.model.Usuario;
 
+/* 
 // filtra o tipo de usuário e abre a tela correspondente
 if (usuario instanceof Medico medico) {
     abrirMedico(medico);
@@ -39,6 +40,7 @@ private void abrirPaciente(Paciente paciente) {
     pacienteView.setVisible(true);
     view.dispose();
 }
+    */
 
 
 

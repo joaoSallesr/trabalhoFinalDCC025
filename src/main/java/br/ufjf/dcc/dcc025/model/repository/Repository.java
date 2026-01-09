@@ -1,11 +1,20 @@
 package br.ufjf.dcc.dcc025.model.repository;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Type;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import br.ufjf.dcc.dcc025.model.utils.LocalTimeAdapter;
 
 public class Repository<T> {
 
@@ -14,7 +23,7 @@ public class Repository<T> {
 
     public Repository(String nomeArquivo) {
         this.caminhoRepositorio = "data" + File.separator + nomeArquivo;
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalTime.class, new LocalTimeAdapter()).create();
     }
 
     public void salvar(List<T> usuarios) {
@@ -32,7 +41,6 @@ public class Repository<T> {
         }
 
         try (Reader reader = new FileReader(caminhoRepositorio)) {
-            // Converte o JSON de volta para uma Lista de Objetos
             return gson.fromJson(reader, tipoUsuario);
         } catch (IOException e) {
             System.out.println("Erro ao carregar usuários.");

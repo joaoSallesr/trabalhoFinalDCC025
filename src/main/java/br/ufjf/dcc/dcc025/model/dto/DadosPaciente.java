@@ -4,13 +4,13 @@ public class DadosPaciente implements DadosUsuario {
     private final String nome;
     private final String sobrenome;
     private final String cpf;
-    private String email;
-    private String numeroContato;
-    private String cep;
-    private String rua;
-    private String bairro;
-    private String cidade;
-    private int numeroCasa;
+    private final String email;
+    private final String numeroContato;
+    private final String cep;
+    private final String rua;
+    private final String bairro;
+    private final String cidade;
+    private final int numeroCasa;
 
     public DadosPaciente(
             String nome, String sobrenome,
