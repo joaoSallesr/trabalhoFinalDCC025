@@ -1,5 +1,8 @@
 package br.ufjf.dcc.dcc025.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosRecepcionista;
@@ -51,5 +54,35 @@ public class Recepcionista extends Usuario {
 
         Recepcionista novoRecepcionista = new Recepcionista(novoNome, novoCPF, novaSenha, novoEmail);
         GerenciadorRepository.getInstance().adicionarRecepcionista(novoRecepcionista);
+    }
+
+    // Atualização de usuário
+    public void ativarMedico(Medico medico) {
+        medico.ativarUsuario();
+    }
+
+    public void desativarMedico(Medico medico) {
+        medico.desativarUsuario();
+    }
+
+    // Interações com paciente
+    public List<Paciente> pacientesHospitalizados(List<Paciente> listaPacientes) {
+        List<Paciente> hospitalizado = new ArrayList<>();
+        for (Paciente paciente : listaPacientes) {
+            if (paciente.getHospitalizado()) {
+                hospitalizado.add(paciente);
+            }
+        }
+        return hospitalizado;
+    }
+
+    public List<Paciente> pacientesRecebemVisita(List<Paciente> listaPacientes) {
+        List<Paciente> recebemVisita = new ArrayList<>();
+        for (Paciente paciente : listaPacientes) {
+            if (paciente.getRecebeVisita()) {
+                recebemVisita.add(paciente);
+            }
+        }
+        return recebemVisita;
     }
 }

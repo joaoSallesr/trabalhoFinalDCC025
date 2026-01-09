@@ -15,7 +15,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public class Medico extends Usuario {
 
-    private final Especialidade especialidade;
+    private Especialidade especialidade;
     private List<HorarioTrabalho> horariosTrabalho;
 
     public Medico(Nome nome, CPF cpf, Senha senha, Email email, Especialidade especialidade) {
@@ -35,6 +35,10 @@ public class Medico extends Usuario {
 
     public void removerHorario(HorarioTrabalho horario) {
         this.horariosTrabalho.remove(horario);
+    }
+
+    public void alterarEspecialidade(Especialidade novaEspecialidade) {
+        this.especialidade = Objects.requireNonNull(especialidade, "Nova especialidade obrigatória.");
     }
 
     // Buscas
