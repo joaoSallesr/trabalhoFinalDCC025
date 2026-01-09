@@ -51,7 +51,7 @@ public class Endereco {
 
     // Validações
     private static void validaCep(String cep) {
-        if (cep != null && PADRAO_CEP.matcher(cep).matches()) {
+        if (cep != null && !PADRAO_CEP.matcher(cep).matches()) {
             throw new InvalidAddressException("Cep inválido: " + cep + " - XXXXX-XXX / XXXXXXXX");
         }
     }

@@ -1,0 +1,28 @@
+[
+  {
+    "contato": {
+      "numero": "32999881234"
+    },
+    "endereco": {
+      "cep": "12345678",
+      "rua": "rua teste",
+      "bairro": "bairro teste",
+      "cidade": "cidade teste",
+      "numeroCasa": 12
+    },
+    "hospitalizado": false,
+    "recebeVisita": false,
+    "id": "c5903410-9c64-497e-aa6f-ee4428821873",
+    "nome": {
+      "nome": "João",
+      "sobrenome": "Salles"
+    },
+    "cpf": {
+      "cpf": "12345678910"
+    },
+    "email": {
+      "email": "joao.teste@gmail.com"
+    },
+    "ativo": true
+  }
+]

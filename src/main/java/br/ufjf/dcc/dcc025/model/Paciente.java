@@ -64,6 +64,7 @@ public class Paciente extends Usuario {
     public Contato getContato() {
         return contato;
     }
+
     public Endereco getEndereco() {
         return endereco;
     }
