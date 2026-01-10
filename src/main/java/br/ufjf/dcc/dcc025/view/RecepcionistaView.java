@@ -55,7 +55,14 @@ public class RecepcionistaView extends JFrame {
 
     // cadastro paciente:
     private JTextField txtNomePaciente, txtSobrenomePaciente, txtCpfPaciente, txtEmailPaciente, txtTelefonePaciente;
-    private JTextField txtRuaPaciente, txtNumeroPaciente, txtCidadePaciente, txtCepPaciente, txtBairroPaciente; // Endereço pode ser unico se só paciente tem endereço
+    private JTextField txtRuaPaciente, txtNumeroPaciente, txtCidadePaciente, txtCepPaciente, txtBairroPaciente; // Endereço
+                                                                                                                // pode
+                                                                                                                // ser
+                                                                                                                // unico
+                                                                                                                // se só
+                                                                                                                // paciente
+                                                                                                                // tem
+                                                                                                                // endereço
     private JPasswordField txtSenhaPaciente;
 
     // cadastro médico:
@@ -72,9 +79,9 @@ public class RecepcionistaView extends JFrame {
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        this.pacienteController = new PacienteController();
-        this.medicoController = new MedicoController();
-        this.recepcionistaController = new RecepcionistaController();
+        this.pacienteController = new PacienteController(null, null);
+        this.medicoController = new MedicoController(null, null);
+        this.recepcionistaController = new RecepcionistaController(null, null);
         ImageIcon image = new ImageIcon("hospital-building.png"); // icone
         this.setIconImage(image.getImage()); // icone
 
@@ -159,8 +166,8 @@ public class RecepcionistaView extends JFrame {
     }
 
     private JPanel criarPainelCadastroPaciente() {
-        JPanel painel = new JPanel(new GridLayout(10, 4, 5, 5));
-        painel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JPanel painel = new JPanel(new GridLayout(0, 2, 10, 10));
+        painel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         txtNomePaciente = new JTextField();
         txtSobrenomePaciente = new JTextField();
@@ -213,8 +220,8 @@ public class RecepcionistaView extends JFrame {
     }
 
     private JPanel criarPainelCadastroMedico() {
-        JPanel painel = new JPanel(new GridLayout(10, 4, 5, 5));
-        painel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JPanel painel = new JPanel(new GridLayout(0, 2, 10, 10));
+        painel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         txtNomeMedico = new JTextField();
         txtSobrenomeMedico = new JTextField();
@@ -312,8 +319,7 @@ public class RecepcionistaView extends JFrame {
             DadosPaciente dadosPaciente = new DadosPaciente(
                     nome, sobrenome, cpf,
                     senha, email, telefone,
-                    cep, rua, bairro, cidade, numeroCasaInt
-            );
+                    cep, rua, bairro, cidade, numeroCasaInt);
             pacienteController.cadastrarPaciente(dadosPaciente);
 
             JOptionPane.showMessageDialog(
@@ -342,8 +348,7 @@ public class RecepcionistaView extends JFrame {
 
             DadosMedico dadosMedico = new DadosMedico(
                     nome, sobrenome, cpf,
-                    senha, email, especialidade
-            );
+                    senha, email, especialidade);
             medicoController.cadastrarMedico(dadosMedico);
 
             JOptionPane.showMessageDialog(
@@ -370,8 +375,7 @@ public class RecepcionistaView extends JFrame {
 
             DadosRecepcionista dadosRecepcionista = new DadosRecepcionista(
                     nome, sobrenome, cpf,
-                    senha, email
-            );
+                    senha, email);
             recepcionistaController.cadastrarRecepcionista(dadosRecepcionista);
 
             JOptionPane.showMessageDialog(
@@ -479,7 +483,8 @@ public class RecepcionistaView extends JFrame {
 
             String statusTexto = liberaVisita ? "Sim" : "Não";
 
-            sb.append("Nome: ").append(p.getNome().getNome()).append(" ").append(p.getNome().getSobrenome()).append("\n");
+            sb.append("Nome: ").append(p.getNome().getNome()).append(" ").append(p.getNome().getSobrenome())
+                    .append("\n");
             sb.append("CPF: ").append(p.getCPF().getCPF()).append("\n");
             sb.append("Pode receber visita? - ").append(statusTexto).append("\n");
             sb.append("--------------------------------------\n");
@@ -496,15 +501,14 @@ public class RecepcionistaView extends JFrame {
                 this,
                 scrollPane,
                 "Relatório de Hospitalização",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void gerenciarMedicos() {
         List<Medico> medicos = medicoController.buscarMedicos();
 
         // Configura as colunas da tabela
-        String[] colunas = {"Nome", "CPF", "Especialidade", "Status"};
+        String[] colunas = { "Nome", "CPF", "Especialidade", "Status" };
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -516,10 +520,10 @@ public class RecepcionistaView extends JFrame {
         for (Medico m : medicos) {
             String status = m.isAtivo() ? "Ativo" : "Inativo";
             Object[] linha = {
-                m.getNome().getNome() + " " + m.getNome().getSobrenome(),
-                m.getCPF().getCPF(),
-                m.getEspecialidade(),
-                status
+                    m.getNome().getNome() + " " + m.getNome().getSobrenome(),
+                    m.getCPF().getCPF(),
+                    m.getEspecialidade(),
+                    status
             };
             model.addRow(linha);
         }
