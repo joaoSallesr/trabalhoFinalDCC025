@@ -7,8 +7,17 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
+import br.ufjf.dcc.dcc025.view.PacienteView;
 
 public class PacienteController {
+
+    private Paciente paciente;
+    private PacienteView view;
+
+    public PacienteController(Paciente paciente, PacienteView view) {
+        this.paciente = paciente;
+        this.view = view;
+    }
 
     public void cadastrarPaciente(DadosPaciente dados) {
         Paciente novoPaciente = new Paciente(dados);

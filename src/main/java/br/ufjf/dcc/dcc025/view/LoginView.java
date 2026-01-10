@@ -2,6 +2,7 @@ package br.ufjf.dcc.dcc025.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame {
 
@@ -165,4 +166,15 @@ public class LoginView extends JFrame {
     public String getSenha() {
         return new String(campoSenha.getPassword());
     }
+    
+    public void addLoginListener(ActionListener listener) {
+        botaoLogin.addActionListener(listener);
+}
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
+}
+
+
+
 }
