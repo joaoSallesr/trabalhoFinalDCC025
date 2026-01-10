@@ -12,12 +12,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -26,6 +29,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
 
 public class MedicoView extends JFrame {
@@ -133,7 +137,6 @@ public class MedicoView extends JFrame {
         formPanel.add(spinnerFim);
         formPanel.add(btnAdicionarHorario);
 
-        // Centro: Tabela
         String[] colunas = {"Dia da Semana", "Início", "Fim"};
         tableModelHorarios = new DefaultTableModel(colunas, 0) {
             @Override // Bloqueia edição das células
@@ -144,7 +147,6 @@ public class MedicoView extends JFrame {
         tabelaHorarios = new JTable(tableModelHorarios);
         JScrollPane scrollPane = new JScrollPane(tabelaHorarios);
 
-        // Baixo: Botão remover
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnRemoverHorario = new JButton("Remover Horário Selecionado");
         bottomPanel.add(btnRemoverHorario);
@@ -219,5 +221,86 @@ public class MedicoView extends JFrame {
                 h.getHorarioFinal().format(fmt)
             });
         }
+    }
+
+    public void abrirDialogoGerenciamento(List<Paciente> todosPacientes,
+            Consumer<Paciente> onAlternarVisita,
+            Consumer<Paciente> onAlternarHospitalizacao) {
+
+        String[] colunas = {"Nome", "CPF", "Hospitalizado", "Pode receber visita"};
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        for (Paciente p : todosPacientes) {
+            model.addRow(new Object[]{
+                p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                p.getCPF().getCPF(),
+                p.isHospitalizado() ? "Sim" : "Não",
+                p.isRecebeVisita() ? "Apto" : "Não apto"
+            });
+        }
+
+        JTable tabela = new JTable(model);
+        JScrollPane scroll = new JScrollPane(tabela);
+
+        JButton btnAlternarVisita = new JButton("Alternar status de visita");
+        btnAlternarVisita.addActionListener(ev -> {
+            int linha = tabela.getSelectedRow();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um paciente.");
+                return;
+            }
+            Paciente p = todosPacientes.get(linha);
+            if (!p.isHospitalizado()) {
+                JOptionPane.showMessageDialog(this, "Paciente não está hospitalizado para receber visitas.");
+                return;
+            }
+
+            onAlternarVisita.accept(p);
+
+            model.setValueAt(p.isRecebeVisita() ? "Apto" : "Não apto", linha, 3);
+        });
+
+        JButton btnAlternarHospitalizar = new JButton("Hospitalizar / Dar Alta");
+        btnAlternarHospitalizar.addActionListener(ev -> {
+            int linha = tabela.getSelectedRow();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um paciente.");
+                return;
+            }
+
+            Paciente p = todosPacientes.get(linha);
+            String acao = p.isHospitalizado() ? "Dar Alta" : "Internar";
+
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Deseja realmente " + acao + " o paciente?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                onAlternarHospitalizacao.accept(p);
+
+                model.setValueAt(p.isHospitalizado() ? "Sim" : "Não", linha, 2);
+
+                model.setValueAt(p.isRecebeVisita() ? "Apto" : "Não apto", linha, 3);
+
+                JOptionPane.showMessageDialog(this, "Status alterado com sucesso.");
+            }
+        });
+
+        JDialog dialog = new JDialog(this, "Gerenciar Todos os Pacientes", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.add(scroll, BorderLayout.CENTER);
+
+        JPanel botoes = new JPanel();
+        botoes.add(btnAlternarVisita);
+        botoes.add(btnAlternarHospitalizar);
+
+        dialog.add(botoes, BorderLayout.SOUTH);
+        dialog.setSize(800, 500);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 }

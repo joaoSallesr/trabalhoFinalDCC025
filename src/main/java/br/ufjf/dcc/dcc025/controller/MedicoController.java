@@ -1,19 +1,12 @@
 package br.ufjf.dcc.dcc025.controller;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
@@ -76,14 +69,6 @@ public class MedicoController {
         }
     }
 
-    private class GerenciarStatusListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            mostrarPacientesParaGerenciamento();
-        }
-    }
-
     public void adicionarHorario(DayOfWeek dia, LocalTime inicio, LocalTime fim) {
         HorarioTrabalho novoHorario = new HorarioTrabalho(dia, inicio, fim);
         medico.adicionarHorario(novoHorario);
@@ -104,72 +89,32 @@ public class MedicoController {
         return GerenciadorRepository.getInstance().buscarMedicosHorario(esp, dia, hora);
     }
 
-    private void mostrarPacientesParaGerenciamento() {
-        List<Paciente> pacientes = GerenciadorRepository
-                .getInstance()
-                .buscarHospitalizados();
+    private class GerenciarStatusListener implements ActionListener {
 
-        String[] colunas = {"Nome", "CPF", "Hospitalizado", "Pode receber visita"};
-        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<Paciente> todosPacientes = GerenciadorRepository.getInstance().getPacientes();
 
-        for (Paciente p : pacientes) {
-            model.addRow(new Object[]{
-                p.getNome().getNome() + " " + p.getNome().getSobrenome(),
-                p.getCPF().getCPF(),
-                p.isHospitalizado() ? "Sim" : "Não",
-                p.isRecebeVisita() ? "Apto" : "Não apto"
-            });
+            view.abrirDialogoGerenciamento(
+                    todosPacientes,
+                    (paciente) -> {
+                        if (paciente.isRecebeVisita()) {
+                            paciente.bloquearVisita();
+                        } else {
+                            paciente.permitirVisita();
+                        }
+                        GerenciadorRepository.getInstance().salvarPacientes();
+                    },
+                    (paciente) -> {
+                        if (paciente.isHospitalizado()) {
+                            paciente.deshospitalizar();
+                        } else {
+                            paciente.hospitalizar();
+                        }
+                        GerenciadorRepository.getInstance().salvarPacientes();
+                    }
+            );
         }
-
-        JTable tabela = new JTable(model);
-        JScrollPane scroll = new JScrollPane(tabela);
-
-        JButton btnAlternar = new JButton("Alternar status de visita");
-
-        btnAlternar.addActionListener(ev -> {
-            int linha = tabela.getSelectedRow();
-            if (linha == -1) {
-                JOptionPane.showMessageDialog(view, "Selecione um paciente.");
-                return;
-            }
-
-            Paciente p = pacientes.get(linha);
-
-            if (!p.isHospitalizado()) {
-                JOptionPane.showMessageDialog(view, "Paciente não está hospitalizado.");
-                return;
-            }
-
-            if (p.isRecebeVisita()) {
-                p.bloquearVisita();
-            } else {
-                p.permitirVisita();
-            }
-
-            GerenciadorRepository.getInstance().salvarPacientes();
-
-            model.setValueAt(
-                    p.isRecebeVisita() ? "Apto" : "Não apto",
-                    linha,
-                    3);
-        });
-
-        JDialog dialog = new JDialog(view, "Status dos Pacientes", true);
-        dialog.setLayout(new BorderLayout());
-        dialog.add(scroll, BorderLayout.CENTER);
-
-        JPanel botoes = new JPanel();
-        botoes.add(btnAlternar);
-
-        dialog.add(botoes, BorderLayout.SOUTH);
-        dialog.setSize(800, 500);
-        dialog.setLocationRelativeTo(view);
-        dialog.setVisible(true);
     }
 
     private class AdicionarHorarioListener implements ActionListener {
@@ -202,6 +147,7 @@ public class MedicoController {
     }
 
     private class RemoverHorarioListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             int linhaSelecionada = view.getLinhaSelecionada();
@@ -231,6 +177,7 @@ public class MedicoController {
     }
 
     private class NavegarAgendaListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             view.atualizarTabela(medico.getAgenda());
