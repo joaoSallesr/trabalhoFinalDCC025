@@ -1,5 +1,7 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.util.List;
+
 import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
@@ -34,13 +36,18 @@ public class MedicoController {
         GerenciadorRepository.getInstance().salvarMedicos();
     }
 
-    public void ativarUsuario(Medico medico) {
-        medico.ativarUsuario();
-        GerenciadorRepository.getInstance().salvarMedicos();
+    public void alternarAtivo(Medico medico) {
+        if (medico.isAtivo()) {
+            medico.desativarUsuario();
+            GerenciadorRepository.getInstance().salvarMedicos();
+        } else {
+            medico.ativarUsuario();
+            GerenciadorRepository.getInstance().salvarMedicos();
+        }
     }
 
-    public void desativarUsuario(Medico medico) {
-        medico.desativarUsuario();
-        GerenciadorRepository.getInstance().salvarMedicos();
+    // Buscas
+    public List<Medico> buscarMedicos() {
+        return GerenciadorRepository.getInstance().getMedicos();
     }
 }

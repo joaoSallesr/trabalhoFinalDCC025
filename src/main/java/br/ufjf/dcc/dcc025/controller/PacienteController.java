@@ -1,5 +1,7 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.util.List;
+
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
@@ -90,5 +92,16 @@ public class PacienteController {
 
     }
 
-    // Auxiliares
+    // Buscas
+    public List<Paciente> buscarPacientesHospitalizados() {
+        return GerenciadorRepository.getInstance().buscarHospitalizados();
+    }
+
+    public List<Paciente> buscarRecebemVisitas() {
+        return GerenciadorRepository.getInstance().buscarRecebemVisitas();
+    }
+
+    public boolean existePacienteVisitavel(String nome, String sobrenome) {
+        return GerenciadorRepository.getInstance().existePacienteVisitavel(nome, sobrenome);
+    }
 }

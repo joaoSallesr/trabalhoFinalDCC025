@@ -99,4 +99,23 @@ public class Paciente extends Usuario {
     public Endereco getEndereco() {
         return endereco;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Paciente paciente = (Paciente) o;
+
+        return Objects.equals(this.getCPF().getCPF(), paciente.getCPF().getCPF());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getCPF().getCPF());
+    }
 }

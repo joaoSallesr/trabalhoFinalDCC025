@@ -10,7 +10,7 @@
       "cidade": "cidade teste",
       "numeroCasa": 12
     },
-    "hospitalizado": false,
+    "hospitalizado": true,
     "recebeVisita": false,
     "id": "3f033aa8-ee3a-4d34-ae33-213a41a0924c",
     "nome": {
@@ -36,15 +36,15 @@
       "cidade": "cidade teste",
       "numeroCasa": 13
     },
-    "hospitalizado": false,
-    "recebeVisita": false,
+    "hospitalizado": true,
+    "recebeVisita": true,
     "id": "da2bb4d0-3d8c-4757-b250-cd8186e11891",
     "nome": {
       "nome": "Tom",
       "sobrenome": "Jobim"
     },
     "cpf": {
-      "cpf": "12345678910"
+      "cpf": "12345678911"
     },
     "email": {
       "email": "tom.jobim@gmail.com"
