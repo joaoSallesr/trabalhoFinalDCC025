@@ -1,7 +1,16 @@
 package br.ufjf.dcc.dcc025.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class MedicoView extends JFrame {
 
@@ -73,12 +82,15 @@ public class MedicoView extends JFrame {
         painelDireito.add(btnSair);
     }
 
-    public void addGerenciarStatusListener(java.awt.event.ActionListener listener) {
+    public void addAgendaListener(ActionListener listener) {
+        btnAgenda.addActionListener(listener);
+    }
+
+    public void addGerenciarStatusListener(ActionListener listener) {
         btnStatus.addActionListener(listener);
     }
 
-    public void addSairListener(java.awt.event.ActionListener listener) {
+    public void addSairListener(ActionListener listener) {
         btnSair.addActionListener(listener);
     }
-
 }

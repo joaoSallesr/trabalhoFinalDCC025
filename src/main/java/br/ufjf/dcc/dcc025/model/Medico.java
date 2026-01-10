@@ -2,6 +2,7 @@ package br.ufjf.dcc.dcc025.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 public class Medico extends Usuario {
 
     private Especialidade especialidade;
-    private List<HorarioTrabalho> horariosTrabalho;
+    private final List<HorarioTrabalho> agenda;
 
     public Medico(DadosMedico dados) {
         super(
@@ -29,20 +30,21 @@ public class Medico extends Usuario {
         this.especialidade = Objects.requireNonNull(
                 Especialidade.fromString(dados.getEspecialidade()),
                 "Especialidade obrigatória.");
+        this.agenda = new ArrayList<>();
     }
 
     // Alteração de atributos
     public void adicionarHorario(HorarioTrabalho novoHorario) {
-        for (HorarioTrabalho horario : horariosTrabalho) {
+        for (HorarioTrabalho horario : agenda) {
             if (horario.getDiaTrabalho() == novoHorario.getDiaTrabalho()) {
                 throw new InvalidWorkingTimeException("Já exite um horário de trabalho para esse dia da semana.");
             }
         }
-        this.horariosTrabalho.add(novoHorario);
+        this.agenda.add(novoHorario);
     }
 
     public void removerHorario(HorarioTrabalho horario) {
-        this.horariosTrabalho.remove(horario);
+        this.agenda.remove(horario);
     }
 
     public void alterarEspecialidade(Especialidade novaEspecialidade) {
@@ -52,18 +54,24 @@ public class Medico extends Usuario {
 
     // Buscas
     public boolean estaTrabalhando(DayOfWeek dia, LocalTime hora) {
-        for (HorarioTrabalho horario : horariosTrabalho) {
-            if (horario.getDiaTrabalho() != dia
-                    || horario.getHorarioComeco().isAfter(hora)
-                    || horario.getHorarioFinal().isBefore(hora)) {
-                return false;
+        for (HorarioTrabalho horario : this.agenda) {
+            if (horario.getDiaTrabalho() == dia) {
+                boolean horarioValido = !hora.isBefore(horario.getHorarioComeco())
+                        && !hora.isAfter(horario.getHorarioFinal());
+                if (horarioValido) {
+                    return true;
+                }
             }
         }
-        return true;
+        return false;
     }
 
     // Getters
     public Especialidade getEspecialidade() {
         return this.especialidade;
+    }
+
+    public List<HorarioTrabalho> getAgenda() {
+        return this.agenda;
     }
 }

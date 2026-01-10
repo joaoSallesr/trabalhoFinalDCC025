@@ -39,7 +39,9 @@ public class PacienteController {
             this.view.addVerStatusListener(e -> mostrarStatusInternacao());
             this.view.addVerDadosListener(e -> mostrarMeusDados());
         }
+    }
 
+    public PacienteController() {
     }
 
     public void cadastrarPaciente(DadosPaciente dados) {
@@ -124,7 +126,7 @@ public class PacienteController {
             return;
         }
 
-        String[] colunas = { "Nome", "Pode receber visitas?" };
+        String[] colunas = {"Nome", "Pode receber visitas?"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -133,9 +135,9 @@ public class PacienteController {
         };
 
         for (Paciente p : hospitalizados) {
-            model.addRow(new Object[] {
-                    p.getNome().getNome() + " " + p.getNome().getSobrenome(),
-                    p.isRecebeVisita() ? "Apto" : "Não apto"
+            model.addRow(new Object[]{
+                p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                p.isRecebeVisita() ? "Apto" : "Não apto"
             });
         }
 
@@ -238,6 +240,7 @@ public class PacienteController {
     }
 
     private class SairListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             view.dispose();

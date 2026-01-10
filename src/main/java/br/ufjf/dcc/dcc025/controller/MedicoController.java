@@ -1,5 +1,10 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -15,14 +20,11 @@ import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
+import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
+import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
-import br.ufjf.dcc.dcc025.view.MedicoView;
 import br.ufjf.dcc.dcc025.view.LoginView;
-import br.ufjf.dcc.dcc025.controller.LoginController;
-
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import br.ufjf.dcc.dcc025.view.MedicoView;
 
 public class MedicoController {
 
@@ -33,14 +35,14 @@ public class MedicoController {
         this.medico = medico;
         this.view = view;
 
-        if (view == null) {
-            throw new IllegalArgumentException("MedicoView não pode ser null");
-        }
         // só adiciona listeners se houver view - evitar npe
         if (this.view != null) {
             this.view.addSairListener(new SairListener());
             this.view.addGerenciarStatusListener(new GerenciarStatusListener());
         }
+    }
+
+    public MedicoController() {
     }
 
     public void cadastrarMedico(DadosMedico dados) {
@@ -49,19 +51,19 @@ public class MedicoController {
     }
 
     // Atualização de atributos
-    public void alterarSenha(Medico medico, String novaSenha) {
+    public void alterarSenha(String novaSenha) {
         Senha senha = new Senha(novaSenha);
         medico.alterarSenha(senha);
         GerenciadorRepository.getInstance().salvarMedicos();
     }
 
-    public void alterarEmail(Medico medico, String novoEmail) {
+    public void alterarEmail(String novoEmail) {
         Email email = new Email(novoEmail);
         medico.alterarEmail(email);
         GerenciadorRepository.getInstance().salvarMedicos();
     }
 
-    public void alternarAtivo(Medico medico) {
+    public void alternarAtivo() {
         if (medico.isAtivo()) {
             medico.desativarUsuario();
             GerenciadorRepository.getInstance().salvarMedicos();
@@ -72,10 +74,31 @@ public class MedicoController {
     }
 
     private class GerenciarStatusListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             mostrarPacientesParaGerenciamento();
         }
+    }
+
+    public void adicionarHorario(DayOfWeek dia, LocalTime inicio, LocalTime fim) {
+        HorarioTrabalho novoHorario = new HorarioTrabalho(dia, inicio, fim);
+        medico.adicionarHorario(novoHorario);
+        GerenciadorRepository.getInstance().salvarMedicos();
+    }
+
+    public void removerHorario(HorarioTrabalho horario) {
+        medico.removerHorario(horario);
+        GerenciadorRepository.getInstance().salvarMedicos();
+    }
+
+    // Buscas
+    public List<Medico> buscarMedicos() {
+        return GerenciadorRepository.getInstance().getMedicos();
+    }
+
+    public List<Medico> filtrarMedicosDisponiveis(Especialidade esp, DayOfWeek dia, LocalTime hora) {
+        return GerenciadorRepository.getInstance().buscarMedicosHorario(esp, dia, hora);
     }
 
     private void mostrarPacientesParaGerenciamento() {
@@ -83,7 +106,7 @@ public class MedicoController {
                 .getInstance()
                 .buscarHospitalizados();
 
-        String[] colunas = { "Nome", "CPF", "Hospitalizado", "Pode receber visita" };
+        String[] colunas = {"Nome", "CPF", "Hospitalizado", "Pode receber visita"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -92,11 +115,11 @@ public class MedicoController {
         };
 
         for (Paciente p : pacientes) {
-            model.addRow(new Object[] {
-                    p.getNome().getNome() + " " + p.getNome().getSobrenome(),
-                    p.getCPF().getCPF(),
-                    p.isHospitalizado() ? "Sim" : "Não",
-                    p.isRecebeVisita() ? "Apto" : "Não apto"
+            model.addRow(new Object[]{
+                p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                p.getCPF().getCPF(),
+                p.isHospitalizado() ? "Sim" : "Não",
+                p.isRecebeVisita() ? "Apto" : "Não apto"
             });
         }
 
@@ -146,11 +169,6 @@ public class MedicoController {
         dialog.setVisible(true);
     }
 
-    // Buscas
-    public List<Medico> buscarMedicos() {
-        return GerenciadorRepository.getInstance().getMedicos();
-    }
-
     private class SairListener implements ActionListener {
 
         @Override
@@ -161,9 +179,9 @@ public class MedicoController {
 
     private void voltarParaLogin() {
         LoginView loginView = new LoginView();
-        new LoginController(loginView);
         loginView.setVisible(true);
         view.dispose();
+        if (view != null) view.dispose();
     }
 
 }

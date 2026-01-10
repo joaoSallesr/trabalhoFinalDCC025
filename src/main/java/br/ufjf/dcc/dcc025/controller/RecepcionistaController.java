@@ -11,14 +11,16 @@ import br.ufjf.dcc.dcc025.view.RecepcionistaView;
 
 public class RecepcionistaController {
 
-    private Recepcionista recepcionista;
-    private RecepcionistaView view;
+    private final Recepcionista recepcionista;
+    private final RecepcionistaView view;
 
     public RecepcionistaController(Recepcionista recepcionista, RecepcionistaView view) {
         this.recepcionista = recepcionista;
         this.view = view;
-        this.view.addSairListener(new SairListener());
 
+        if (this.view != null) {
+            this.view.addSairListener(new SairListener());
+        }
     }
 
     public void cadastrarRecepcionista(DadosRecepcionista dados) {
@@ -27,13 +29,13 @@ public class RecepcionistaController {
     }
 
     private class SairListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            view.dispose();
-
             LoginView loginView = new LoginView();
             new LoginController(loginView);
             loginView.setVisible(true);
+            view.dispose();
         }
     }
 

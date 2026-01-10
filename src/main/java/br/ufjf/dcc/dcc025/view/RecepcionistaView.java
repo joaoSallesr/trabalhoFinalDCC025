@@ -4,6 +4,10 @@ import java.awt.BorderLayout; //'*' importa todas as classes públicas desse pac
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -17,9 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -99,19 +105,26 @@ public class RecepcionistaView extends JFrame {
         btnCadastroPaciente.addActionListener(e -> {
             cardLayout.show(painelCentral, "CADASTRO_PACIENTE");
         });
-        btnCadastroMedico = new JButton("Cadastrar Medico");
+
+        btnCadastroMedico = new JButton("Cadastrar Médico");
         btnCadastroMedico.addActionListener(e -> {
             cardLayout.show(painelCentral, "CADASTRO_MEDICO");
         });
+
         btnCadastroRecepcionista = new JButton("Cadastrar Recepcionista");
         btnCadastroRecepcionista.addActionListener(e -> {
             cardLayout.show(painelCentral, "CADASTRO_RECEPCIONISTA");
         });
+
         btnStatus = new JButton("Conferir Status dos Pacientes");
         btnStatus.addActionListener(e -> mostrarStatusPacientes());
+
         btnListaMedico = new JButton("Lista de médicos");
         btnListaMedico.addActionListener(e -> gerenciarMedicos());
-        btnAgendaMedico = new JButton("Verificar agenda dos médicos");
+
+        btnAgendaMedico = new JButton("Verificar Agenda dos Médicos");
+        btnAgendaMedico.addActionListener(e -> verificarAgendaMedicos());
+
         btnConsultarFaltas = new JButton("Verificar faltas");
 
         painelEsquerdo.add(btnCadastroPaciente);
@@ -502,7 +515,7 @@ public class RecepcionistaView extends JFrame {
         List<Medico> medicos = medicoController.buscarMedicos();
 
         // Configura as colunas da tabela
-        String[] colunas = { "Nome", "CPF", "Especialidade", "Status" };
+        String[] colunas = {"Nome", "CPF", "Especialidade", "Status"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -514,10 +527,10 @@ public class RecepcionistaView extends JFrame {
         for (Medico m : medicos) {
             String status = m.isAtivo() ? "Ativo" : "Inativo";
             Object[] linha = {
-                    m.getNome().getNome() + " " + m.getNome().getSobrenome(),
-                    m.getCPF().getCPF(),
-                    m.getEspecialidade(),
-                    status
+                m.getNome().getNome() + " " + m.getNome().getSobrenome(),
+                m.getCPF().getCPF(),
+                m.getEspecialidade(),
+                status
             };
             model.addRow(linha);
         }
@@ -537,7 +550,7 @@ public class RecepcionistaView extends JFrame {
 
             Medico medicoSelecionado = medicos.get(linhaSelecionada);
 
-            medicoController.alternarAtivo(medicoSelecionado);
+            medicoController.alternarAtivo();
 
             String novoStatus = medicoSelecionado.isAtivo() ? "Ativo" : "Inativo";
             model.setValueAt(novoStatus, linhaSelecionada, 3);
@@ -558,6 +571,63 @@ public class RecepcionistaView extends JFrame {
 
         dialog.add(painelBotoes, BorderLayout.SOUTH);
 
+        dialog.setVisible(true);
+    }
+
+    private void verificarAgendaMedicos() {
+        JDialog dialog = new JDialog(this, "Verificar Disponibilidade", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(700, 500);
+
+        JPanel filtros = new JPanel(new FlowLayout());
+        JComboBox<Especialidade> comboEsp = new JComboBox<>(Especialidade.values());
+        JComboBox<DayOfWeek> comboDia = new JComboBox<>(DayOfWeek.values());
+
+        Date date = new Date();
+        SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinnerHora = new JSpinner(sm);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(spinnerHora, "HH:mm");
+        spinnerHora.setEditor(de);
+
+        JButton btnBuscar = new JButton("Buscar");
+        filtros.add(new JLabel("Especialidade:"));
+        filtros.add(comboEsp);
+        filtros.add(new JLabel("Dia:"));
+        filtros.add(comboDia);
+        filtros.add(new JLabel("Hora:"));
+        filtros.add(spinnerHora);
+        filtros.add(btnBuscar);
+
+        String[] colunas = {"Médico", "Especialidade", "Status"};
+        DefaultTableModel model = new DefaultTableModel(colunas, 0);
+        JTable tabela = new JTable(model);
+        JScrollPane scroll = new JScrollPane(tabela);
+
+        btnBuscar.addActionListener(ev -> {
+            Especialidade esp = (Especialidade) comboEsp.getSelectedItem();
+            DayOfWeek dia = (DayOfWeek) comboDia.getSelectedItem();
+            Date d = (Date) spinnerHora.getValue();
+            LocalTime hora = d.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+
+            List<Medico> disponiveis = medicoController.filtrarMedicosDisponiveis(esp, dia, hora);
+
+            model.setRowCount(0);
+            if (disponiveis.isEmpty()) {
+                JOptionPane.showMessageDialog(dialog, "Nenhum médico encontrado para este critério.");
+            } else {
+                for (Medico m : disponiveis) {
+                    model.addRow(new Object[]{
+                        m.getNome().getNome() + " " + m.getNome().getSobrenome(),
+                        m.getEspecialidade(),
+                        "Disponível"
+                    });
+                }
+            }
+        });
+
+        dialog.add(filtros, BorderLayout.NORTH);
+        dialog.add(scroll, BorderLayout.CENTER);
+        dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
 

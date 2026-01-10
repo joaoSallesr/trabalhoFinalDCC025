@@ -1,6 +1,8 @@
 package br.ufjf.dcc.dcc025.model.repository;
 
 import java.lang.reflect.Type;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.Recepcionista;
+import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
 
 public class GerenciadorRepository {
 
@@ -95,10 +98,10 @@ public class GerenciadorRepository {
 
     // Buscas
     public List<Paciente> buscarHospitalizados() {
-        List<Paciente> hospitalizados  = new ArrayList<>();
+        List<Paciente> hospitalizados = new ArrayList<>();
         for (Paciente p : this.listaPacientes) {
             if (p.isHospitalizado()) {
-                hospitalizados .add(p);
+                hospitalizados.add(p);
             }
         }
         return hospitalizados;
@@ -118,12 +121,26 @@ public class GerenciadorRepository {
         for (Paciente p : this.listaPacientes) {
             boolean nomeIgual = p.getNome().getNome().equalsIgnoreCase(nome);
             boolean sobreNomeIgual = p.getNome().getSobrenome().equalsIgnoreCase(sobrenome);
-            
+
             if (nomeIgual && sobreNomeIgual && p.isRecebeVisita()) {
                 return true;
             }
         }
         return false;
+    }
+
+    public List<Medico> buscarMedicosHorario(Especialidade especialidade, DayOfWeek dia, LocalTime hora) {
+        List<Medico> disponivel = new ArrayList<>();
+        for (Medico medico : this.listaMedicos) {
+
+            if (medico.isAtivo()
+                    && medico.getEspecialidade() == especialidade
+                    && medico.estaTrabalhando(dia, hora)) {
+
+                disponivel.add(medico);
+            }
+        }
+        return disponivel;
     }
 
     // Getters

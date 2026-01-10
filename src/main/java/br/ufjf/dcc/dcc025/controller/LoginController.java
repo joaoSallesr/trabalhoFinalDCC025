@@ -1,11 +1,17 @@
 package br.ufjf.dcc.dcc025.controller;
 
-import br.ufjf.dcc.dcc025.model.*;
-import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
-import br.ufjf.dcc.dcc025.view.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import br.ufjf.dcc.dcc025.model.Medico;
+import br.ufjf.dcc.dcc025.model.Paciente;
+import br.ufjf.dcc.dcc025.model.Recepcionista;
+import br.ufjf.dcc.dcc025.model.Usuario;
+import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
+import br.ufjf.dcc.dcc025.view.LoginView;
+import br.ufjf.dcc.dcc025.view.MedicoView;
+import br.ufjf.dcc.dcc025.view.PacienteView;
+import br.ufjf.dcc.dcc025.view.RecepcionistaView;
 
 public class LoginController {
 
@@ -90,18 +96,24 @@ public class LoginController {
     // Abre a tela correspondente ao tipo de usuário
     private void abrirTelaUsuario(Usuario usuario) {
 
-        if (usuario instanceof Medico medico) {
-            MedicoView view = new MedicoView();
-            new MedicoController(medico, view);
-            view.setVisible(true);
-        } else if (usuario instanceof Recepcionista recep) {
-            RecepcionistaView view = new RecepcionistaView();
-            new RecepcionistaController(recep, view);
-            view.setVisible(true);
-        } else if (usuario instanceof Paciente paciente) {
-            PacienteView view = new PacienteView();
-            new PacienteController(paciente, view);
-            view.setVisible(true);
+        switch (usuario) {
+            case Medico medico -> {
+                MedicoView view = new MedicoView();
+                new MedicoController(medico, view);
+                view.setVisible(true);
+            }
+            case Recepcionista recep -> {
+                RecepcionistaView view = new RecepcionistaView();
+                new RecepcionistaController(recep, view);
+                view.setVisible(true);
+            }
+            case Paciente paciente -> {
+                PacienteView view = new PacienteView();
+                new PacienteController(paciente, view);
+                view.setVisible(true);
+            }
+            default -> {
+            }
         }
 
         this.view.dispose();
