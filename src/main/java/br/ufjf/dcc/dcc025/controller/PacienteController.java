@@ -98,6 +98,10 @@ public class PacienteController {
     }
 
     // Buscas
+    public List<Paciente> buscarTodosPacientes() {
+        return GerenciadorRepository.getInstance().getPacientes();
+    }
+
     public List<Paciente> buscarPacientesHospitalizados() {
         return GerenciadorRepository.getInstance().buscarHospitalizados();
     }

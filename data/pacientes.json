@@ -20,11 +20,11 @@
     "cpf": {
       "cpf": "12345678910"
     },
-    "email": {
-      "email": "joao.teste@gmail.com"
-    },
     "senha": {
       "senha": "1234"
+    },
+    "email": {
+      "email": "joao.teste@gmail.com"
     },
     "ativo": true
   },
@@ -49,11 +49,11 @@
     "cpf": {
       "cpf": "12345678911"
     },
-    "email": {
-      "email": "tom.jobim@gmail.com"
-    },
     "senha": {
       "senha": "1234"
+    },
+    "email": {
+      "email": "tom.jobim@gmail.com"
     },
     "ativo": true
   }
