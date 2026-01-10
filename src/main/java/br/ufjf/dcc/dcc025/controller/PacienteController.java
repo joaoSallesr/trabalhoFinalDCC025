@@ -1,12 +1,19 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.model.Paciente;
@@ -30,6 +37,7 @@ public class PacienteController {
         if (this.view != null) {
             this.view.addSairListener(new SairListener());
             this.view.addVerStatusListener(e -> mostrarStatusInternacao());
+            this.view.addVerDadosListener(e -> mostrarMeusDados());
         }
 
     }
@@ -135,6 +143,81 @@ public class PacienteController {
         JScrollPane scrollPane = new JScrollPane(tabela);
 
         view.atualizarPainelCentral(scrollPane);
+    }
+
+    private void mostrarMeusDados() {
+
+        JPanel painel = new JPanel(new GridLayout(0, 2, 10, 10));
+        painel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JTextField txtEmail = new JTextField(paciente.getEmail().getEmail());
+        JPasswordField txtSenha = new JPasswordField(paciente.getSenha().getSenha());
+        JTextField txtContato = new JTextField(paciente.getContato().getNumero());
+
+        JTextField txtCep = new JTextField(paciente.getEndereco().getCEP());
+        JTextField txtRua = new JTextField(paciente.getEndereco().getRua());
+        JTextField txtBairro = new JTextField(paciente.getEndereco().getBairro());
+        JTextField txtCidade = new JTextField(paciente.getEndereco().getCidade());
+        JTextField txtNumero = new JTextField(
+                String.valueOf(paciente.getEndereco().getNumeroCasa()));
+
+        JButton btnSalvar = new JButton("Salvar alterações");
+
+        painel.add(new JLabel("Email:"));
+        painel.add(txtEmail);
+
+        painel.add(new JLabel("Senha:"));
+        painel.add(txtSenha);
+
+        painel.add(new JLabel("Contato:"));
+        painel.add(txtContato);
+
+        painel.add(new JLabel("CEP:"));
+        painel.add(txtCep);
+
+        painel.add(new JLabel("Rua:"));
+        painel.add(txtRua);
+
+        painel.add(new JLabel("Bairro:"));
+        painel.add(txtBairro);
+
+        painel.add(new JLabel("Cidade:"));
+        painel.add(txtCidade);
+
+        painel.add(new JLabel("Número:"));
+        painel.add(txtNumero);
+
+        painel.add(new JLabel());
+        painel.add(btnSalvar);
+
+        btnSalvar.addActionListener(e -> {
+            try {
+                alterarEmail(paciente, txtEmail.getText());
+                alterarSenha(paciente, new String(txtSenha.getPassword()));
+                alterarContato(paciente, txtContato.getText());
+
+                int numeroCasa = Integer.parseInt(txtNumero.getText());
+
+                alterarEndereco(
+                        paciente,
+                        txtCep.getText(),
+                        txtRua.getText(),
+                        txtBairro.getText(),
+                        txtCidade.getText(),
+                        numeroCasa);
+
+                JOptionPane.showMessageDialog(
+                        view,
+                        "Dados atualizados com sucesso!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                        view,
+                        "Erro ao salvar dados: " + ex.getMessage());
+            }
+        });
+
+        view.atualizarPainelCentral(painel);
     }
 
     // Buscas

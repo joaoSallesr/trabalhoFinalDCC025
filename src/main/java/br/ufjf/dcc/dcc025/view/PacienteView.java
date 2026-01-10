@@ -12,7 +12,7 @@ public class PacienteView extends JFrame {
     private JButton btnMinhasConsultas;
     private JButton btnConferirHistorico;
     private JButton btnMeusDocumentos;
-    private JButton btnConferirDados;
+    private JButton btnAlterarDados;
     private JButton btnVerStatus;
 
     private JButton btnSair;
@@ -46,13 +46,13 @@ public class PacienteView extends JFrame {
         btnMinhasConsultas = new JButton("Minhas Consultas");
         btnConferirHistorico = new JButton("Conferir Histórico");
         btnMeusDocumentos = new JButton("Meus Documentos");
-        btnConferirDados = new JButton("Verificar meus dados");
+        btnAlterarDados = new JButton("Alterar meus dados");
         btnVerStatus = new JButton("Verificar status de internação de outros pacientes");
 
         painelEsquerdo.add(btnMinhasConsultas);
         painelEsquerdo.add(btnConferirHistorico);
         painelEsquerdo.add(btnMeusDocumentos);
-        painelEsquerdo.add(btnConferirDados);
+        painelEsquerdo.add(btnAlterarDados);
         painelEsquerdo.add(btnVerStatus);
     }
 
@@ -89,6 +89,10 @@ public class PacienteView extends JFrame {
 
     public void addVerStatusListener(java.awt.event.ActionListener listener) {
         btnVerStatus.addActionListener(listener);
+    }
+
+    public void addVerDadosListener(java.awt.event.ActionListener listener) {
+        btnAlterarDados.addActionListener(listener);
     }
 
     public void addSairListener(java.awt.event.ActionListener listener) {
