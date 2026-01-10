@@ -2,6 +2,7 @@ package br.ufjf.dcc.dcc025.view;
 
 import java.awt.BorderLayout; //'*' importa todas as classes públicas desse pacote
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -9,19 +10,23 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.controller.MedicoController;
 import br.ufjf.dcc.dcc025.controller.PacienteController;
 import br.ufjf.dcc.dcc025.controller.RecepcionistaController;
+import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
@@ -104,6 +109,7 @@ public class RecepcionistaView extends JFrame {
         btnStatus = new JButton("Conferir Status dos Pacientes");
         btnStatus.addActionListener(e -> mostrarStatusPacientes());
         btnListaMedico = new JButton("Lista de médicos");
+        btnListaMedico.addActionListener(e -> gerenciarMedicos());
         btnAgendaMedico = new JButton("Verificar agenda dos médicos");
         btnConsultarFaltas = new JButton("Verificar faltas");
 
@@ -492,5 +498,68 @@ public class RecepcionistaView extends JFrame {
                 "Relatório de Hospitalização",
                 JOptionPane.INFORMATION_MESSAGE
         );
+    }
+
+    private void gerenciarMedicos() {
+        List<Medico> medicos = medicoController.buscarMedicos();
+
+        // Configura as colunas da tabela
+        String[] colunas = {"Nome", "CPF", "Especialidade", "Status"};
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        // Preenche a tabela com os dados
+        for (Medico m : medicos) {
+            String status = m.isAtivo() ? "Ativo" : "Inativo";
+            Object[] linha = {
+                m.getNome().getNome() + " " + m.getNome().getSobrenome(),
+                m.getCPF().getCPF(),
+                m.getEspecialidade(),
+                status
+            };
+            model.addRow(linha);
+        }
+
+        JTable tabela = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(tabela);
+
+        JButton btnAlterarStatus = new JButton("Ativar / Desativar Médico Selecionado");
+
+        btnAlterarStatus.addActionListener(e -> {
+            int linhaSelecionada = tabela.getSelectedRow();
+
+            if (linhaSelecionada == -1) {
+                JOptionPane.showMessageDialog(this, "Selecione um médico na tabela primeiro.");
+                return;
+            }
+
+            Medico medicoSelecionado = medicos.get(linhaSelecionada);
+
+            medicoController.alternarAtivo(medicoSelecionado);
+
+            String novoStatus = medicoSelecionado.isAtivo() ? "Ativo" : "Inativo";
+            model.setValueAt(novoStatus, linhaSelecionada, 3);
+
+            JOptionPane.showMessageDialog(this, "Status alterado para: " + novoStatus);
+        });
+
+        JDialog dialog = new JDialog(this, "Gerenciamento de Médicos", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setLocationRelativeTo(this);
+
+        dialog.add(scrollPane, BorderLayout.CENTER);
+        dialog.setSize(800, 600);
+        dialog.setLocationRelativeTo(this);
+
+        JPanel painelBotoes = new JPanel(new FlowLayout());
+        painelBotoes.add(btnAlterarStatus);
+
+        dialog.add(painelBotoes, BorderLayout.SOUTH);
+
+        dialog.setVisible(true);
     }
 }
