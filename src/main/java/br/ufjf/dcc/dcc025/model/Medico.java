@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
+import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.exception.InvalidWorkingTimeException;
 import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
@@ -18,12 +19,19 @@ public class Medico extends Usuario {
     private Especialidade especialidade;
     private List<HorarioTrabalho> horariosTrabalho;
 
-    public Medico(Nome nome, CPF cpf, Senha senha, Email email, Especialidade especialidade) {
-        super(nome, cpf, senha, email);
-        this.especialidade = Objects.requireNonNull(especialidade, "Especialidade obrigatória.");
+    public Medico(DadosMedico dados) {
+        super(
+                new Nome(dados.getNome(), dados.getSobrenome()),
+                new CPF(dados.getCPF()),
+                new Senha(dados.getSenha()),
+                new Email(dados.getEmail())
+        );
+        this.especialidade = Objects.requireNonNull(
+                Especialidade.fromString(dados.getEspecialidade()),
+                "Especialidade obrigatória.");
     }
 
-    // Atualização de atributos
+    // Alteração de atributos
     public void adicionarHorario(HorarioTrabalho novoHorario) {
         for (HorarioTrabalho horario : horariosTrabalho) {
             if (horario.getDiaTrabalho() == novoHorario.getDiaTrabalho()) {
@@ -38,7 +46,8 @@ public class Medico extends Usuario {
     }
 
     public void alterarEspecialidade(Especialidade novaEspecialidade) {
-        this.especialidade = Objects.requireNonNull(especialidade, "Nova especialidade obrigatória.");
+        this.especialidade = Objects.requireNonNull(
+                novaEspecialidade, "Nova especialidade obrigatória.");
     }
 
     // Buscas

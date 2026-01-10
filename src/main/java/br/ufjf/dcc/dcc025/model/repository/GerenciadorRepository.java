@@ -80,6 +80,52 @@ public class GerenciadorRepository {
         repositorioRecepcionista.salvar(listaRecepcionistas);
     }
 
+    // Atualizar usuário no repositório
+    public void salvarPacientes() {
+        this.repositorioPacientes.salvar(listaPacientes);
+    }
+
+    public void salvarMedicos() {
+        this.repositorioMedicos.salvar(this.listaMedicos);
+    }
+
+    public void salvarRecepcionistas() {
+        this.repositorioRecepcionista.salvar(this.listaRecepcionistas);
+    }
+
+    // Buscas
+    public List<Paciente> buscarHospitalizados() {
+        List<Paciente> hospitalizados  = new ArrayList<>();
+        for (Paciente p : this.listaPacientes) {
+            if (p.isHospitalizado()) {
+                hospitalizados .add(p);
+            }
+        }
+        return hospitalizados;
+    }
+
+    public List<Paciente> buscarRecebemVisitas() {
+        List<Paciente> recebemVisitas = new ArrayList<>();
+        for (Paciente p : this.listaPacientes) {
+            if (p.isRecebeVisita()) {
+                recebemVisitas.add(p);
+            }
+        }
+        return recebemVisitas;
+    }
+
+    public boolean existePacienteVisitavel(String nome, String sobrenome) {
+        for (Paciente p : this.listaPacientes) {
+            boolean nomeIgual = p.getNome().getNome().equalsIgnoreCase(nome);
+            boolean sobreNomeIgual = p.getNome().getSobrenome().equalsIgnoreCase(sobrenome);
+            
+            if (nomeIgual && sobreNomeIgual && p.isRecebeVisita()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Getters
     public List<Paciente> getPacientes() {
         return listaPacientes;

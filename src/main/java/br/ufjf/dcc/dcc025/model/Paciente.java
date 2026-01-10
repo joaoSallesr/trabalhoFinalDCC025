@@ -1,6 +1,5 @@
 package br.ufjf.dcc.dcc025.model;
 
-import java.util.List;
 import java.util.Objects;
 
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
@@ -18,17 +17,28 @@ public class Paciente extends Usuario {
     private boolean hospitalizado;
     private boolean recebeVisita;
 
-    public Paciente(Nome nome, CPF cpf, Senha senha, Email email, Contato contato, Endereco endereco) {
-        super(nome, cpf, senha, email);
-        this.contato = Objects.requireNonNull(contato, "Contato obrigatório.");
-        this.endereco = Objects.requireNonNull(endereco, "Endereço obrigatório.");
+    public Paciente(DadosPaciente dados) {
+        super(
+                new Nome(dados.getNome(), dados.getSobrenome()),
+                new CPF(dados.getCPF()),
+                new Senha(dados.getSenha()),
+                new Email(dados.getEmail())
+        );
+        this.contato = new Contato(dados.getNumeroContato());
+        this.endereco = new Endereco(
+                dados.getCEP(),
+                dados.getRua(),
+                dados.getBairro(),
+                dados.getCidade(),
+                dados.getNumeroCasa()
+        );
         this.hospitalizado = false;
         this.recebeVisita = false;
     }
 
     // Atualização de atributos
-    public void alterarContato(String novoNumero) {
-        this.contato = Objects.requireNonNull(contato, "Novo contato obrigatório.");
+    public void alterarContato(Contato novoContato) {
+        this.contato = Objects.requireNonNull(novoContato, "Novo contato obrigatório.");
     }
 
     public void alterarEndereco(Endereco novoEndereco) {
@@ -56,47 +66,29 @@ public class Paciente extends Usuario {
         this.recebeVisita = false;
     }
 
-    // Interações com usuário
-    public boolean verificarVisita(String nome, String sobrenome, List<Paciente> listaPacientes) {
-        for (Paciente paciente : listaPacientes) {
-            if (paciente.getRecebeVisita() && paciente.getNome().getNome().equalsIgnoreCase(nome) && paciente.getNome().getSobrenome().equalsIgnoreCase(sobrenome)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public DadosPaciente consultarDados() {
         String meuNome = this.getNome().getNome();
         String meuSobrenome = this.getNome().getSobrenome();
         String meuCPF = this.getCPF().getCPF();
         String minhaSenha = this.getSenha().getSenha();
         String meuEmail = this.getEmail().getEmail();
-        String meuContato = this.getContato().getNumero();
-        String meuCEP = this.getEndereco().getCEP();
-        String minhaRua = this.getEndereco().getRua();
-        String meuBairro = this.getEndereco().getBairro();
-        String minhaCidade = this.getEndereco().getCidade();
-        int meuNumeroCasa = this.getEndereco().getNumeroCasa();
+        String meuContato = this.contato.getNumero();
+        String meuCEP = this.endereco.getCEP();
+        String minhaRua = this.endereco.getRua();
+        String meuBairro = this.endereco.getBairro();
+        String minhaCidade = this.endereco.getCidade();
+        int meuNumeroCasa = this.endereco.getNumeroCasa();
 
         DadosPaciente meusDados = new DadosPaciente(meuNome, meuSobrenome, meuCPF, minhaSenha, meuEmail, meuContato, meuCEP, minhaRua, meuBairro, minhaCidade, meuNumeroCasa);
         return meusDados;
     }
 
-    public void marcarConsulta() {
-
-    }
-
-    public void desmarcarConsulta() {
-
-    }
-
     // Getters
-    public boolean getHospitalizado() {
+    public boolean isHospitalizado() {
         return hospitalizado;
     }
 
-    public boolean getRecebeVisita() {
+    public boolean isRecebeVisita() {
         return recebeVisita;
     }
 

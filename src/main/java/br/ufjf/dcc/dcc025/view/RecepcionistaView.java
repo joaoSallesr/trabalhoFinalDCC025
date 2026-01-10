@@ -3,6 +3,7 @@ package br.ufjf.dcc.dcc025.view;
 import java.awt.BorderLayout; //'*' importa todas as classes públicas desse pacote
 import java.awt.CardLayout;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -15,14 +16,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import br.ufjf.dcc.dcc025.controller.RecepcionistaController;
-import br.ufjf.dcc.dcc025.model.Paciente;
-import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
-import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
-import br.ufjf.dcc.dcc025.model.valueobjects.Email;
-import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
-import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
-import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
+import br.ufjf.dcc.dcc025.controller.PacienteController;
+import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 
 public class RecepcionistaView extends JFrame {
 
@@ -31,7 +26,7 @@ public class RecepcionistaView extends JFrame {
     private JPanel painelDireito;
     private CardLayout cardLayout; // reutilizar a janela para as diversas opções
 
-    private RecepcionistaController controller;
+    private final PacienteController pacienteController;
 
     private JButton btnCadastroPaciente;
     private JButton btnStatus;
@@ -51,13 +46,13 @@ public class RecepcionistaView extends JFrame {
     private JTextField txtCidade;
     private JTextField txtCep;
     private JTextField txtBairro;
-    private JTextField txtNumeroCasa;
 
     public RecepcionistaView() {
         setTitle("Área Recepcionista");
         setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        this.pacienteController = new PacienteController();
         ImageIcon image = new ImageIcon("hospital-building.png"); // icone
         this.setIconImage(image.getImage()); // icone
 
@@ -142,7 +137,6 @@ public class RecepcionistaView extends JFrame {
         txtCidade = new JTextField();
         txtCep = new JTextField();
         txtBairro = new JTextField();
-        txtNumeroCasa = new JTextField();
 
         JButton btnSalvar = new JButton("Salvar");
 
@@ -184,31 +178,32 @@ public class RecepcionistaView extends JFrame {
 
     private void salvarPaciente() {
         try {
-            Nome nome = new Nome(
-                    txtNome.getText(),
-                    txtSobrenome.getText());
+            String nome = txtNome.getText();
+            String sobrenome = txtSobrenome.getText();
+            String cpf = txtCpf.getText();
+            String senha = new String(txtSenha.getPassword());
+            String email = txtEmail.getText();
+            String telefone = txtTelefone.getText();
+            String cep = txtCep.getText();
+            String rua = txtRua.getText();
+            String bairro = txtBairro.getText();
+            String numeroString = txtNumero.getText();
+            String cidade = txtCidade.getText();
+            int numeroCasaInt;
 
-            CPF cpf = new CPF(txtCpf.getText());
-            Email email = new Email(txtEmail.getText());
-            Contato contato = new Contato(txtTelefone.getText());
-            Senha senha = new Senha(new String(txtSenha.getPassword()));
+            try {
+                numeroCasaInt = Integer.parseInt(numeroString);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "O campo 'Número' deve conter apenas dígitos.");
+                return;
+            }
 
-            Endereco endereco = new Endereco(
-                    txtCep.getText(),
-                    txtRua.getText(),
-                    txtBairro.getText(),
-                    txtCidade.getText(),
-                    Integer.parseInt(txtNumeroCasa.getText()));
-
-            Paciente paciente = new Paciente(
-                    nome,
-                    cpf,
-                    senha,
-                    email,
-                    contato,
-                    endereco);
-
-            controller.cadastrarPaciente(paciente);
+            DadosPaciente dadosPaciente = new DadosPaciente(
+                    nome, sobrenome, cpf,
+                    senha, email, telefone,
+                    cep, rua, bairro, cidade, numeroCasaInt
+            );
+            pacienteController.cadastrarPaciente(dadosPaciente);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -216,7 +211,7 @@ public class RecepcionistaView extends JFrame {
 
             limparCampos();
 
-        } catch (Exception e) {
+        } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(
                     this,
                     e.getMessage(),
@@ -227,11 +222,14 @@ public class RecepcionistaView extends JFrame {
 
     private void limparCampos() {
         txtNome.setText("");
+        txtSobrenome.setText("");
         txtCpf.setText("");
-        txtEmail.setText("");
         txtSenha.setText("");
+        txtEmail.setText("");
         txtTelefone.setText("");
+        txtCep.setText("");
         txtRua.setText("");
+        txtBairro.setText("");
         txtNumero.setText("");
         txtCidade.setText("");
     }

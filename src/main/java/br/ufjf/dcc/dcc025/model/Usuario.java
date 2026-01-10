@@ -9,7 +9,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public abstract class Usuario {
-    
+
     private final UUID id;
     private final Nome nome;
     private final CPF cpf;
@@ -21,16 +21,18 @@ public abstract class Usuario {
         this.id = UUID.randomUUID();
         this.nome = Objects.requireNonNull(nome, "Nome obrigatório.");
         this.cpf = Objects.requireNonNull(cpf, "CPF obrigatório.");
+        this.senha = Objects.requireNonNull(senha, "Senha obrigatória.");
         this.email = Objects.requireNonNull(email, "Email obrigatório.");
         this.ativo = true;
     }
 
     // Atualização de atributos
-    public void alterarSenha(String novaSenha) {
-        this.senha = Objects.requireNonNull(senha, "Nova senha obrigatória.");
+    public void alterarSenha(Senha novaSenha) {
+        this.senha = Objects.requireNonNull(novaSenha, "Nova senha obrigatória.");
     }
-    public void alterarEmail(String novoEmail) {
-        this.email = Objects.requireNonNull(email, "Novo email obrigatório.");
+
+    public void alterarEmail(Email novoEmail) {
+        this.email = Objects.requireNonNull(novoEmail, "Novo email obrigatório.");
     }
 
     public void ativarUsuario() {
@@ -62,7 +64,7 @@ public abstract class Usuario {
         return email;
     }
 
-    public boolean getAtivo() {
+    public boolean isAtivo() {
         return ativo;
     }
 }
