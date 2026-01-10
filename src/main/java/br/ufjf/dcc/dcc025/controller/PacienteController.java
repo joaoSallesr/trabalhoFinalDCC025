@@ -4,6 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
@@ -22,7 +27,10 @@ public class PacienteController {
     public PacienteController(Paciente paciente, PacienteView view) {
         this.paciente = paciente;
         this.view = view;
-        this.view.addSairListener(new SairListener());
+        if (this.view != null) {
+            this.view.addSairListener(new SairListener());
+            this.view.addVerStatusListener(e -> mostrarStatusInternacao());
+        }
 
     }
 
@@ -95,6 +103,38 @@ public class PacienteController {
 
     public void desmarcarConsulta() {
 
+    }
+
+    private void mostrarStatusInternacao() {
+
+        List<Paciente> hospitalizados = GerenciadorRepository.getInstance().buscarHospitalizados();
+
+        if (hospitalizados.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    view,
+                    "Não há pacientes hospitalizados no momento.");
+            return;
+        }
+
+        String[] colunas = { "Nome", "Pode receber visitas?" };
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Paciente p : hospitalizados) {
+            model.addRow(new Object[] {
+                    p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                    p.isRecebeVisita() ? "Apto" : "Não apto"
+            });
+        }
+
+        JTable tabela = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(tabela);
+
+        view.atualizarPainelCentral(scrollPane);
     }
 
     // Buscas

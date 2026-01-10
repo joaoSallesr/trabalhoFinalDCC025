@@ -13,6 +13,7 @@ public class PacienteView extends JFrame {
     private JButton btnConferirHistorico;
     private JButton btnMeusDocumentos;
     private JButton btnConferirDados;
+    private JButton btnVerStatus;
 
     private JButton btnSair;
 
@@ -38,7 +39,7 @@ public class PacienteView extends JFrame {
 
     private void criarPainelEsquerdo() {
         painelEsquerdo = new JPanel();
-        painelEsquerdo.setLayout(new GridLayout(4, 1, 10, 10));
+        painelEsquerdo.setLayout(new GridLayout(0, 1, 10, 10));
         painelEsquerdo.setBorder(
                 BorderFactory.createTitledBorder("Ações"));
 
@@ -46,11 +47,13 @@ public class PacienteView extends JFrame {
         btnConferirHistorico = new JButton("Conferir Histórico");
         btnMeusDocumentos = new JButton("Meus Documentos");
         btnConferirDados = new JButton("Verificar meus dados");
+        btnVerStatus = new JButton("Verificar status de internação de outros pacientes");
 
         painelEsquerdo.add(btnMinhasConsultas);
         painelEsquerdo.add(btnConferirHistorico);
         painelEsquerdo.add(btnMeusDocumentos);
         painelEsquerdo.add(btnConferirDados);
+        painelEsquerdo.add(btnVerStatus);
     }
 
     private void criarPainelCentral() {
@@ -74,6 +77,18 @@ public class PacienteView extends JFrame {
 
         btnSair = new JButton("Sair");
         painelDireito.add(btnSair);
+    }
+
+    public void atualizarPainelCentral(JComponent componente) {
+        painelCentral.removeAll();
+        painelCentral.setLayout(new BorderLayout());
+        painelCentral.add(componente, BorderLayout.CENTER);
+        painelCentral.revalidate();
+        painelCentral.repaint();
+    }
+
+    public void addVerStatusListener(java.awt.event.ActionListener listener) {
+        btnVerStatus.addActionListener(listener);
     }
 
     public void addSairListener(java.awt.event.ActionListener listener) {
