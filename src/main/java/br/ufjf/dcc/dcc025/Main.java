@@ -3,7 +3,6 @@ package br.ufjf.dcc.dcc025;
 import br.ufjf.dcc.dcc025.controller.LoginController;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
 import br.ufjf.dcc.dcc025.view.LoginView;
-import br.ufjf.dcc.dcc025.view.RecepcionistaView;
 
 public class Main {
 

@@ -72,4 +72,9 @@ public class MedicoView extends JFrame {
 
         painelDireito.add(btnSair);
     }
+
+    public void addSairListener(java.awt.event.ActionListener listener) {
+        btnSair.addActionListener(listener);
+    }
+
 }

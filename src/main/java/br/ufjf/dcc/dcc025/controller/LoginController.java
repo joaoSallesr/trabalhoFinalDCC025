@@ -79,7 +79,7 @@ public class LoginController {
 
     // Verifica se o email e senha são válidos
     private boolean credenciaisValidas(Usuario usuario, String email, String senhaDigitada) {
-        if (usuario.getSenha() == null || usuario.getEmail() == null) {
+        if (usuario.getEmail() == null || usuario.getSenha() == null) {
             return false;
         }
 

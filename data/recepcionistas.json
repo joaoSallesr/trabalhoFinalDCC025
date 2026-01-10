@@ -15,5 +15,22 @@
       "senha": "1234"
     },
     "ativo": true
+  },
+  {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "nome": {
+      "nome": "Ana",
+      "sobrenome": "Paula"
+    },
+    "cpf": {
+      "cpf": "12345678913"
+    },
+    "email": {
+      "email": "ana.paula@gmail.com"
+    },
+    "senha": {
+      "senha": "1234"
+    },
+    "ativo": true
   }
 ]

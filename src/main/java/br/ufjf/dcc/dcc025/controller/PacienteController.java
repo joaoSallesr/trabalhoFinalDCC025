@@ -1,5 +1,7 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import br.ufjf.dcc.dcc025.model.Paciente;
@@ -9,6 +11,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
+import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.view.PacienteView;
 
 public class PacienteController {
@@ -19,6 +22,8 @@ public class PacienteController {
     public PacienteController(Paciente paciente, PacienteView view) {
         this.paciente = paciente;
         this.view = view;
+        this.view.addSairListener(new SairListener());
+
     }
 
     public void cadastrarPaciente(DadosPaciente dados) {
@@ -104,4 +109,16 @@ public class PacienteController {
     public boolean existePacienteVisitavel(String nome, String sobrenome) {
         return GerenciadorRepository.getInstance().existePacienteVisitavel(nome, sobrenome);
     }
+
+    private class SairListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.dispose();
+
+            LoginView loginView = new LoginView();
+            new LoginController(loginView);
+            loginView.setVisible(true);
+        }
+    }
+
 }

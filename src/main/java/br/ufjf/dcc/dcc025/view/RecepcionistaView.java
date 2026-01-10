@@ -56,13 +56,7 @@ public class RecepcionistaView extends JFrame {
     // cadastro paciente:
     private JTextField txtNomePaciente, txtSobrenomePaciente, txtCpfPaciente, txtEmailPaciente, txtTelefonePaciente;
     private JTextField txtRuaPaciente, txtNumeroPaciente, txtCidadePaciente, txtCepPaciente, txtBairroPaciente; // Endereço
-                                                                                                                // pode
-                                                                                                                // ser
-                                                                                                                // unico
-                                                                                                                // se só
-                                                                                                                // paciente
-                                                                                                                // tem
-                                                                                                                // endereço
+    // endereço
     private JPasswordField txtSenhaPaciente;
 
     // cadastro médico:
@@ -566,4 +560,9 @@ public class RecepcionistaView extends JFrame {
 
         dialog.setVisible(true);
     }
+
+    public void addSairListener(java.awt.event.ActionListener listener) {
+        btnSair.addActionListener(listener);
+    }
+
 }

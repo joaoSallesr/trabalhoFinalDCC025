@@ -75,4 +75,9 @@ public class PacienteView extends JFrame {
         btnSair = new JButton("Sair");
         painelDireito.add(btnSair);
     }
+
+    public void addSairListener(java.awt.event.ActionListener listener) {
+        btnSair.addActionListener(listener);
+    }
+
 }
