@@ -10,12 +10,17 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 
 public abstract class Usuario {
 
-    private final UUID id;
-    private final Nome nome;
-    private final CPF cpf;
+    private UUID id;
+    private Nome nome;
+    private CPF cpf;
     private Senha senha;
     private Email email;
     private boolean ativo;
+
+    protected Usuario() {
+        this.id = UUID.randomUUID();
+        this.ativo = true;
+    }
 
     protected Usuario(Nome nome, CPF cpf, Senha senha, Email email) {
         this.id = UUID.randomUUID();
@@ -67,4 +72,29 @@ public abstract class Usuario {
     public boolean isAtivo() {
         return ativo;
     }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setNome(Nome nome) {
+        this.nome = nome;
+    }
+
+    public void setCPF(CPF cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setSenha(Senha senha) {
+        this.senha = senha;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
 }

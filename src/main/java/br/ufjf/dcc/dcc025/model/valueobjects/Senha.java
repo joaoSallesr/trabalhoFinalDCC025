@@ -6,10 +6,13 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidPasswordException;
 
 public class Senha {
 
-    private final String senha;
+    private String senha;
 
-    private static final Pattern PADRAO_SENHA
-            = Pattern.compile("^(?=.*[0-9])(?=\\S+$).{8,20}$");
+    public Senha() {
+        // construtor vazio para o Jackson
+    }
+
+    private static final Pattern PADRAO_SENHA = Pattern.compile("^(?=.*[0-9])(?=\\S+$).{8,20}$");
     // Padrão de senha:
     // Números de 0 a 9
     // Sem espaços
@@ -30,4 +33,10 @@ public class Senha {
     public String getSenha() {
         return senha;
     }
+
+    public void setSenha(String senha) {
+        validaSenha(senha);
+        this.senha = senha;
+    }
+
 }

@@ -7,7 +7,6 @@ import br.ufjf.dcc.dcc025.view.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class LoginController {
 
     private final LoginView view;
@@ -21,7 +20,6 @@ public class LoginController {
         this.view.addLoginListener(new LoginListener());
     }
 
-    
     private class LoginListener implements ActionListener {
 
         @Override
@@ -47,11 +45,11 @@ public class LoginController {
             view.mostrarMensagem("Email ou senha inválidos.");
             return;
         }
-         if (!usuario.isAtivo()) {
-        view.mostrarMensagem("Usuário desativado. Procure a recepção.");
-        return;
-    }
-       
+        if (!usuario.isAtivo()) {
+            view.mostrarMensagem("Usuário desativado. Procure a recepção.");
+            return;
+        }
+
         abrirTelaUsuario(usuario);
     }
 
@@ -81,11 +79,13 @@ public class LoginController {
 
     // Verifica se o email e senha são válidos
     private boolean credenciaisValidas(Usuario usuario, String email, String senhaDigitada) {
+        if (usuario.getSenha() == null || usuario.getEmail() == null) {
+            return false;
+        }
+
         return usuario.getEmail().getEmail().equalsIgnoreCase(email)
                 && usuario.getSenha().getSenha().equals(senhaDigitada);
     }
-
-    
 
     // Abre a tela correspondente ao tipo de usuário
     private void abrirTelaUsuario(Usuario usuario) {
@@ -94,13 +94,11 @@ public class LoginController {
             MedicoView view = new MedicoView();
             new MedicoController(medico, view);
             view.setVisible(true);
-        }
-        else if (usuario instanceof Recepcionista recep) {
+        } else if (usuario instanceof Recepcionista recep) {
             RecepcionistaView view = new RecepcionistaView();
             new RecepcionistaController(recep, view);
             view.setVisible(true);
-        }
-        else if (usuario instanceof Paciente paciente) {
+        } else if (usuario instanceof Paciente paciente) {
             PacienteView view = new PacienteView();
             new PacienteController(paciente, view);
             view.setVisible(true);
@@ -109,10 +107,3 @@ public class LoginController {
         this.view.dispose();
     }
 }
-
-
-
-
-
-
-

@@ -12,6 +12,9 @@
     "email": {
       "email": "house123@gmail.com"
     },
+    "senha": {
+      "senha": "1234"
+    },
     "ativo": true
   },
   {
@@ -26,6 +29,9 @@
     },
     "email": {
       "email": "jose.mauro@yahoo.com"
+    },
+    "senha": {
+      "senha": "house1234"
     },
     "ativo": true
   }
