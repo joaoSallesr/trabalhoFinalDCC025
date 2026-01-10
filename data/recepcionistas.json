@@ -11,6 +11,9 @@
     "email": {
       "email": "Thiago45@gmail.com"
     },
+    "senha": {
+      "senha": "1234"
+    },
     "ativo": true
   }
 ]
