@@ -3,6 +3,7 @@ package br.ufjf.dcc.dcc025.view;
 import java.awt.BorderLayout; //'*' importa todas as classes públicas desse pacote
 import java.awt.CardLayout;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -13,12 +14,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import br.ufjf.dcc.dcc025.controller.MedicoController;
 import br.ufjf.dcc.dcc025.controller.PacienteController;
 import br.ufjf.dcc.dcc025.controller.RecepcionistaController;
+import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosRecepcionista;
@@ -98,6 +102,7 @@ public class RecepcionistaView extends JFrame {
             cardLayout.show(painelCentral, "CADASTRO_RECEPCIONISTA");
         });
         btnStatus = new JButton("Conferir Status dos Pacientes");
+        btnStatus.addActionListener(e -> mostrarStatusPacientes());
         btnListaMedico = new JButton("Lista de médicos");
         btnAgendaMedico = new JButton("Verificar agenda dos médicos");
         btnConsultarFaltas = new JButton("Verificar faltas");
@@ -275,6 +280,7 @@ public class RecepcionistaView extends JFrame {
         return painel;
     }
 
+    @SuppressWarnings("UseSpecificCatch")
     private void salvarPaciente() {
         try {
             String nome = txtNomePaciente.getText();
@@ -317,6 +323,7 @@ public class RecepcionistaView extends JFrame {
         }
     }
 
+    @SuppressWarnings("UseSpecificCatch")
     private void salvarMedico() {
         try {
             String nome = txtNomeMedico.getText();
@@ -346,6 +353,7 @@ public class RecepcionistaView extends JFrame {
         }
     }
 
+    @SuppressWarnings("UseSpecificCatch")
     private void salvarRecepcionista() {
         try {
             String nome = txtNomeRecepcionista.getText();
@@ -447,4 +455,42 @@ public class RecepcionistaView extends JFrame {
         }
     }
 
+    private void mostrarStatusPacientes() {
+        List<Paciente> hospitalizados = pacienteController.buscarPacientesHospitalizados();
+        List<Paciente> podemReceberVisita = pacienteController.buscarRecebemVisitas();
+
+        if (hospitalizados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Não há pacientes hospitalizados no momento.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("*** SITUAÇÃO DOS PACIENTES ***\n\n");
+
+        for (Paciente p : hospitalizados) {
+
+            boolean liberaVisita = podemReceberVisita.contains(p);
+
+            String statusTexto = liberaVisita ? "Sim" : "Não";
+
+            sb.append("Nome: ").append(p.getNome().getNome()).append(" ").append(p.getNome().getSobrenome()).append("\n");
+            sb.append("CPF: ").append(p.getCPF().getCPF()).append("\n");
+            sb.append("Pode receber visita? - ").append(statusTexto).append("\n");
+            sb.append("--------------------------------------\n");
+        }
+
+        JTextArea textArea = new JTextArea(sb.toString());
+        textArea.setEditable(false);
+        textArea.setRows(20);
+        textArea.setColumns(40);
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        JOptionPane.showMessageDialog(
+                this,
+                scrollPane,
+                "Relatório de Hospitalização",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
 }
