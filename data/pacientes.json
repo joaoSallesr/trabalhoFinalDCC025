@@ -21,7 +21,7 @@
       "cpf": "12345678910"
     },
     "senha": {
-      "senha": "1234"
+      "senha": "12341234"
     },
     "email": {
       "email": "joao.teste@gmail.com"
@@ -39,7 +39,7 @@
       "cidade": "cidade teste",
       "numeroCasa": 13
     },
-    "hospitalizado": true,
+    "hospitalizado": false,
     "recebeVisita": true,
     "id": "da2bb4d0-3d8c-4757-b250-cd8186e11891",
     "nome": {
@@ -50,7 +50,7 @@
       "cpf": "12345678911"
     },
     "senha": {
-      "senha": "1234"
+      "senha": "12341234"
     },
     "email": {
       "email": "tom.jobim@gmail.com"
