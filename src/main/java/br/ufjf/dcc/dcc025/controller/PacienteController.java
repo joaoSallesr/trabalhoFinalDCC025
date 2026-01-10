@@ -147,6 +147,7 @@ public class PacienteController {
         view.atualizarPainelCentral(scrollPane);
     }
 
+    @SuppressWarnings("UseSpecificCatch")
     private void mostrarMeusDados() {
 
         JPanel painel = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -243,12 +244,17 @@ public class PacienteController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            view.dispose();
-
-            LoginView loginView = new LoginView();
-            new LoginController(loginView);
-            loginView.setVisible(true);
+            voltarParaLogin();
         }
     }
 
+    private void voltarParaLogin() {
+        LoginView loginView = new LoginView();
+        new LoginController(loginView);
+        loginView.setVisible(true);
+        if (view != null) {
+            view.dispose();
+        }
+    }
 }
+

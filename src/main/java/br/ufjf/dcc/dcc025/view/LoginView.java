@@ -40,7 +40,6 @@ public class LoginView extends JFrame {
     // btão
     private static final Dimension TAMANHO_BOTAO = new Dimension(120, 40);
 
-
     //componentes da tela
     private JLabel labelTitulo;
     private JLabel labelUsuario;
@@ -51,14 +50,12 @@ public class LoginView extends JFrame {
 
     private JButton botaoLogin;
 
-
     //construtor
     public LoginView() {
         configurarJanela();
         montarTela();
         setVisible(true);
     }
-
 
     //configurações da janela
     private void configurarJanela() {
@@ -68,7 +65,6 @@ public class LoginView extends JFrame {
         setLocationRelativeTo(null); // centraliza na tela
     }
 
-
     //layout da janela
     private void montarTela() {
         setLayout(new BorderLayout());
@@ -76,9 +72,8 @@ public class LoginView extends JFrame {
         add(criarPainelTitulo(), BorderLayout.NORTH);
         add(criarPainelFormulario(), BorderLayout.CENTER);
         add(criarPainelBotao(), BorderLayout.SOUTH);
-        
-    }
 
+    }
 
     //painel do título
     private JPanel criarPainelTitulo() {
@@ -86,7 +81,7 @@ public class LoginView extends JFrame {
         painelTitulo.setBackground(COR_FUNDO);
 
         painelTitulo.setBorder(
-        BorderFactory.createEmptyBorder(5, 0, 1, 0)
+                BorderFactory.createEmptyBorder(5, 0, 1, 0)
         );
         labelTitulo = new JLabel("Hospital", SwingConstants.CENTER);
         labelTitulo.setFont(FONTE_TITULO);
@@ -95,8 +90,7 @@ public class LoginView extends JFrame {
         return painelTitulo;
     }
 
-
-     //painel do formulário
+    //painel do formulário
     private JPanel criarPainelFormulario() {
 
         // Painel que contém as linhas do formulário
@@ -119,7 +113,6 @@ public class LoginView extends JFrame {
         return painelFormulario;
     }
 
-
     //linha do usuário
     private JPanel criarLinhaUsuario() {
         JPanel linhaUsuario = new JPanel(
@@ -138,7 +131,6 @@ public class LoginView extends JFrame {
 
         return linhaUsuario;
     }
-
 
     // linha da senha
     private JPanel criarLinhaSenha() {
@@ -159,7 +151,6 @@ public class LoginView extends JFrame {
         return linhaSenha;
     }
 
-
     //painel do botão login
     private JPanel criarPainelBotao() {
         JPanel painelBotao = new JPanel();
@@ -172,23 +163,21 @@ public class LoginView extends JFrame {
         return painelBotao;
     }
 
-
     //getters       
     public String getUsuario() {
         return campoUsuario.getText();
     }
+
     public String getSenha() {
         return new String(campoSenha.getPassword());
     }
-    
+
     public void addLoginListener(ActionListener listener) {
         botaoLogin.addActionListener(listener);
-}
+    }
 
     public void mostrarMensagem(String mensagem) {
         JOptionPane.showMessageDialog(this, mensagem);
-}
-
-
+    }
 
 }

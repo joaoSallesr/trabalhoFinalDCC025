@@ -98,19 +98,19 @@ public class LoginController {
 
         switch (usuario) {
             case Medico medico -> {
-                MedicoView view = new MedicoView();
-                new MedicoController(medico, view);
-                view.setVisible(true);
+                MedicoView medicoView = new MedicoView();
+                new MedicoController(medico, medicoView);
+                medicoView.setVisible(true);
             }
             case Recepcionista recep -> {
-                RecepcionistaView view = new RecepcionistaView();
-                new RecepcionistaController(recep, view);
-                view.setVisible(true);
+                RecepcionistaView recepcionistaView = new RecepcionistaView();
+                new RecepcionistaController(recep, recepcionistaView);
+                recepcionistaView.setVisible(true);
             }
             case Paciente paciente -> {
-                PacienteView view = new PacienteView();
-                new PacienteController(paciente, view);
-                view.setVisible(true);
+                PacienteView pacienteView = new PacienteView();
+                new PacienteController(paciente, pacienteView);
+                pacienteView.setVisible(true);
             }
             default -> {
             }

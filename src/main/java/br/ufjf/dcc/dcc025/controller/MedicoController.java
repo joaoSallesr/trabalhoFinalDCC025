@@ -39,6 +39,9 @@ public class MedicoController {
         if (this.view != null) {
             this.view.addSairListener(new SairListener());
             this.view.addGerenciarStatusListener(new GerenciarStatusListener());
+            this.view.addAdicionarHorarioListener(new AdicionarHorarioListener());
+            this.view.addRemoverHorarioListener(new RemoverHorarioListener());
+            this.view.addNavegarAgendaListener(new NavegarAgendaListener());
         }
     }
 
@@ -169,6 +172,71 @@ public class MedicoController {
         dialog.setVisible(true);
     }
 
+    private class AdicionarHorarioListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                DayOfWeek dia = view.getDiaSelecionado();
+                LocalTime inicio = view.getHorarioInicio();
+                LocalTime fim = view.getHorarioFim();
+
+                if (inicio.isAfter(fim)) {
+                    JOptionPane.showMessageDialog(view, "O horário de início não pode ser depois do horário de fim.");
+                    return;
+                }
+
+                if (inicio.equals(fim)) {
+                    JOptionPane.showMessageDialog(view, "O horário de início e fim não podem ser iguais.");
+                    return;
+                }
+
+                adicionarHorario(dia, inicio, fim);
+                view.atualizarTabela(medico.getAgenda());
+                JOptionPane.showMessageDialog(view, "Horário adicionado com sucesso!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Erro ao adicionar: " + ex.getMessage());
+            }
+        }
+    }
+
+    private class RemoverHorarioListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int linhaSelecionada = view.getLinhaSelecionada();
+
+            if (linhaSelecionada == -1) {
+                JOptionPane.showMessageDialog(view, "Selecione um horário na tabela para remover.");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(view, "Tem certeza que deseja remover este horário?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            try {
+                HorarioTrabalho horarioParaRemover = medico.getAgenda().get(linhaSelecionada);
+
+                removerHorario(horarioParaRemover);
+
+                view.atualizarTabela(medico.getAgenda());
+                JOptionPane.showMessageDialog(view, "Horário removido.");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Erro ao remover: " + ex.getMessage());
+            }
+        }
+    }
+
+    private class NavegarAgendaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.atualizarTabela(medico.getAgenda());
+        }
+    }
+
     private class SairListener implements ActionListener {
 
         @Override
@@ -179,9 +247,10 @@ public class MedicoController {
 
     private void voltarParaLogin() {
         LoginView loginView = new LoginView();
+        new LoginController(loginView);
         loginView.setVisible(true);
-        view.dispose();
-        if (view != null) view.dispose();
+        if (view != null) {
+            view.dispose();
+        }
     }
-
 }

@@ -1,37 +1,50 @@
 [
   {
     "especialidade": "CLINICO",
-    "id": "a7f51635-49f2-4f72-ba56-d43c1b62b742",
+    "agenda": [
+      {
+        "diaTrabalho": "MONDAY",
+        "horarioComeco": "14:00:00",
+        "horarioFinal": "20:00:00"
+      },
+      {
+        "diaTrabalho": "SUNDAY",
+        "horarioComeco": "14:00:00",
+        "horarioFinal": "20:00:00"
+      }
+    ],
+    "id": "934d455d-7b40-4002-8286-01b3fcb93bc4",
     "nome": {
-      "nome": "Doutor",
-      "sobrenome": "House"
+      "nome": "Carlos",
+      "sobrenome": "Antonio"
     },
     "cpf": {
-      "cpf": "11111111111"
-    },
-    "email": {
-      "email": "house123@gmail.com"
+      "cpf": "12312312312"
     },
     "senha": {
       "senha": "12341234"
+    },
+    "email": {
+      "email": "carlos123@gmail.com"
     },
     "ativo": true
   },
   {
-    "especialidade": "PEDIATRA",
-    "id": "3b23263f-5ea8-4f8e-975c-b63a54f5f8b7",
+    "especialidade": "CARDIOLOGISTA",
+    "agenda": [],
+    "id": "1344ee05-b550-4401-a2ef-2ae36c32a653",
     "nome": {
-      "nome": "Jose",
-      "sobrenome": "Mauro"
+      "nome": "João",
+      "sobrenome": "Pedro"
     },
     "cpf": {
-      "cpf": "22222222222"
-    },
-    "email": {
-      "email": "jose.mauro@yahoo.com"
+      "cpf": "43242342341"
     },
     "senha": {
       "senha": "12341234"
+    },
+    "email": {
+      "email": "joao.pedro@gmail.com"
     },
     "ativo": true
   }

@@ -32,11 +32,16 @@ public class RecepcionistaController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            LoginView loginView = new LoginView();
-            new LoginController(loginView);
-            loginView.setVisible(true);
-            view.dispose();
+            voltarParaLogin();
         }
     }
 
+    private void voltarParaLogin() {
+        LoginView loginView = new LoginView();
+        new LoginController(loginView);
+        loginView.setVisible(true);
+        if (view != null) {
+            view.dispose();
+        }
+    }
 }
