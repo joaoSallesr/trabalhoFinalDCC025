@@ -140,7 +140,7 @@ public class MedicoView extends JFrame {
         formPanel.add(spinnerFim);
         formPanel.add(btnAdicionarHorario);
 
-        String[] colunas = { "Dia da Semana", "Início", "Fim" };
+        String[] colunas = {"Dia da Semana", "Início", "Fim"};
         tableModelHorarios = new DefaultTableModel(colunas, 0) {
             @Override // Bloqueia edição das células
             public boolean isCellEditable(int row, int column) {
@@ -184,7 +184,6 @@ public class MedicoView extends JFrame {
         btnSair.addActionListener(listener);
     }
 
-<<<<<<< HEAD
     public void addGerenciarStatusListener(ActionListener listener) {
         btnStatus.addActionListener(listener);
     }
@@ -219,20 +218,19 @@ public class MedicoView extends JFrame {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
 
         for (HorarioTrabalho h : agenda) {
-            tableModelHorarios.addRow(new Object[] {
-                    h.getDiaTrabalho(),
-                    h.getHorarioComeco().format(fmt),
-                    h.getHorarioFinal().format(fmt)
+            tableModelHorarios.addRow(new Object[]{
+                h.getDiaTrabalho(),
+                h.getHorarioComeco().format(fmt),
+                h.getHorarioFinal().format(fmt)
             });
         }
     }
-<<<<<<< HEAD
 
     public void abrirDialogoGerenciamento(List<Paciente> todosPacientes,
             Consumer<Paciente> onAlternarVisita,
             Consumer<Paciente> onAlternarHospitalizacao) {
 
-        String[] colunas = { "Nome", "CPF", "Hospitalizado", "Pode receber visita" };
+        String[] colunas = {"Nome", "CPF", "Hospitalizado", "Pode receber visita"};
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -241,11 +239,11 @@ public class MedicoView extends JFrame {
         };
 
         for (Paciente p : todosPacientes) {
-            model.addRow(new Object[] {
-                    p.getNome().getNome() + " " + p.getNome().getSobrenome(),
-                    p.getCPF().getCPF(),
-                    p.isHospitalizado() ? "Sim" : "Não",
-                    p.isRecebeVisita() ? "Apto" : "Não apto"
+            model.addRow(new Object[]{
+                p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                p.getCPF().getCPF(),
+                p.isHospitalizado() ? "Sim" : "Não",
+                p.isRecebeVisita() ? "Apto" : "Não apto"
             });
         }
 
@@ -308,13 +306,8 @@ public class MedicoView extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-=======
-=======
-    // Adiciona listener para o botão de emitir documento
+
     public void addEmitirDocumentoListener(java.awt.event.ActionListener listener) {
         btnDocumento.addActionListener(listener);
     }
-
->>>>>>> 7927b2b (Adiciona funcionalidade de documentos médicos)
->>>>>>> c80eccf (Adiciona funcionalidade de documentos médicos)
 }

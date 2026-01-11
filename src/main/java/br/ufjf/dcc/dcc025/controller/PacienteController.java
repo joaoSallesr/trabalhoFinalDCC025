@@ -253,18 +253,9 @@ public class PacienteController {
         }
     }
 
-<<<<<<< HEAD
-    private void voltarParaLogin() {
-        LoginView loginView = new LoginView();
-        new LoginController(loginView);
-        loginView.setVisible(true);
-        if (view != null) {
-            view.dispose();
-        }
-    }
-=======
     // listener para meus documentos
     private class MeusDocumentosListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             mostrarDocumentos();
@@ -284,8 +275,8 @@ public class PacienteController {
 
         for (DocumentoMedico doc : documentos) {
             model.addElement(
-                "Data: " + doc.getData()
-                + " | Médico: " + doc.getNomeMedico()
+                    "Data: " + doc.getData()
+                    + " | Médico: " + doc.getNomeMedico()
             );
         }
 
@@ -297,22 +288,29 @@ public class PacienteController {
                 DocumentoMedico doc = documentos.get(lista.getSelectedIndex());
 
                 JOptionPane.showMessageDialog(
-                    view,
-                    doc.getTexto(),
-                    "Documento Médico",
-                    JOptionPane.INFORMATION_MESSAGE
+                        view,
+                        doc.getTexto(),
+                        "Documento Médico",
+                        JOptionPane.INFORMATION_MESSAGE
                 );
             }
         });
 
         JOptionPane.showMessageDialog(
-            view,
-            scroll,
-            "Meus Documentos",
-            JOptionPane.INFORMATION_MESSAGE
+                view,
+                scroll,
+                "Meus Documentos",
+                JOptionPane.INFORMATION_MESSAGE
         );
     }
 
->>>>>>> 7927b2b (Adiciona funcionalidade de documentos médicos)
-}
+    private void voltarParaLogin() {
+        LoginView loginView = new LoginView();
+        new LoginController(loginView);
+        loginView.setVisible(true);
+        if (view != null) {
+            view.dispose();
+        }
+    }
 
+}

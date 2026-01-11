@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import br.ufjf.dcc.dcc025.model.utils.LocalDateAdapter;
 import br.ufjf.dcc.dcc025.model.utils.LocalTimeAdapter;
 
 public class Repository<T> {
@@ -23,7 +25,7 @@ public class Repository<T> {
 
     public Repository(String nomeArquivo) {
         this.caminhoRepositorio = "data" + File.separator + nomeArquivo;
-        this.gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalTime.class, new LocalTimeAdapter()).create();
+        this.gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalTime.class, new LocalTimeAdapter()).registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
     }
 
     public void salvar(List<T> usuarios) {

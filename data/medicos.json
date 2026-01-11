@@ -11,6 +11,11 @@
         "diaTrabalho": "SUNDAY",
         "horarioComeco": "14:00:00",
         "horarioFinal": "20:00:00"
+      },
+      {
+        "diaTrabalho": "FRIDAY",
+        "horarioComeco": "20:00:00",
+        "horarioFinal": "23:25:10.878"
       }
     ],
     "id": "934d455d-7b40-4002-8286-01b3fcb93bc4",
