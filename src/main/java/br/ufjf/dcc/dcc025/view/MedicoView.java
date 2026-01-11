@@ -7,10 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -25,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -119,16 +116,14 @@ public class MedicoView extends JFrame {
 
         cbDiaSemana = new JComboBox<>(DayOfWeek.values());
 
-        Date date = new Date();
-        SpinnerDateModel smInicio = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        spinnerInicio = new JSpinner(smInicio);
-        JSpinner.DateEditor deInicio = new JSpinner.DateEditor(spinnerInicio, "HH:mm");
-        spinnerInicio.setEditor(deInicio);
+        SpinnerNumberModel modeloInicio = new SpinnerNumberModel(8, 0, 23, 1);
+        spinnerInicio = new JSpinner(modeloInicio);
 
-        SpinnerDateModel smFim = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        spinnerFim = new JSpinner(smFim);
-        JSpinner.DateEditor deFim = new JSpinner.DateEditor(spinnerFim, "HH:mm");
-        spinnerFim.setEditor(deFim);
+        spinnerInicio.setEditor(new JSpinner.NumberEditor(spinnerInicio, "00':00'"));
+
+        SpinnerNumberModel modeloFim = new SpinnerNumberModel(18, 0, 23, 1);
+        spinnerFim = new JSpinner(modeloFim);
+        spinnerFim.setEditor(new JSpinner.NumberEditor(spinnerFim, "00':00'"));
 
         btnAdicionarHorario = new JButton("Adicionar");
 
@@ -199,13 +194,13 @@ public class MedicoView extends JFrame {
 
     // Converte o Date do JSpinner para LocalTime
     public LocalTime getHorarioInicio() {
-        Date date = (Date) spinnerInicio.getValue();
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        int hora = (Integer) spinnerInicio.getValue();
+        return LocalTime.of(hora, 0);
     }
 
     public LocalTime getHorarioFim() {
-        Date date = (Date) spinnerFim.getValue();
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        int hora = (Integer) spinnerFim.getValue();
+        return LocalTime.of(hora, 0);
     }
 
     public int getLinhaSelecionada() {

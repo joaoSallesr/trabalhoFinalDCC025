@@ -1,5 +1,6 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import br.ufjf.dcc.dcc025.model.exception.InvalidAddressException;
@@ -65,5 +66,28 @@ public class Endereco {
 
     public int getNumeroCasa() {
         return numeroCasa;
+    }
+
+    // Overrides
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Endereco endereco = (Endereco) o;
+        return numeroCasa == endereco.numeroCasa &&
+                Objects.equals(cep, endereco.cep) &&
+                Objects.equals(rua, endereco.rua) &&
+                Objects.equals(bairro, endereco.bairro) &&
+                Objects.equals(cidade, endereco.cidade);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cep, rua, bairro, cidade, numeroCasa);
+    }
+
+    @Override
+    public String toString() {
+        return rua + ", " + numeroCasa + " - " + bairro + ", " + cidade + " - CEP: " + cep;
     }
 }

@@ -1,5 +1,7 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
+import java.util.Objects;
+
 import org.apache.commons.validator.routines.EmailValidator;
 
 import br.ufjf.dcc.dcc025.model.exception.InvalidEmailException;
@@ -24,6 +26,25 @@ public class Email {
 
     // Getters
     public String getEmail() {
+        return email;
+    }
+
+    // Overrides
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Email emailObj = (Email) o;
+        return Objects.equals(email, emailObj.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
+    @Override
+    public String toString() {
         return email;
     }
 }

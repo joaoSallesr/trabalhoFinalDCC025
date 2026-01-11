@@ -5,11 +5,10 @@ import java.util.Locale;
 
 import br.ufjf.dcc.dcc025.model.exception.InvalidSpecialtyException;
 
-public enum Especialidade {
-    // Definir especialidades
-    CARDIOLOGISTA("Cardiologista"),
-    PEDIATRA("Pediatra"),
-    CLINICO("Clínico");
+public enum EstadoConsulta {
+    MARCADA("Marcada"),
+    CANCELADA("Cancelada"),
+    AUSENTE("Ausente");
 
     private final String descricao;
 
@@ -19,23 +18,23 @@ public enum Especialidade {
         COLLATOR.setStrength(Collator.PRIMARY);
     }
 
-    Especialidade(String descricao) {
+    EstadoConsulta(String descricao) {
         this.descricao = descricao;
     }
 
     // Validação
-    public static Especialidade fromString(String entrada) {
+    public static EstadoConsulta fromString(String entrada) {
         if (entrada == null || entrada.isBlank()) {
-            throw new InvalidSpecialtyException("Especialidade obrigatória.");
+            throw new InvalidSpecialtyException("Estado obrigatório.");
         }
 
-        for (Especialidade especialidade : Especialidade.values()) {
-            if (COLLATOR.compare(especialidade.descricao, entrada) == 0
-                    || COLLATOR.compare(especialidade.name(), entrada) == 0) {
-                return especialidade;
+        for (EstadoConsulta estadoConsulta : EstadoConsulta.values()) {
+            if (COLLATOR.compare(estadoConsulta.descricao, entrada) == 0
+                    || COLLATOR.compare(estadoConsulta.name(), entrada) == 0) {
+                return estadoConsulta;
             }
         }
-        throw new InvalidSpecialtyException("Especialidade inválida: " + entrada);
+        throw new IllegalArgumentException("Estado inválido: " + entrada);
     }
 
     // Getters

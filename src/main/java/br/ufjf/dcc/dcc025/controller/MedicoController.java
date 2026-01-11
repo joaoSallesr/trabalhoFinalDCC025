@@ -7,12 +7,10 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.table.DefaultTableModel;
 
+import br.ufjf.dcc.dcc025.model.DocumentoMedico;
 import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
@@ -23,12 +21,6 @@ import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.view.MedicoView;
-import br.ufjf.dcc.dcc025.model.DocumentoMedico;
-
-
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MedicoController {
 
@@ -213,9 +205,10 @@ public class MedicoController {
             view.dispose();
         }
     }
-    
+
     // listener para documento médico
     private class EmitirDocumentoListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             emitirDocumento();
@@ -243,7 +236,9 @@ public class MedicoController {
                 pacientes.get(0)
         );
 
-        if (paciente == null) return;
+        if (paciente == null) {
+            return;
+        }
 
         JTextArea areaTexto = new JTextArea(10, 40);
         JScrollPane scroll = new JScrollPane(areaTexto);
@@ -255,7 +250,9 @@ public class MedicoController {
                 JOptionPane.OK_CANCEL_OPTION
         );
 
-        if (opcao != JOptionPane.OK_OPTION) return;
+        if (opcao != JOptionPane.OK_OPTION) {
+            return;
+        }
 
         String texto = areaTexto.getText();
 
@@ -274,5 +271,5 @@ public class MedicoController {
         GerenciadorRepository.getInstance().salvarPacientes();
 
         JOptionPane.showMessageDialog(view, "Documento emitido com sucesso.");
-    }   
+    }
 }

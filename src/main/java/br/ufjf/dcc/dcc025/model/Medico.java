@@ -3,12 +3,17 @@ package br.ufjf.dcc.dcc025.model;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
 
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.exception.InvalidWorkingTimeException;
 import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
+import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
 import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
@@ -19,6 +24,7 @@ public class Medico extends Usuario {
 
     private Especialidade especialidade;
     private final List<HorarioTrabalho> agenda;
+    private Map<DayOfWeek, Set<Consulta>> consultasSemana;
 
     public Medico(DadosMedico dados) {
         super(
@@ -31,6 +37,7 @@ public class Medico extends Usuario {
                 Especialidade.fromString(dados.getEspecialidade()),
                 "Especialidade obrigatória.");
         this.agenda = new ArrayList<>();
+        this.consultasSemana = new TreeMap<>();
     }
 
     // Alteração de atributos
@@ -64,6 +71,11 @@ public class Medico extends Usuario {
             }
         }
         return false;
+    }
+
+    public List<Consulta> getConsultasDoDia(DayOfWeek dia) {
+        Set<Consulta> agendadas = consultasSemana.getOrDefault(dia, Collections.emptySet());
+        return new ArrayList<>(agendadas);
     }
 
     // Getters

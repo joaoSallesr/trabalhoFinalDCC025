@@ -1,5 +1,6 @@
 package br.ufjf.dcc.dcc025.model.valueobjects;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import br.ufjf.dcc.dcc025.model.exception.InvalidPasswordException;
@@ -39,4 +40,22 @@ public class Senha {
         this.senha = senha;
     }
 
+    // Overrrides
+    @Override
+    public String toString() {
+        return "Senha{********}"; 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Senha senhaObj = (Senha) o;
+        return Objects.equals(senha, senhaObj.senha);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(senha);
+    }
 }
