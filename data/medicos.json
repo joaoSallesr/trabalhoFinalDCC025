@@ -55,11 +55,6 @@
     "especialidade": "CLINICO",
     "agenda": [
       {
-        "diaTrabalho": "MONDAY",
-        "horarioComeco": "16:00:00",
-        "horarioFinal": "20:00:00"
-      },
-      {
         "diaTrabalho": "WEDNESDAY",
         "horarioComeco": "11:00:00",
         "horarioFinal": "20:00:00"
@@ -68,6 +63,16 @@
         "diaTrabalho": "FRIDAY",
         "horarioComeco": "07:00:00",
         "horarioFinal": "20:00:00"
+      },
+      {
+        "diaTrabalho": "TUESDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
+      },
+      {
+        "diaTrabalho": "MONDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
       }
     ],
     "consultasSemana": {
