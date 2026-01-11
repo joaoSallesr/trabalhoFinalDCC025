@@ -570,6 +570,7 @@ public class RecepcionistaView extends JFrame {
         dialog.setVisible(true);
     }
 
+    @SuppressWarnings("UseSpecificCatch")
     private void verificarAgendaMedicos() {
         JDialog dialog = new JDialog(this, "Verificar Disponibilidade", true);
         dialog.setLayout(new BorderLayout());

@@ -120,6 +120,7 @@ public class MedicoController {
     private class AdicionarHorarioListener implements ActionListener {
 
         @Override
+        @SuppressWarnings("UseSpecificCatch")
         public void actionPerformed(ActionEvent e) {
             try {
                 DayOfWeek dia = view.getDiaSelecionado();
@@ -149,6 +150,7 @@ public class MedicoController {
     private class RemoverHorarioListener implements ActionListener {
 
         @Override
+        @SuppressWarnings("UseSpecificCatch")
         public void actionPerformed(ActionEvent e) {
             int linhaSelecionada = view.getLinhaSelecionada();
 

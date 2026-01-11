@@ -1,13 +1,12 @@
 package br.ufjf.dcc.dcc025;
 
 import br.ufjf.dcc.dcc025.controller.LoginController;
-import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
 import br.ufjf.dcc.dcc025.view.LoginView;
 
 public class Main {
 
     public static void main(String[] args) {
-        GerenciadorRepository repo = GerenciadorRepository.getInstance();
+        //GerenciadorRepository repo = GerenciadorRepository.getInstance();
 
         /*
                  * Paciente paciente = repo.getPacientes().get(0);
