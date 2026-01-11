@@ -95,6 +95,32 @@
           "nomeMedicoDisplay": "House",
           "especialidadeDisplay": "Clínico"
         }
+      ],
+      "TUESDAY": [
+        {
+          "diaConsulta": "TUESDAY",
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "CANCELADA",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        },
+        {
+          "diaConsulta": "TUESDAY",
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "CANCELADA",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        },
+        {
+          "diaConsulta": "TUESDAY",
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "MARCADA",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        }
       ]
     },
     "id": "8617f75a-42eb-4db3-9142-ee1110eab57d",
