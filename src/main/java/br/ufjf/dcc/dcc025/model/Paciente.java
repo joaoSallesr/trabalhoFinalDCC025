@@ -124,6 +124,14 @@ public class Paciente extends Usuario {
         }
         return historicoConsultas;
     }
+    
+    public void atualizarConsulta(Consulta antiga, Consulta nova) {
+        int index = historicoConsultas.indexOf(antiga);
+            if (index >= 0) {
+                historicoConsultas.set(index, nova);
+            }   
+    }
+
 
     // Getters
     public boolean isHospitalizado() {

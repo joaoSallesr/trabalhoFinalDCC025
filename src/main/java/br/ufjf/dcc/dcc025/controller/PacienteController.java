@@ -36,6 +36,9 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.view.PacienteView;
+import br.ufjf.dcc.dcc025.model.valueobjects.EstadoConsulta;
+
+
 
 public class PacienteController {
 
@@ -54,10 +57,11 @@ public class PacienteController {
             this.view.addVerDadosListener(e -> mostrarMeusDados());
             this.view.addMeusDocumentosListener(new MeusDocumentosListener());
             this.view.addMinhasConsultasListener(e -> gerenciarMinhasConsultas());
+            this.view.addConferirHistoricoListener(e -> mostrarHistoricoConsultas());
             this.view.addAgendarConsultaNavegacaoListener(e -> {
                 JPanel painelAgendamento = view.criarTelaAgendamento();
-                view.atualizarPainelCentral(painelAgendamento);
-                reatribuirListenersAgendamento();
+                    view.atualizarPainelCentral(painelAgendamento);
+                    reatribuirListenersAgendamento();
             });
         }
     }
@@ -281,31 +285,40 @@ public class PacienteController {
     }
 
     private void cancelarConsulta(Consulta consulta) {
-        int confirm = JOptionPane.showConfirmDialog(view,
-                "Tem certeza que deseja cancelar esta consulta?",
-                "Cancelar Consulta",
-                JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-
-                Medico medicoResponsavel = consulta.getMedico();
-
-                if (medicoResponsavel != null) {
-                    medicoResponsavel.removerConsulta(consulta);
-                    GerenciadorRepository.getInstance().salvarMedicos();
-                }
-
-                paciente.removerConsulta(consulta);
-                GerenciadorRepository.getInstance().salvarPacientes();
-
-                JOptionPane.showMessageDialog(view, "Consulta cancelada com sucesso.");
-
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view, "Erro ao cancelar: " + ex.getMessage());
-            }
+        if (consulta.getEstadoConsulta() != EstadoConsulta.MARCADA) {
+            JOptionPane.showMessageDialog(
+                view,
+                "Apenas consultas MARCADAS podem ser canceladas.",
+                "Operação inválida",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
         }
+
+        int confirm = JOptionPane.showConfirmDialog(
+            view,
+            "Tem certeza que deseja cancelar esta consulta?",
+            "Cancelar Consulta",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        Consulta consultaAtualizada = consulta.novoEstado("Cancelada");
+
+        paciente.atualizarConsulta(consulta, consultaAtualizada);
+        consulta.getMedico().atualizarConsulta(consulta, consultaAtualizada);
+
+        GerenciadorRepository.getInstance().salvarMedicos();
+        GerenciadorRepository.getInstance().salvarPacientes();
+
+        JOptionPane.showMessageDialog(view, "Consulta cancelada com sucesso.");
     }
+
+
 
     private void mostrarStatusInternacao() {
 
@@ -499,5 +512,47 @@ public class PacienteController {
             view.dispose();
         }
     }
+
+       
+    private void mostrarHistoricoConsultas() {
+        List<Consulta> consultas = paciente.getConsultas();
+
+        if (consultas.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Nenhuma consulta registrada.");
+            return;
+        }
+
+        String[] colunas = {"Dia", "Hora", "Médico", "Especialidade", "Status"};
+
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        consultas.sort((c1, c2) -> {
+            int cmp = c2.getDiaConsulta().compareTo(c1.getDiaConsulta());
+            if (cmp != 0) return cmp;
+            return c2.getHorarioConsulta().compareTo(c1.getHorarioConsulta());
+        });
+
+        for (Consulta c : consultas) {
+            model.addRow(new Object[]{
+                    c.getDiaConsulta(),
+                    c.getHorarioConsulta(),
+                    c.getNomeMedicoDisplay(),
+                    c.getEspecialidadeDisplay(),
+                    c.getEstadoConsulta()
+            });
+        }
+    
+
+        JTable tabela = new JTable(model);
+        JScrollPane scroll = new JScrollPane(tabela);
+
+        view.atualizarPainelCentral(scroll);
+    }
+
 
 }

@@ -157,6 +157,21 @@ public class Medico extends Usuario {
         return new ArrayList<>(getConsultasMap().getOrDefault(dia, new ArrayList<>()));
     }
 
+    public void atualizarConsulta(Consulta antiga, Consulta nova) {
+
+        if (antiga == null || nova == null) return;
+
+        DayOfWeek dia = antiga.getDiaConsulta();
+
+        List<Consulta> listaDia = consultasSemana.get(dia);
+            if (listaDia == null) return;
+
+        int index = listaDia.indexOf(antiga);
+            if (index >= 0) {
+                listaDia.set(index, nova);
+            }
+    }
+
     // Getters
     public Especialidade getEspecialidade() {
         return this.especialidade;

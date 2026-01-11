@@ -193,6 +193,11 @@ public class PacienteView extends JFrame {
     public void addSairListener(ActionListener listener) {
         btnSair.addActionListener(listener);
     }
+    
+    // Listener histórico
+    public void addConferirHistoricoListener(ActionListener listener) {
+        btnConferirHistorico.addActionListener(listener);
+    }
 
     // Getters
     public Especialidade getEspecialidadeSelecionada() {
