@@ -1,32 +1,56 @@
 [
   {
     "contato": {
-      "numero": "32999881234"
+      "numero": "32999845693"
     },
     "endereco": {
-      "cep": "12345678",
-      "rua": "rua teste",
-      "bairro": "bairro teste",
-      "cidade": "cidade teste",
-      "numeroCasa": 12
+      "cep": "32032901",
+      "rua": "Rua teste",
+      "bairro": "Bairro teste",
+      "cidade": "Cidade teste",
+      "numeroCasa": 32
     },
-    "hospitalizado": false,
+    "hospitalizado": true,
     "recebeVisita": false,
     "documentos": [
       {
-        "nomeMedico": "Carlos Antonio",
+        "nomeMedico": "Gregory House",
         "nomePaciente": "João Salles",
-        "texto": "atestado",
+        "texto": "Ola joao",
+        "data": "2026-01-11"
+      },
+      {
+        "nomeMedico": "John Lennon",
+        "nomePaciente": "João Salles",
+        "texto": "asdasdasd",
         "data": "2026-01-11"
       }
     ],
-    "id": "3f033aa8-ee3a-4d34-ae33-213a41a0924c",
+    "historicoConsultas": [
+      {
+        "diaConsulta": "MONDAY",
+        "horarioConsulta": "17:00:00",
+        "estadoConsulta": "MARCADA",
+        "nomePacienteDisplay": "João Salles",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      },
+      {
+        "diaConsulta": "SATURDAY",
+        "horarioConsulta": "10:00:00",
+        "estadoConsulta": "MARCADA",
+        "nomePacienteDisplay": "João Salles",
+        "nomeMedicoDisplay": "Lennon",
+        "especialidadeDisplay": "Cardiologista"
+      }
+    ],
+    "id": "0732dc64-7200-4d06-a525-2430af5e09a8",
     "nome": {
       "nome": "João",
       "sobrenome": "Salles"
     },
     "cpf": {
-      "cpf": "12345678910"
+      "cpf": "78998703723"
     },
     "senha": {
       "senha": "12341234"
@@ -38,59 +62,39 @@
   },
   {
     "contato": {
-      "numero": "32999123456"
+      "numero": "32999080706"
     },
     "endereco": {
-      "cep": "12345-678",
-      "rua": "rua teste",
-      "bairro": "bairro teste",
-      "cidade": "cidade teste",
-      "numeroCasa": 13
+      "cep": "32332123",
+      "rua": "Rua teste",
+      "bairro": "Bairro teste",
+      "cidade": "Cidade teste",
+      "numeroCasa": 232
     },
-    "hospitalizado": true,
-    "recebeVisita": true,
-    "id": "da2bb4d0-3d8c-4757-b250-cd8186e11891",
+    "hospitalizado": false,
+    "recebeVisita": false,
+    "documentos": [
+      {
+        "nomeMedico": "Gregory House",
+        "nomePaciente": "Pedro Marques",
+        "texto": "pedro teste",
+        "data": "2026-01-11"
+      }
+    ],
+    "historicoConsultas": [],
+    "id": "863e2208-1df4-4f4c-bdd0-27d9ce0b74f2",
     "nome": {
-      "nome": "Tom",
-      "sobrenome": "Jobim"
+      "nome": "Pedro",
+      "sobrenome": "Marques"
     },
     "cpf": {
-      "cpf": "12345678911"
+      "cpf": "31223256712"
     },
     "senha": {
       "senha": "12341234"
     },
     "email": {
-      "email": "tom.jobim@gmail.com"
-    },
-    "ativo": true
-  },
-  {
-    "contato": {
-      "numero": "32988856987"
-    },
-    "endereco": {
-      "cep": "36037586",
-      "rua": "Rua das Flores",
-      "bairro": "Barreira",
-      "cidade": "Juiz de Fora",
-      "numeroCasa": 65
-    },
-    "hospitalizado": true,
-    "recebeVisita": true,
-    "id": "41b0bb5e-232c-4354-88a9-95311facf015",
-    "nome": {
-      "nome": "Bruno",
-      "sobrenome": "Marte"
-    },
-    "cpf": {
-      "cpf": "555666777"
-    },
-    "senha": {
-      "senha": "12341234"
-    },
-    "email": {
-      "email": "bruno@gmail.com"
+      "email": "pedro123@gmail.com"
     },
     "ativo": true
   }

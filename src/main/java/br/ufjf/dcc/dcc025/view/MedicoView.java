@@ -22,11 +22,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.model.Paciente;
+import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
 
 public class MedicoView extends JFrame {
@@ -53,6 +55,12 @@ public class MedicoView extends JFrame {
     private JButton btnRemoverHorario;
     private JTable tabelaHorarios;
     private DefaultTableModel tableModelHorarios;
+
+    // Consultas
+    private JComboBox<DayOfWeek> cbDiaFiltroConsulta;
+    private JTable tabelaConsultasAgendadas;
+    private DefaultTableModel tableModelConsultas;
+    private JButton btnFiltrarConsultas;
 
     public MedicoView() {
         setTitle("Área do Médico");
@@ -101,9 +109,11 @@ public class MedicoView extends JFrame {
         homePanel.add(lblBemVindo, BorderLayout.CENTER);
 
         JPanel agendaPanel = criarPainelAgenda();
+        JPanel consultasPanel = criarPainelConsultas();
 
         painelCentral.add(homePanel, "HOME");
         painelCentral.add(agendaPanel, "AGENDA");
+        painelCentral.add(consultasPanel, "CONSULTAS");
 
         // Exibe Home por padrão
         cardLayout.show(painelCentral, "HOME");
@@ -156,6 +166,34 @@ public class MedicoView extends JFrame {
         return painel;
     }
 
+    private JPanel criarPainelConsultas() {
+        JPanel painel = new JPanel(new BorderLayout());
+
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        cbDiaFiltroConsulta = new JComboBox<>(DayOfWeek.values());
+        btnFiltrarConsultas = new JButton("Carregar Consultas");
+
+        topPanel.add(new JLabel("Selecione o Dia:"));
+        topPanel.add(cbDiaFiltroConsulta);
+        topPanel.add(btnFiltrarConsultas);
+
+        String[] colunas = {"Horário", "Paciente", "Status"};
+        tableModelConsultas = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tabelaConsultasAgendadas = new JTable(tableModelConsultas);
+        tabelaConsultasAgendadas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scroll = new JScrollPane(tabelaConsultasAgendadas);
+
+        painel.add(topPanel, BorderLayout.NORTH);
+        painel.add(scroll, BorderLayout.CENTER);
+
+        return painel;
+    }
+
     private void criarPainelDireito() {
         painelDireito = new JPanel();
         painelDireito.setLayout(new GridLayout(1, 1, 10, 10));
@@ -166,7 +204,12 @@ public class MedicoView extends JFrame {
         painelDireito.add(btnSair);
     }
 
-    // Listeners
+    // Listeners status
+    public void addGerenciarStatusListener(ActionListener listener) {
+        btnStatus.addActionListener(listener);
+    }
+
+    // Listeners agenda
     public void addAdicionarHorarioListener(ActionListener listener) {
         btnAdicionarHorario.addActionListener(listener);
     }
@@ -175,21 +218,51 @@ public class MedicoView extends JFrame {
         btnRemoverHorario.addActionListener(listener);
     }
 
-    public void addSairListener(ActionListener listener) {
-        btnSair.addActionListener(listener);
-    }
-
-    public void addGerenciarStatusListener(ActionListener listener) {
-        btnStatus.addActionListener(listener);
-    }
-
     public void addNavegarAgendaListener(ActionListener listener) {
         btnAgenda.addActionListener(listener);
+    }
+
+    // Listeners consultas
+    public void addCarregarConsultasListener(ActionListener listener) {
+        btnFiltrarConsultas.addActionListener(listener);
+    }
+
+    public void addVerConsultasListener(ActionListener listener) {
+        btnConsulta.addActionListener(e -> {
+            cardLayout.show(painelCentral, "CONSULTAS");
+            listener.actionPerformed(e);
+        });
+    }
+
+    // Listeners sair
+    public void addSairListener(ActionListener listener) {
+        btnSair.addActionListener(listener);
     }
 
     // Getters de Dados da Tela
     public DayOfWeek getDiaSelecionado() {
         return (DayOfWeek) cbDiaSemana.getSelectedItem();
+    }
+
+    public DayOfWeek getDiaFiltroConsulta() {
+        return (DayOfWeek) cbDiaFiltroConsulta.getSelectedItem();
+    }
+
+    public int getLinhaConsultaSelecionada() {
+        return tabelaConsultasAgendadas.getSelectedRow();
+    }
+
+    public void atualizarListaConsultas(List<Consulta> consultas) {
+        tableModelConsultas.setRowCount(0);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
+
+        for (Consulta c : consultas) {
+            tableModelConsultas.addRow(new Object[]{
+                c.getHorarioConsulta().format(fmt),
+                c.getPaciente().getNome().getNome() + " " + c.getPaciente().getNome().getSobrenome(),
+                c.getEstadoConsulta().toString()
+            });
+        }
     }
 
     // Converte o Date do JSpinner para LocalTime

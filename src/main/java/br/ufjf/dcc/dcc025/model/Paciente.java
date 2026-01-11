@@ -1,17 +1,17 @@
 package br.ufjf.dcc.dcc025.model;
 
-import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
+import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
 import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
-import br.ufjf.dcc.dcc025.model.DocumentoMedico;
 
 public class Paciente extends Usuario {
 
@@ -20,7 +20,7 @@ public class Paciente extends Usuario {
     private boolean hospitalizado;
     private boolean recebeVisita;
     private List<DocumentoMedico> documentos = new ArrayList<>();
-
+    private List<Consulta> historicoConsultas = new ArrayList<>();
 
     public Paciente(DadosPaciente dados) {
         super(
@@ -39,6 +39,7 @@ public class Paciente extends Usuario {
         );
         this.hospitalizado = false;
         this.recebeVisita = false;
+        this.historicoConsultas = new ArrayList<>();
     }
 
     // Atualização de atributos
@@ -88,11 +89,11 @@ public class Paciente extends Usuario {
         return meusDados;
     }
 
-    //documentos médicos
+    // Documentos médicos
     public void adicionarDocumento(DocumentoMedico documento) {
         if (documentos == null) {
             documentos = new ArrayList<>();
-    }
+        }
         documentos.add(documento);
     }
 
@@ -103,7 +104,27 @@ public class Paciente extends Usuario {
         return documentos;
     }
 
-    
+    // Consultas
+    public void adicionarConsulta(Consulta consulta) {
+        if (this.historicoConsultas == null) {
+            this.historicoConsultas = new ArrayList<>();
+        }
+        this.historicoConsultas.add(consulta);
+    }
+
+    public void removerConsulta(Consulta consulta) {
+        if (this.historicoConsultas != null) {
+            this.historicoConsultas.remove(consulta);
+        }
+    }
+
+    public List<Consulta> getConsultas() {
+        if (this.historicoConsultas == null) {
+            this.historicoConsultas = new ArrayList<>();
+        }
+        return historicoConsultas;
+    }
+
     // Getters
     public boolean isHospitalizado() {
         return hospitalizado;
@@ -119,6 +140,12 @@ public class Paciente extends Usuario {
 
     public Endereco getEndereco() {
         return endereco;
+    }
+
+    // Overrides
+    @Override
+    public String toString() {
+        return this.getNome().getNome() + " " + this.getNome().getSobrenome() + " (CPF: " + this.getCPF().getCPF() + ")";
     }
 
     @Override

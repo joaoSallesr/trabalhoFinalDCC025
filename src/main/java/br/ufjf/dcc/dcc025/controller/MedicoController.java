@@ -15,6 +15,7 @@ import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
+import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
 import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
@@ -33,13 +34,16 @@ public class MedicoController {
 
         // só adiciona listeners se houver view - evitar npe
         if (this.view != null) {
+            this.view.atualizarTabela(medico.getAgenda());
+            this.view.setVisible(true);
             this.view.addSairListener(new SairListener());
             this.view.addGerenciarStatusListener(new GerenciarStatusListener());
             this.view.addAdicionarHorarioListener(new AdicionarHorarioListener());
             this.view.addRemoverHorarioListener(new RemoverHorarioListener());
             this.view.addNavegarAgendaListener(new NavegarAgendaListener());
             this.view.addEmitirDocumentoListener(new EmitirDocumentoListener());
-
+            this.view.addVerConsultasListener(new NavegarConsultasListener());
+            this.view.addCarregarConsultasListener(new FiltrarConsultasListener());
         }
     }
 
@@ -64,25 +68,14 @@ public class MedicoController {
         GerenciadorRepository.getInstance().salvarMedicos();
     }
 
-    public void alternarAtivo() {
-        if (medico.isAtivo()) {
-            medico.desativarUsuario();
+    public void alternarAtivo(Medico medicoAlvo) {
+        if (medicoAlvo.isAtivo()) {
+            medicoAlvo.desativarUsuario();
             GerenciadorRepository.getInstance().salvarMedicos();
         } else {
-            medico.ativarUsuario();
+            medicoAlvo.ativarUsuario();
             GerenciadorRepository.getInstance().salvarMedicos();
         }
-    }
-
-    public void adicionarHorario(DayOfWeek dia, LocalTime inicio, LocalTime fim) {
-        HorarioTrabalho novoHorario = new HorarioTrabalho(dia, inicio, fim);
-        medico.adicionarHorario(novoHorario);
-        GerenciadorRepository.getInstance().salvarMedicos();
-    }
-
-    public void removerHorario(HorarioTrabalho horario) {
-        medico.removerHorario(horario);
-        GerenciadorRepository.getInstance().salvarMedicos();
     }
 
     // Buscas
@@ -94,6 +87,7 @@ public class MedicoController {
         return GerenciadorRepository.getInstance().buscarMedicosHorario(esp, dia, hora);
     }
 
+    // Gerenciador de status dos pacientes
     private class GerenciarStatusListener implements ActionListener {
 
         @Override
@@ -122,6 +116,7 @@ public class MedicoController {
         }
     }
 
+    // Gerenciador de horários de trabalho
     private class AdicionarHorarioListener implements ActionListener {
 
         @Override
@@ -181,6 +176,17 @@ public class MedicoController {
         }
     }
 
+    private void adicionarHorario(DayOfWeek dia, LocalTime inicio, LocalTime fim) {
+        HorarioTrabalho novoHorario = new HorarioTrabalho(dia, inicio, fim);
+        medico.adicionarHorario(novoHorario);
+        GerenciadorRepository.getInstance().salvarMedicos();
+    }
+
+    private void removerHorario(HorarioTrabalho horario) {
+        medico.removerHorario(horario);
+        GerenciadorRepository.getInstance().salvarMedicos();
+    }
+
     private class NavegarAgendaListener implements ActionListener {
 
         @Override
@@ -189,34 +195,39 @@ public class MedicoController {
         }
     }
 
-    private class SairListener implements ActionListener {
+    // Gerenciador de consultas
+    private class NavegarConsultasListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            voltarParaLogin();
+            DayOfWeek diaSelecionado = view.getDiaFiltroConsulta();
+            carregarConsultasDoDia(diaSelecionado);
         }
     }
 
-    private void voltarParaLogin() {
-        LoginView loginView = new LoginView();
-        new LoginController(loginView);
-        loginView.setVisible(true);
-        if (view != null) {
-            view.dispose();
+    private class FiltrarConsultasListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DayOfWeek dia = view.getDiaFiltroConsulta();
+            carregarConsultasDoDia(dia);
         }
     }
 
-    // listener para documento médico
+    private void carregarConsultasDoDia(DayOfWeek dia) {
+        List<Consulta> consultas = medico.getConsultasDoDia(dia);
+        view.atualizarListaConsultas(consultas);
+    }
+
+    // Gerenciador de emissão de documento
     private class EmitirDocumentoListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             emitirDocumento();
         }
-
     }
 
-    //  função para emitir documento médico
     private void emitirDocumento() {
 
         List<Paciente> pacientes = GerenciadorRepository.getInstance().getPacientes();
@@ -271,5 +282,23 @@ public class MedicoController {
         GerenciadorRepository.getInstance().salvarPacientes();
 
         JOptionPane.showMessageDialog(view, "Documento emitido com sucesso.");
+    }
+
+    // Sair da janela - voltar para tela de login
+    private class SairListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            voltarParaLogin();
+        }
+    }
+
+    private void voltarParaLogin() {
+        LoginView loginView = new LoginView();
+        new LoginController(loginView);
+        loginView.setVisible(true);
+        if (view != null) {
+            view.dispose();
+        }
     }
 }

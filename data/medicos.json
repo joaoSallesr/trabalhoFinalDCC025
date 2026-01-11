@@ -1,55 +1,100 @@
 [
   {
-    "especialidade": "CLINICO",
+    "especialidade": "CARDIOLOGISTA",
     "agenda": [
       {
         "diaTrabalho": "MONDAY",
-        "horarioComeco": "14:00:00",
-        "horarioFinal": "20:00:00"
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
       },
       {
-        "diaTrabalho": "SUNDAY",
-        "horarioComeco": "14:00:00",
-        "horarioFinal": "20:00:00"
+        "diaTrabalho": "WEDNESDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
       },
       {
-        "diaTrabalho": "FRIDAY",
-        "horarioComeco": "20:00:00",
-        "horarioFinal": "23:25:10.878"
+        "diaTrabalho": "TUESDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
+      },
+      {
+        "diaTrabalho": "SATURDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
       }
     ],
-    "id": "934d455d-7b40-4002-8286-01b3fcb93bc4",
+    "consultasSemana": {
+      "SATURDAY": [
+        {
+          "diaConsulta": "SATURDAY",
+          "horarioConsulta": "10:00:00",
+          "estadoConsulta": "MARCADA",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "Lennon",
+          "especialidadeDisplay": "Cardiologista"
+        }
+      ]
+    },
+    "id": "bd24e49f-aa7a-4f0b-882b-deb99bb4a8e3",
     "nome": {
-      "nome": "Carlos",
-      "sobrenome": "Antonio"
+      "nome": "John",
+      "sobrenome": "Lennon"
     },
     "cpf": {
-      "cpf": "12312312312"
+      "cpf": "45334534512"
     },
     "senha": {
       "senha": "12341234"
     },
     "email": {
-      "email": "carlos123@gmail.com"
+      "email": "lennon1234@gmail.com"
     },
     "ativo": true
   },
   {
-    "especialidade": "CARDIOLOGISTA",
-    "agenda": [],
-    "id": "1344ee05-b550-4401-a2ef-2ae36c32a653",
+    "especialidade": "CLINICO",
+    "agenda": [
+      {
+        "diaTrabalho": "MONDAY",
+        "horarioComeco": "16:00:00",
+        "horarioFinal": "20:00:00"
+      },
+      {
+        "diaTrabalho": "WEDNESDAY",
+        "horarioComeco": "11:00:00",
+        "horarioFinal": "20:00:00"
+      },
+      {
+        "diaTrabalho": "FRIDAY",
+        "horarioComeco": "07:00:00",
+        "horarioFinal": "20:00:00"
+      }
+    ],
+    "consultasSemana": {
+      "MONDAY": [
+        {
+          "diaConsulta": "MONDAY",
+          "horarioConsulta": "17:00:00",
+          "estadoConsulta": "MARCADA",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        }
+      ]
+    },
+    "id": "8617f75a-42eb-4db3-9142-ee1110eab57d",
     "nome": {
-      "nome": "João",
-      "sobrenome": "Pedro"
+      "nome": "Gregory",
+      "sobrenome": "House"
     },
     "cpf": {
-      "cpf": "43242342341"
+      "cpf": "12378998712"
     },
     "senha": {
       "senha": "12341234"
     },
     "email": {
-      "email": "joao.pedro@gmail.com"
+      "email": "dr.house@gmail.com"
     },
     "ativo": true
   }

@@ -1,8 +1,12 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -16,15 +20,19 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.model.DocumentoMedico;
+import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
+import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.Contato;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
+import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.view.PacienteView;
@@ -34,15 +42,23 @@ public class PacienteController {
     private Paciente paciente;
     private PacienteView view;
 
+    private List<SlotDisponibilidade> slotsAtuaisNaTela;
+
     public PacienteController(Paciente paciente, PacienteView view) {
         this.paciente = paciente;
         this.view = view;
+        this.slotsAtuaisNaTela = new ArrayList<>();
         if (this.view != null) {
             this.view.addSairListener(new SairListener());
             this.view.addVerStatusListener(e -> mostrarStatusInternacao());
             this.view.addVerDadosListener(e -> mostrarMeusDados());
             this.view.addMeusDocumentosListener(new MeusDocumentosListener());
-
+            this.view.addMinhasConsultasListener(e -> gerenciarMinhasConsultas());
+            this.view.addAgendarConsultaNavegacaoListener(e -> {
+                JPanel painelAgendamento = view.criarTelaAgendamento();
+                view.atualizarPainelCentral(painelAgendamento);
+                reatribuirListenersAgendamento();
+            });
         }
     }
 
@@ -112,12 +128,183 @@ public class PacienteController {
     }
 
     // Ações
-    public void marcarConsulta() {
-
+    private void reatribuirListenersAgendamento() {
+        this.view.addBuscarHorariosListener(new BuscarHorariosAction());
+        this.view.addConfirmarAgendamentoListener(new ConfirmarAgendamentoAction());
     }
 
-    public void desmarcarConsulta() {
+    private class BuscarHorariosAction implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                Especialidade esp = view.getEspecialidadeSelecionada();
+                DayOfWeek dia = view.getDiaSelecionado();
+
+                List<Medico> todosMedicos = GerenciadorRepository.getInstance().getMedicos();
+                List<Object[]> linhasTabela = new ArrayList<>();
+
+                slotsAtuaisNaTela.clear();
+                for (Medico medico : todosMedicos) {
+
+                    if (medico.isAtivo() && medico.getEspecialidade() == esp) {
+
+                        List<LocalTime> horariosLivres = medico.getHorariosDisponiveis(dia);
+
+                        for (LocalTime hora : horariosLivres) {
+
+                            linhasTabela.add(new Object[]{
+                                "Dr(a). " + medico.getNome().getSobrenome(),
+                                medico.getEspecialidade(),
+                                dia,
+                                hora
+                            });
+
+                            slotsAtuaisNaTela.add(new SlotDisponibilidade(medico, dia, hora));
+                        }
+                    }
+                }
+
+                if (linhasTabela.isEmpty()) {
+                    JOptionPane.showMessageDialog(view, "Nenhum horário encontrado para essa especialidade neste dia.");
+                }
+
+                view.preencherTabelaHorarios(linhasTabela);
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Erro ao buscar horários: " + ex.getMessage());
+            }
+        }
+    }
+
+    private class ConfirmarAgendamentoAction implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int linha = view.getLinhaHorarioSelecionada();
+
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(view, "Selecione um horário na tabela para agendar.");
+                return;
+            }
+
+            SlotDisponibilidade slot = slotsAtuaisNaTela.get(linha);
+
+            int confirm = JOptionPane.showConfirmDialog(view,
+                    "Confirmar agendamento com " + slot.medico.getNome().getSobrenome() + " às " + slot.hora + "?",
+                    "Confirmar", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    Consulta novaConsulta = new Consulta(slot.dia, slot.hora, paciente, slot.medico);
+
+                    slot.medico.agendarConsulta(novaConsulta);
+
+                    paciente.adicionarConsulta(novaConsulta);
+
+                    GerenciadorRepository.getInstance().salvarMedicos();
+                    GerenciadorRepository.getInstance().salvarPacientes();
+
+                    JOptionPane.showMessageDialog(view, "Consulta agendada com sucesso!");
+
+                    view.preencherTabelaHorarios(new ArrayList<>());
+                    slotsAtuaisNaTela.clear();
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(view, "Erro ao agendar: " + ex.getMessage());
+                }
+            }
+        }
+    }
+
+    private static class SlotDisponibilidade {
+
+        Medico medico;
+        DayOfWeek dia;
+        LocalTime hora;
+
+        public SlotDisponibilidade(Medico medico, DayOfWeek dia, LocalTime hora) {
+            this.medico = medico;
+            this.dia = dia;
+            this.hora = hora;
+        }
+    }
+
+    private void gerenciarMinhasConsultas() {
+        List<Consulta> consultas = paciente.getConsultas();
+
+        String[] colunas = {"Dia", "Hora", "Médico", "Especialidade", "Estado"};
+
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Consulta c : consultas) {
+            model.addRow(new Object[]{
+                c.getDiaConsulta(),
+                c.getHorarioConsulta(),
+                c.getNomeMedicoDisplay(),
+                c.getEspecialidadeDisplay(),
+                c.getEstadoConsulta()
+            });
+        }
+
+        JTable table = new JTable(model);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        JButton btnCancelar = new JButton("Cancelar Selecionada");
+
+        btnCancelar.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                Consulta consultaSelecionada = consultas.get(row);
+                cancelarConsulta(consultaSelecionada);
+
+                gerenciarMinhasConsultas();
+            } else {
+                JOptionPane.showMessageDialog(view, "Selecione uma consulta para cancelar.");
+            }
+        });
+
+        JPanel painel = new JPanel(new BorderLayout());
+        painel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel btnPanel = new JPanel();
+        btnPanel.add(btnCancelar);
+        painel.add(btnPanel, BorderLayout.SOUTH);
+
+        view.atualizarPainelCentral(painel);
+    }
+
+    private void cancelarConsulta(Consulta consulta) {
+        int confirm = JOptionPane.showConfirmDialog(view,
+                "Tem certeza que deseja cancelar esta consulta?",
+                "Cancelar Consulta",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+
+                Medico medicoResponsavel = consulta.getMedico();
+
+                if (medicoResponsavel != null) {
+                    medicoResponsavel.removerConsulta(consulta);
+                    GerenciadorRepository.getInstance().salvarMedicos();
+                }
+
+                paciente.removerConsulta(consulta);
+                GerenciadorRepository.getInstance().salvarPacientes();
+
+                JOptionPane.showMessageDialog(view, "Consulta cancelada com sucesso.");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(view, "Erro ao cancelar: " + ex.getMessage());
+            }
+        }
     }
 
     private void mostrarStatusInternacao() {

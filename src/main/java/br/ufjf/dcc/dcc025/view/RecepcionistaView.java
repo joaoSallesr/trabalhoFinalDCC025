@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -21,11 +19,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -550,7 +546,7 @@ public class RecepcionistaView extends JFrame {
 
             Medico medicoSelecionado = medicos.get(linhaSelecionada);
 
-            medicoController.alternarAtivo();
+            medicoController.alternarAtivo(medicoSelecionado);
 
             String novoStatus = medicoSelecionado.isAtivo() ? "Ativo" : "Inativo";
             model.setValueAt(novoStatus, linhaSelecionada, 3);
@@ -577,25 +573,26 @@ public class RecepcionistaView extends JFrame {
     private void verificarAgendaMedicos() {
         JDialog dialog = new JDialog(this, "Verificar Disponibilidade", true);
         dialog.setLayout(new BorderLayout());
-        dialog.setSize(700, 500);
+        dialog.setSize(750, 500);
 
         JPanel filtros = new JPanel(new FlowLayout());
+
         JComboBox<Especialidade> comboEsp = new JComboBox<>(Especialidade.values());
         JComboBox<DayOfWeek> comboDia = new JComboBox<>(DayOfWeek.values());
 
-        Date date = new Date();
-        SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        JSpinner spinnerHora = new JSpinner(sm);
-        JSpinner.DateEditor de = new JSpinner.DateEditor(spinnerHora, "HH:mm");
-        spinnerHora.setEditor(de);
+        JComboBox<String> comboHora = new JComboBox<>();
+        for (int i = 7; i <= 20; i++) {
+            comboHora.addItem(String.format("%02d:00", i));
+        }
 
         JButton btnBuscar = new JButton("Buscar");
+
         filtros.add(new JLabel("Especialidade:"));
         filtros.add(comboEsp);
         filtros.add(new JLabel("Dia:"));
         filtros.add(comboDia);
         filtros.add(new JLabel("Hora:"));
-        filtros.add(spinnerHora);
+        filtros.add(comboHora);
         filtros.add(btnBuscar);
 
         String[] colunas = {"Médico", "Especialidade", "Status"};
@@ -604,24 +601,29 @@ public class RecepcionistaView extends JFrame {
         JScrollPane scroll = new JScrollPane(tabela);
 
         btnBuscar.addActionListener(ev -> {
-            Especialidade esp = (Especialidade) comboEsp.getSelectedItem();
-            DayOfWeek dia = (DayOfWeek) comboDia.getSelectedItem();
-            Date d = (Date) spinnerHora.getValue();
-            LocalTime hora = d.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+            try {
+                Especialidade esp = (Especialidade) comboEsp.getSelectedItem();
+                DayOfWeek dia = (DayOfWeek) comboDia.getSelectedItem();
 
-            List<Medico> disponiveis = medicoController.filtrarMedicosDisponiveis(esp, dia, hora);
+                String horaStr = (String) comboHora.getSelectedItem();
+                LocalTime hora = LocalTime.parse(horaStr);
 
-            model.setRowCount(0);
-            if (disponiveis.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "Nenhum médico encontrado para este critério.");
-            } else {
-                for (Medico m : disponiveis) {
-                    model.addRow(new Object[]{
-                        m.getNome().getNome() + " " + m.getNome().getSobrenome(),
-                        m.getEspecialidade(),
-                        "Disponível"
-                    });
+                List<Medico> disponiveis = medicoController.filtrarMedicosDisponiveis(esp, dia, hora);
+
+                model.setRowCount(0);
+                if (disponiveis.isEmpty()) {
+                    JOptionPane.showMessageDialog(dialog, "Nenhum médico disponível para este critério.");
+                } else {
+                    for (Medico m : disponiveis) {
+                        model.addRow(new Object[]{
+                            m.getNome().getNome() + " " + m.getNome().getSobrenome(),
+                            m.getEspecialidade(),
+                            "Disponível"
+                        });
+                    }
                 }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(dialog, "Erro ao buscar: " + ex.getMessage());
             }
         });
 

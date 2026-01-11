@@ -8,6 +8,7 @@ import br.ufjf.dcc.dcc025.model.exception.InvalidSpecialtyException;
 public enum EstadoConsulta {
     MARCADA("Marcada"),
     CANCELADA("Cancelada"),
+    EFETUADA("Efetuada"),
     AUSENTE("Ausente");
 
     private final String descricao;
