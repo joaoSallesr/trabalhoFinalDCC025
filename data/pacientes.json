@@ -12,6 +12,14 @@
     },
     "hospitalizado": false,
     "recebeVisita": false,
+    "documentos": [
+      {
+        "nomeMedico": "Carlos Antonio",
+        "nomePaciente": "João Salles",
+        "texto": "atestado",
+        "data": "2026-01-11"
+      }
+    ],
     "id": "3f033aa8-ee3a-4d34-ae33-213a41a0924c",
     "nome": {
       "nome": "João",

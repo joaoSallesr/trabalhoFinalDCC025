@@ -90,12 +90,19 @@ public class Paciente extends Usuario {
 
     //documentos médicos
     public void adicionarDocumento(DocumentoMedico documento) {
+        if (documentos == null) {
+            documentos = new ArrayList<>();
+    }
         documentos.add(documento);
     }
 
     public List<DocumentoMedico> getDocumentos() {
+        if (documentos == null) {
+            documentos = new ArrayList<>();
+        }
         return documentos;
     }
+
     
     // Getters
     public boolean isHospitalizado() {
