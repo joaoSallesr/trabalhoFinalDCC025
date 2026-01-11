@@ -1,0 +1,10 @@
+# Maven
+target/
+
+# Arquivos compilados
+*.class
+
+# IDEs (opcional, mas recomendado)
+.idea/
+.vscode/
+*.iml
