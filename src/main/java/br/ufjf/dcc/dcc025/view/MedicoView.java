@@ -184,6 +184,7 @@ public class MedicoView extends JFrame {
         btnSair.addActionListener(listener);
     }
 
+<<<<<<< HEAD
     public void addGerenciarStatusListener(ActionListener listener) {
         btnStatus.addActionListener(listener);
     }
@@ -225,6 +226,7 @@ public class MedicoView extends JFrame {
             });
         }
     }
+<<<<<<< HEAD
 
     public void abrirDialogoGerenciamento(List<Paciente> todosPacientes,
             Consumer<Paciente> onAlternarVisita,
@@ -306,4 +308,13 @@ public class MedicoView extends JFrame {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
+=======
+=======
+    // Adiciona listener para o botão de emitir documento
+    public void addEmitirDocumentoListener(java.awt.event.ActionListener listener) {
+        btnDocumento.addActionListener(listener);
+    }
+
+>>>>>>> 7927b2b (Adiciona funcionalidade de documentos médicos)
+>>>>>>> c80eccf (Adiciona funcionalidade de documentos médicos)
 }

@@ -1,6 +1,8 @@
 package br.ufjf.dcc.dcc025.model;
 
 import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.valueobjects.CPF;
@@ -9,6 +11,7 @@ import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Endereco;
 import br.ufjf.dcc.dcc025.model.valueobjects.Nome;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
+import br.ufjf.dcc.dcc025.model.DocumentoMedico;
 
 public class Paciente extends Usuario {
 
@@ -16,6 +19,8 @@ public class Paciente extends Usuario {
     private Endereco endereco;
     private boolean hospitalizado;
     private boolean recebeVisita;
+    private List<DocumentoMedico> documentos = new ArrayList<>();
+
 
     public Paciente(DadosPaciente dados) {
         super(
@@ -83,6 +88,15 @@ public class Paciente extends Usuario {
         return meusDados;
     }
 
+    //documentos médicos
+    public void adicionarDocumento(DocumentoMedico documento) {
+        documentos.add(documento);
+    }
+
+    public List<DocumentoMedico> getDocumentos() {
+        return documentos;
+    }
+    
     // Getters
     public boolean isHospitalizado() {
         return hospitalizado;

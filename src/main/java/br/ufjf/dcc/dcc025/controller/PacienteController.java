@@ -6,8 +6,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -16,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import br.ufjf.dcc.dcc025.model.DocumentoMedico;
 import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosPaciente;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
@@ -38,6 +41,8 @@ public class PacienteController {
             this.view.addSairListener(new SairListener());
             this.view.addVerStatusListener(e -> mostrarStatusInternacao());
             this.view.addVerDadosListener(e -> mostrarMeusDados());
+            this.view.addMeusDocumentosListener(new MeusDocumentosListener());
+
         }
     }
 
@@ -248,6 +253,7 @@ public class PacienteController {
         }
     }
 
+<<<<<<< HEAD
     private void voltarParaLogin() {
         LoginView loginView = new LoginView();
         new LoginController(loginView);
@@ -256,5 +262,57 @@ public class PacienteController {
             view.dispose();
         }
     }
+=======
+    // listener para meus documentos
+    private class MeusDocumentosListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mostrarDocumentos();
+        }
+    }
+
+    private void mostrarDocumentos() {
+
+        List<DocumentoMedico> documentos = paciente.getDocumentos();
+
+        if (documentos.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Nenhum documento disponível.");
+            return;
+        }
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+
+        for (DocumentoMedico doc : documentos) {
+            model.addElement(
+                "Data: " + doc.getData()
+                + " | Médico: " + doc.getNomeMedico()
+            );
+        }
+
+        JList<String> lista = new JList<>(model);
+        JScrollPane scroll = new JScrollPane(lista);
+
+        lista.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                DocumentoMedico doc = documentos.get(lista.getSelectedIndex());
+
+                JOptionPane.showMessageDialog(
+                    view,
+                    doc.getTexto(),
+                    "Documento Médico",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
+
+        JOptionPane.showMessageDialog(
+            view,
+            scroll,
+            "Meus Documentos",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+>>>>>>> 7927b2b (Adiciona funcionalidade de documentos médicos)
 }
 

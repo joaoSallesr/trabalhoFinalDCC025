@@ -98,5 +98,9 @@ public class PacienteView extends JFrame {
     public void addSairListener(java.awt.event.ActionListener listener) {
         btnSair.addActionListener(listener);
     }
+    // Adiciona listener para o botão de meus documentos
+    public void addMeusDocumentosListener(java.awt.event.ActionListener listener) {
+        btnMeusDocumentos.addActionListener(listener);
+    }
 
 }

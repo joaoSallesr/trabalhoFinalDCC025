@@ -7,6 +7,11 @@ import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.model.Medico;
 import br.ufjf.dcc.dcc025.model.Paciente;
@@ -18,6 +23,12 @@ import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.view.MedicoView;
+import br.ufjf.dcc.dcc025.model.DocumentoMedico;
+
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MedicoController {
 
@@ -35,6 +46,8 @@ public class MedicoController {
             this.view.addAdicionarHorarioListener(new AdicionarHorarioListener());
             this.view.addRemoverHorarioListener(new RemoverHorarioListener());
             this.view.addNavegarAgendaListener(new NavegarAgendaListener());
+            this.view.addEmitirDocumentoListener(new EmitirDocumentoListener());
+
         }
     }
 
@@ -200,4 +213,66 @@ public class MedicoController {
             view.dispose();
         }
     }
+    
+    // listener para documento médico
+    private class EmitirDocumentoListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            emitirDocumento();
+        }
+
+    }
+
+    //  função para emitir documento médico
+    private void emitirDocumento() {
+
+        List<Paciente> pacientes = GerenciadorRepository.getInstance().getPacientes();
+
+        if (pacientes.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Não há pacientes cadastrados.");
+            return;
+        }
+
+        Paciente paciente = (Paciente) JOptionPane.showInputDialog(
+                view,
+                "Selecione o paciente:",
+                "Emitir Documento",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                pacientes.toArray(),
+                pacientes.get(0)
+        );
+
+        if (paciente == null) return;
+
+        JTextArea areaTexto = new JTextArea(10, 40);
+        JScrollPane scroll = new JScrollPane(areaTexto);
+
+        int opcao = JOptionPane.showConfirmDialog(
+                view,
+                scroll,
+                "Digite o documento médico",
+                JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (opcao != JOptionPane.OK_OPTION) return;
+
+        String texto = areaTexto.getText();
+
+        if (texto.isBlank()) {
+            JOptionPane.showMessageDialog(view, "Documento não pode estar vazio.");
+            return;
+        }
+
+        DocumentoMedico documento = new DocumentoMedico(
+                medico.getNome().getNome() + " " + medico.getNome().getSobrenome(),
+                paciente.getNome().getNome() + " " + paciente.getNome().getSobrenome(),
+                texto
+        );
+
+        paciente.adicionarDocumento(documento);
+        GerenciadorRepository.getInstance().salvarPacientes();
+
+        JOptionPane.showMessageDialog(view, "Documento emitido com sucesso.");
+    }   
 }
