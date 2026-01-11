@@ -89,6 +89,17 @@
     ],
     "historicoConsultas": [],
     "id": "863e2208-1df4-4f4c-bdd0-27d9ce0b74f2",
+    "hospitalizado": true,
+    "recebeVisita": true,
+    "documentos": [
+      {
+        "nomeMedico": "Carlos Antonio",
+        "nomePaciente": "Tom Jobim",
+        "texto": "atestado de 5 dias",
+        "data": "2026-01-11"
+      }
+    ],
+    "id": "da2bb4d0-3d8c-4757-b250-cd8186e11891",
     "nome": {
       "nome": "Pedro",
       "sobrenome": "Marques"
