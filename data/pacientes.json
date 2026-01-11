@@ -79,6 +79,12 @@
         "nomePaciente": "Pedro Marques",
         "texto": "pedro teste",
         "data": "2026-01-11"
+      },
+      {
+        "nomeMedico": "John Lennon",
+        "nomePaciente": "Pedro Marques",
+        "texto": "Documento teste paciente Pedro\n",
+        "data": "2026-01-11"
       }
     ],
     "historicoConsultas": [],
