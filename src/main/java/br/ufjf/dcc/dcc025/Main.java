@@ -1,8 +1,17 @@
 package br.ufjf.dcc.dcc025;
 
 import br.ufjf.dcc.dcc025.controller.LoginController;
+import br.ufjf.dcc.dcc025.controller.MedicoController;
+import br.ufjf.dcc.dcc025.controller.PacienteController;
+import br.ufjf.dcc.dcc025.controller.RecepcionistaController;
+import br.ufjf.dcc.dcc025.model.Medico;
+import br.ufjf.dcc.dcc025.model.Paciente;
+import br.ufjf.dcc.dcc025.model.Recepcionista;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
 import br.ufjf.dcc.dcc025.view.LoginView;
+import br.ufjf.dcc.dcc025.view.MedicoView;
+import br.ufjf.dcc.dcc025.view.PacienteView;
+import br.ufjf.dcc.dcc025.view.RecepcionistaView;
 
 public class Main {
 
@@ -15,20 +24,25 @@ public class Main {
                         return;
                 }
 
-                //Paciente paciente = repo.getPacientes().get(0);
-                //PacienteView view = new PacienteView();
-                //new PacienteController(paciente, view);
+                /*
+                 * Paciente paciente = repo.getPacientes().get(0);
+                 * PacienteView view = new PacienteView();
+                 * new PacienteController(paciente, view);
+                 */
 
-                //Recepcionista recepcionista = repo.getRecepcionistas().get(0);
-                //RecepcionistaView view = new RecepcionistaView();
-                //new RecepcionistaController(recepcionista, view);
+                /*
+                 * Recepcionista recepcionista = repo.getRecepcionistas().get(0);
+                 * RecepcionistaView view = new RecepcionistaView();
+                 * new RecepcionistaController(recepcionista, view);
+                 */
 
-                //Medico medico = repo.getMedicos().get(0);
-                //MedicoView view = new MedicoView();
-                //new MedicoController(medico, view);
-                
-                LoginView view = new LoginView();
-                new LoginController(view);
+                Medico medico = repo.getMedicos().get(0);
+                MedicoView view = new MedicoView();
+                new MedicoController(medico, view);
+
+                // LoginView view = new LoginView();
+                // new LoginController(view);
+                view.setVisible(true);
         }
 }
 

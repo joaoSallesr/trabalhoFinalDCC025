@@ -56,5 +56,34 @@
       "email": "tom.jobim@gmail.com"
     },
     "ativo": true
+  },
+  {
+    "contato": {
+      "numero": "32988856987"
+    },
+    "endereco": {
+      "cep": "36037586",
+      "rua": "Rua das Flores",
+      "bairro": "Barreira",
+      "cidade": "Juiz de Fora",
+      "numeroCasa": 65
+    },
+    "hospitalizado": true,
+    "recebeVisita": true,
+    "id": "41b0bb5e-232c-4354-88a9-95311facf015",
+    "nome": {
+      "nome": "Bruno",
+      "sobrenome": "Marte"
+    },
+    "cpf": {
+      "cpf": "555666777"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "bruno@gmail.com"
+    },
+    "ativo": true
   }
 ]

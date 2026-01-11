@@ -45,6 +45,7 @@ public class MedicoView extends JFrame {
     private JButton btnDocumento;
     private JButton btnConsulta;
     private JButton btnStatus;
+    private JButton btnNotificacoes;
     private JButton btnSair;
 
     // Agenda
@@ -82,6 +83,7 @@ public class MedicoView extends JFrame {
         btnDocumento = new JButton("Emitir Documento");
         btnConsulta = new JButton("Histórico");
         btnStatus = new JButton("Gerenciar Pacientes");
+        btnNotificacoes = new JButton("Verificar notificações");
 
         btnAgenda.addActionListener(e -> cardLayout.show(painelCentral, "AGENDA"));
 
@@ -89,6 +91,7 @@ public class MedicoView extends JFrame {
         painelEsquerdo.add(btnDocumento);
         painelEsquerdo.add(btnConsulta);
         painelEsquerdo.add(btnStatus);
+        painelEsquerdo.add(btnNotificacoes);
     }
 
     private void criarPainelCentral() {
@@ -137,7 +140,7 @@ public class MedicoView extends JFrame {
         formPanel.add(spinnerFim);
         formPanel.add(btnAdicionarHorario);
 
-        String[] colunas = {"Dia da Semana", "Início", "Fim"};
+        String[] colunas = { "Dia da Semana", "Início", "Fim" };
         tableModelHorarios = new DefaultTableModel(colunas, 0) {
             @Override // Bloqueia edição das células
             public boolean isCellEditable(int row, int column) {
@@ -215,10 +218,10 @@ public class MedicoView extends JFrame {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
 
         for (HorarioTrabalho h : agenda) {
-            tableModelHorarios.addRow(new Object[]{
-                h.getDiaTrabalho(),
-                h.getHorarioComeco().format(fmt),
-                h.getHorarioFinal().format(fmt)
+            tableModelHorarios.addRow(new Object[] {
+                    h.getDiaTrabalho(),
+                    h.getHorarioComeco().format(fmt),
+                    h.getHorarioFinal().format(fmt)
             });
         }
     }
@@ -227,20 +230,20 @@ public class MedicoView extends JFrame {
             Consumer<Paciente> onAlternarVisita,
             Consumer<Paciente> onAlternarHospitalizacao) {
 
-        String[] colunas = {"Nome", "CPF", "Hospitalizado", "Pode receber visita"};
+        String[] colunas = { "Nome", "CPF", "Hospitalizado", "Pode receber visita" };
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
+
         for (Paciente p : todosPacientes) {
-            model.addRow(new Object[]{
-                p.getNome().getNome() + " " + p.getNome().getSobrenome(),
-                p.getCPF().getCPF(),
-                p.isHospitalizado() ? "Sim" : "Não",
-                p.isRecebeVisita() ? "Apto" : "Não apto"
+            model.addRow(new Object[] {
+                    p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                    p.getCPF().getCPF(),
+                    p.isHospitalizado() ? "Sim" : "Não",
+                    p.isRecebeVisita() ? "Apto" : "Não apto"
             });
         }
 
