@@ -259,7 +259,7 @@ public class MedicoView extends JFrame {
         for (Consulta c : consultas) {
             tableModelConsultas.addRow(new Object[]{
                 c.getHorarioConsulta().format(fmt),
-                c.getPaciente().getNome().getNome() + " " + c.getPaciente().getNome().getSobrenome(),
+                c.getNomePacienteDisplay(),
                 c.getEstadoConsulta().toString()
             });
         }

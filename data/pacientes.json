@@ -24,6 +24,12 @@
         "nomePaciente": "João Salles",
         "texto": "asdasdasd",
         "data": "2026-01-11"
+      },
+      {
+        "nomeMedico": "Gregory House",
+        "nomePaciente": "João Salles",
+        "texto": "asdas",
+        "data": "2026-01-11"
       }
     ],
     "historicoConsultas": [
@@ -71,24 +77,6 @@
       "cidade": "Cidade teste",
       "numeroCasa": 232
     },
-    "hospitalizado": false,
-    "recebeVisita": false,
-    "documentos": [
-      {
-        "nomeMedico": "Gregory House",
-        "nomePaciente": "Pedro Marques",
-        "texto": "pedro teste",
-        "data": "2026-01-11"
-      },
-      {
-        "nomeMedico": "John Lennon",
-        "nomePaciente": "Pedro Marques",
-        "texto": "Documento teste paciente Pedro\n",
-        "data": "2026-01-11"
-      }
-    ],
-    "historicoConsultas": [],
-    "id": "863e2208-1df4-4f4c-bdd0-27d9ce0b74f2",
     "hospitalizado": true,
     "recebeVisita": true,
     "documentos": [
@@ -99,6 +87,7 @@
         "data": "2026-01-11"
       }
     ],
+    "historicoConsultas": [],
     "id": "da2bb4d0-3d8c-4757-b250-cd8186e11891",
     "nome": {
       "nome": "Pedro",
@@ -112,6 +101,46 @@
     },
     "email": {
       "email": "pedro123@gmail.com"
+    },
+    "ativo": true
+  },
+  {
+    "contato": {
+      "numero": "32999101219"
+    },
+    "endereco": {
+      "cep": "32032018",
+      "rua": "Rua teste",
+      "bairro": "Bairro teste",
+      "cidade": "Cidade teste",
+      "numeroCasa": 31
+    },
+    "hospitalizado": false,
+    "recebeVisita": false,
+    "documentos": [],
+    "historicoConsultas": [
+      {
+        "diaConsulta": "WEDNESDAY",
+        "horarioConsulta": "11:00:00",
+        "estadoConsulta": "MARCADA",
+        "nomePacienteDisplay": "João Salles",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      }
+    ],
+    "id": "4b103b8b-a73a-4c2f-979b-9a2427f249d4",
+    "nome": {
+      "nome": "João",
+      "sobrenome": "Salles"
+    },
+    "cpf": {
+      "cpf": "12332178916"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "joao.salles@gmail.com"
     },
     "ativo": true
   }
