@@ -30,6 +30,12 @@
         "nomePaciente": "João Salles",
         "texto": "asdas",
         "data": "2026-01-11"
+      },
+      {
+        "nomeMedico": "John Lennon",
+        "nomePaciente": "João Salles",
+        "texto": "atesto 5 dias",
+        "data": "2026-01-11"
       }
     ],
     "historicoConsultas": [
@@ -44,7 +50,8 @@
       {
         "diaConsulta": "SATURDAY",
         "horarioConsulta": "10:00:00",
-        "estadoConsulta": "MARCADA",
+        "estadoConsulta": "EFETUADA",
+        "avaliacaoSaude": 4,
         "nomePacienteDisplay": "João Salles",
         "nomeMedicoDisplay": "Lennon",
         "especialidadeDisplay": "Cardiologista"

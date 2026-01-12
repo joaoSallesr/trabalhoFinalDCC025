@@ -242,7 +242,7 @@ public class PacienteController {
             }
         }
 
-        String[] colunas = {"Dia", "Hora", "Médico", "Especialidade", "Estado"};
+        String[] colunas = {"Dia", "Hora", "Médico", "Especialidade", "Estado", "Avaliação"};
 
         DefaultTableModel model = new DefaultTableModel(colunas, 0) {
             @Override
@@ -257,7 +257,8 @@ public class PacienteController {
                 c.getHorarioConsulta(),
                 c.getNomeMedicoDisplay(),
                 c.getEspecialidadeDisplay(),
-                c.getEstadoConsulta()
+                c.getEstadoConsulta(),
+                c.getAvaliacaoSaude() == null ? "" : c.getAvaliacaoSaude()
             });
         }
 

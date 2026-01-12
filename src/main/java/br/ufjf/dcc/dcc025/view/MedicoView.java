@@ -61,6 +61,8 @@ public class MedicoView extends JFrame {
     private JTable tabelaConsultasAgendadas;
     private DefaultTableModel tableModelConsultas;
     private JButton btnFiltrarConsultas;
+    private JButton btnFinalizarConsulta;
+
 
     public MedicoView() {
         setTitle("Área do Médico");
@@ -172,10 +174,14 @@ public class MedicoView extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         cbDiaFiltroConsulta = new JComboBox<>(DayOfWeek.values());
         btnFiltrarConsultas = new JButton("Carregar Consultas");
+        btnFinalizarConsulta = new JButton("Finalizar Consulta");
+
 
         topPanel.add(new JLabel("Selecione o Dia:"));
         topPanel.add(cbDiaFiltroConsulta);
         topPanel.add(btnFiltrarConsultas);
+        topPanel.add(btnFinalizarConsulta);
+
 
         String[] colunas = {"Horário", "Paciente", "Status"};
         tableModelConsultas = new DefaultTableModel(colunas, 0) {
@@ -377,5 +383,9 @@ public class MedicoView extends JFrame {
 
     public void addEmitirDocumentoListener(java.awt.event.ActionListener listener) {
         btnDocumento.addActionListener(listener);
+    }
+
+    public void addFinalizarConsultaListener(ActionListener listener) {
+        btnFinalizarConsulta.addActionListener(listener);
     }
 }

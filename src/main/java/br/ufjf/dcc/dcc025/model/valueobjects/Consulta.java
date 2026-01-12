@@ -14,6 +14,8 @@ public class Consulta {
     private final DayOfWeek diaConsulta;
     private final LocalTime horarioConsulta;
     private final EstadoConsulta estadoConsulta;
+    private final Integer avaliacaoSaude; 
+
 
     // Criados para não corromper o json
     private final String nomePacienteDisplay;
@@ -30,9 +32,11 @@ public class Consulta {
         this.nomePacienteDisplay = paciente.getNome().getNome() + " " + paciente.getNome().getSobrenome();
         this.nomeMedicoDisplay = medico.getNome().getSobrenome();
         this.especialidadeDisplay = medico.getEspecialidade().toString();
+        this.avaliacaoSaude = null;
+
     }
 
-    private Consulta(DayOfWeek dia, LocalTime hora, Paciente p, Medico m, EstadoConsulta estado, String nP, String nM, String esp) {
+    private Consulta(DayOfWeek dia, LocalTime hora, Paciente p, Medico m, EstadoConsulta estado, String nP, String nM, String esp, Integer avaliacao) {
         this.diaConsulta = dia;
         this.horarioConsulta = hora;
         this.paciente = p;
@@ -42,6 +46,8 @@ public class Consulta {
         this.nomePacienteDisplay = nP;
         this.nomeMedicoDisplay = nM;
         this.especialidadeDisplay = esp;
+        this.avaliacaoSaude = avaliacao;
+
     }
 
     public Consulta novoEstado(String novoEstadoString) {
@@ -55,7 +61,9 @@ public class Consulta {
                 novoEstadoEnum,
                 this.nomePacienteDisplay,
                 this.nomeMedicoDisplay,
-                this.especialidadeDisplay
+                this.especialidadeDisplay,
+                this.avaliacaoSaude
+                
         );
     }
 
@@ -99,4 +107,33 @@ public class Consulta {
         }
         return especialidadeDisplay;
     }
+
+    public Consulta finalizarConsulta(int nota) {
+
+        if (nota < 1 || nota > 10) {
+            throw new IllegalArgumentException("Avaliação deve ser entre 1 e 10.");
+        }
+
+        if (this.estadoConsulta != EstadoConsulta.MARCADA) {
+            throw new IllegalStateException("Consulta não pode ser finalizada.");
+        }
+
+        return new Consulta(
+            this.diaConsulta,
+            this.horarioConsulta,
+            this.paciente,
+            this.medico,
+            EstadoConsulta.EFETUADA,
+            this.nomePacienteDisplay,
+            this.nomeMedicoDisplay,
+            this.especialidadeDisplay,
+            nota
+        );
+    }
+
+    public Integer getAvaliacaoSaude() {
+        return avaliacaoSaude;
+    }
+
+
 }

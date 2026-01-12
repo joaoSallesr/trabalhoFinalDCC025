@@ -164,13 +164,27 @@ public class Medico extends Usuario {
         DayOfWeek dia = antiga.getDiaConsulta();
 
         List<Consulta> listaDia = consultasSemana.get(dia);
-            if (listaDia == null) return;
+        if (listaDia == null) return;
 
-        int index = listaDia.indexOf(antiga);
-            if (index >= 0) {
-                listaDia.set(index, nova);
+        for (int i = 0; i < listaDia.size(); i++) {
+            Consulta c = listaDia.get(i);
+            boolean mesmoHorario = c.getHorarioConsulta().equals(antiga.getHorarioConsulta());
+            boolean mesmoPaciente = (c.getNomePacienteDisplay() != null && antiga.getNomePacienteDisplay() != null)
+                    && c.getNomePacienteDisplay().equals(antiga.getNomePacienteDisplay());
+            if (mesmoHorario && mesmoPaciente) {
+                listaDia.set(i, nova);
+                return;
             }
+        }
     }
+
+    public void finalizarConsulta(Consulta consulta, int avaliacao) {
+        if (consulta == null) return;
+
+        Consulta nova = consulta.finalizarConsulta(avaliacao);
+        atualizarConsulta(consulta, nova);
+    }
+
 
     // Getters
     public Especialidade getEspecialidade() {

@@ -21,6 +21,11 @@
         "diaTrabalho": "SATURDAY",
         "horarioComeco": "08:00:00",
         "horarioFinal": "18:00:00"
+      },
+      {
+        "diaTrabalho": "FRIDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
       }
     ],
     "consultasSemana": {
@@ -28,7 +33,8 @@
         {
           "diaConsulta": "SATURDAY",
           "horarioConsulta": "10:00:00",
-          "estadoConsulta": "MARCADA",
+          "estadoConsulta": "EFETUADA",
+          "avaliacaoSaude": 4,
           "nomePacienteDisplay": "João Salles",
           "nomeMedicoDisplay": "Lennon",
           "especialidadeDisplay": "Cardiologista"

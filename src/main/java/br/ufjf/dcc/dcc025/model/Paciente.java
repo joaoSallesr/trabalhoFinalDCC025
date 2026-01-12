@@ -126,10 +126,19 @@ public class Paciente extends Usuario {
     }
     
     public void atualizarConsulta(Consulta antiga, Consulta nova) {
-        int index = historicoConsultas.indexOf(antiga);
-            if (index >= 0) {
-                historicoConsultas.set(index, nova);
-            }   
+        if (historicoConsultas == null) return;
+
+        for (int i = 0; i < historicoConsultas.size(); i++) {
+            Consulta c = historicoConsultas.get(i);
+            boolean mesmoHorario = c.getDiaConsulta() == antiga.getDiaConsulta()
+                    && c.getHorarioConsulta().equals(antiga.getHorarioConsulta());
+            boolean mesmoMedico = c.getNomeMedicoDisplay() != null && antiga.getNomeMedicoDisplay() != null
+                    && c.getNomeMedicoDisplay().equals(antiga.getNomeMedicoDisplay());
+            if (mesmoHorario && (mesmoMedico || c.getNomePacienteDisplay().equals(antiga.getNomePacienteDisplay()))) {
+                historicoConsultas.set(i, nova);
+                return;
+            }
+        }
     }
 
 
