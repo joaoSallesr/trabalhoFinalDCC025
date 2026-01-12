@@ -1,0 +1,144 @@
+[
+  {
+    "contato": {
+      "numero": "32999120908"
+    },
+    "endereco": {
+      "cep": "32032190",
+      "rua": "rua",
+      "bairro": "bairro",
+      "cidade": "cidade",
+      "numeroCasa": 32
+    },
+    "hospitalizado": true,
+    "recebeVisita": false,
+    "documentos": [
+      {
+        "nomeMedico": "Gregory House",
+        "nomePaciente": "João Salles",
+        "texto": "Documento do joao",
+        "data": "2026-01-11"
+      }
+    ],
+    "historicoConsultas": [
+      {
+        "diaConsulta": "MONDAY",
+        "horarioConsulta": "13:00:00",
+        "estadoConsulta": "CANCELADA",
+        "nomePacienteDisplay": "João Salles",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      },
+      {
+        "diaConsulta": "WEDNESDAY",
+        "horarioConsulta": "17:00:00",
+        "estadoConsulta": "EFETUADA",
+        "avaliacaoSaude": 5,
+        "nomePacienteDisplay": "João Salles",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      }
+    ],
+    "id": "2627847f-60ea-4f6c-990e-eec087eddb5d",
+    "nome": {
+      "nome": "João",
+      "sobrenome": "Salles"
+    },
+    "cpf": {
+      "cpf": "12343298109"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "joao.salles@gmail.com"
+    },
+    "ativo": true
+  },
+  {
+    "contato": {
+      "numero": "32999888787"
+    },
+    "endereco": {
+      "cep": "32032018",
+      "rua": "rua",
+      "bairro": "bairro",
+      "cidade": "cidade",
+      "numeroCasa": 32
+    },
+    "hospitalizado": true,
+    "recebeVisita": true,
+    "documentos": [
+      {
+        "nomeMedico": "Gregory House",
+        "nomePaciente": "Júlia Campos",
+        "texto": "Documento da júlia",
+        "data": "2026-01-11"
+      }
+    ],
+    "historicoConsultas": [
+      {
+        "diaConsulta": "TUESDAY",
+        "horarioConsulta": "12:00:00",
+        "estadoConsulta": "AUSENTE",
+        "nomePacienteDisplay": "Júlia Campos",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      },
+      {
+        "diaConsulta": "WEDNESDAY",
+        "horarioConsulta": "09:00:00",
+        "estadoConsulta": "AUSENTE",
+        "nomePacienteDisplay": "Júlia Campos",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      }
+    ],
+    "id": "2b096eca-2073-4411-885e-b76000475bb6",
+    "nome": {
+      "nome": "Júlia",
+      "sobrenome": "Campos"
+    },
+    "cpf": {
+      "cpf": "30908703512"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "julia.campos@gmail.com"
+    },
+    "ativo": true
+  },
+  {
+    "contato": {
+      "numero": "32999870101"
+    },
+    "endereco": {
+      "cep": "32032120",
+      "rua": "rua",
+      "bairro": "bairro",
+      "cidade": "cidade",
+      "numeroCasa": 45
+    },
+    "hospitalizado": false,
+    "recebeVisita": false,
+    "documentos": [],
+    "historicoConsultas": [],
+    "id": "5da56840-7cdb-485a-9cd4-4b38374e3f93",
+    "nome": {
+      "nome": "Gustavo",
+      "sobrenome": "Borges"
+    },
+    "cpf": {
+      "cpf": "12365470108"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "gustavo.borges@gmail.com"
+    },
+    "ativo": true
+  }
+]

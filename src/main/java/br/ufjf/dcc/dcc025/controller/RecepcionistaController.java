@@ -1,11 +1,29 @@
 package br.ufjf.dcc.dcc025.controller;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
+import br.ufjf.dcc.dcc025.model.Medico;
+import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.Recepcionista;
 import br.ufjf.dcc.dcc025.model.dto.DadosRecepcionista;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
+import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
+import br.ufjf.dcc.dcc025.model.valueobjects.EstadoConsulta;
 import br.ufjf.dcc.dcc025.view.LoginView;
 import br.ufjf.dcc.dcc025.view.RecepcionistaView;
 
@@ -29,6 +47,120 @@ public class RecepcionistaController {
         GerenciadorRepository.getInstance().adicionarRecepcionista(novoRecepcionista);
     }
 
+    private class VerificarFaltasListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JDialog dialog = new JDialog(view, "Verificar faltas", true);
+
+            List<Paciente> pacientes = GerenciadorRepository.getInstance().getPacientes();
+
+            String[] colunas = {"Dia", "Hora", "Paciente", "Médico", "Especialidade"};
+
+            DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
+            List<AbstractMap.SimpleEntry<Paciente, Consulta>> mapping = new ArrayList<>();
+
+            for (Paciente p : pacientes) {
+                for (Consulta c : p.getConsultas()) {
+                    if (c.getEstadoConsulta() == EstadoConsulta.MARCADA) {
+                        model.addRow(new Object[]{
+                            c.getDiaConsulta(),
+                            c.getHorarioConsulta(),
+                            p.getNome().getNome() + " " + p.getNome().getSobrenome(),
+                            c.getNomeMedicoDisplay(),
+                            c.getEspecialidadeDisplay()
+                        });
+                        mapping.add(new AbstractMap.SimpleEntry<>(p, c));
+                    }
+                }
+            }
+
+            JTable tabela = new JTable(model);
+            tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            JScrollPane scroll = new JScrollPane(tabela);
+
+            JButton btnMarcarFalta = new JButton("Marcar falta (Ausente)");
+            JButton btnFechar = new JButton("Fechar");
+
+            btnFechar.addActionListener(ev -> dialog.dispose());
+
+            btnMarcarFalta.addActionListener(ev -> {
+                int row = tabela.getSelectedRow();
+                if (row == -1) {
+                    JOptionPane.showMessageDialog(dialog, "Selecione uma consulta para marcar falta.");
+                    return;
+                }
+
+                var entry = mapping.get(row);
+                Paciente paciente = entry.getKey();
+                Consulta consulta = entry.getValue();
+
+                int confirm = JOptionPane.showConfirmDialog(dialog,
+                        "Confirmar marcação de falta para " + paciente.getNome().getNome() + " " + paciente.getNome().getSobrenome() + "?",
+                        "Confirmar",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm != JOptionPane.YES_OPTION) {
+                    return;
+                }
+
+                Consulta consultaAtualizada = consulta.novoEstado("Ausente");
+
+                paciente.atualizarConsulta(consulta, consultaAtualizada);
+
+                List<Medico> medicos = GerenciadorRepository.getInstance().getMedicos();
+                String nomeMedico = consulta.getNomeMedicoDisplay();
+                boolean encontradoMedico = false;
+
+                String alvo = nomeMedico == null ? "" : nomeMedico.trim().toLowerCase();
+
+                for (Medico m : medicos) {
+                    String nomeCompleto = m.getNome() == null ? "" : m.getNome().toString().trim().toLowerCase();
+                    String sobrenome = m.getNome() == null ? "" : m.getNome().getSobrenome().trim().toLowerCase();
+
+                    if (nomeCompleto.equals(alvo) || sobrenome.equals(alvo) || nomeCompleto.contains(alvo) || sobrenome.contains(alvo)) {
+                        m.atualizarConsulta(consulta, consultaAtualizada);
+
+                        String mensagem = "Paciente " + paciente.getNome().getNome() + " " + paciente.getNome().getSobrenome()
+                                + " faltou à consulta em " + consulta.getDiaConsulta() + " " + consulta.getHorarioConsulta();
+                        m.adicionarNotificacao(mensagem);
+
+                        encontradoMedico = true;
+                        break;
+                    }
+                }
+
+                if (!encontradoMedico) {
+                    System.out.println("Aviso: Médico não encontrado para notificar: " + nomeMedico);
+                }
+
+                GerenciadorRepository.getInstance().salvarPacientes();
+                GerenciadorRepository.getInstance().salvarMedicos();
+
+                JOptionPane.showMessageDialog(dialog, "Falta marcada e médico notificado.");
+
+                dialog.dispose();
+            });
+            dialog.setLayout(new BorderLayout());
+            dialog.add(scroll, BorderLayout.CENTER);
+
+            JPanel painelBotoes = new JPanel(new FlowLayout());
+            painelBotoes.add(btnMarcarFalta);
+            painelBotoes.add(btnFechar);
+
+            dialog.add(painelBotoes, BorderLayout.SOUTH);
+            dialog.setSize(800, 500);
+            dialog.setLocationRelativeTo(view);
+            dialog.setVisible(true);
+        }
+    }
+
     private class SairListener implements ActionListener {
 
         @Override
@@ -43,95 +175,6 @@ public class RecepcionistaController {
         loginView.setVisible(true);
         if (view != null) {
             view.dispose();
-        }
-    }
-
-    private class VerificarFaltasListener implements java.awt.event.ActionListener {
-
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            // monta lista de todas as consultas marcadas nos pacientes
-            java.util.List<br.ufjf.dcc.dcc025.model.Paciente> pacientes = br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository.getInstance().getPacientes();
-
-            String[] colunas = {"Dia", "Hora", "Paciente", "Médico", "Especialidade"};
-            javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(colunas, 0) {
-                @Override
-                public boolean isCellEditable(int row, int column) { return false; }
-            };
-
-            java.util.List<java.util.AbstractMap.SimpleEntry<br.ufjf.dcc.dcc025.model.Paciente, br.ufjf.dcc.dcc025.model.valueobjects.Consulta>> mapping = new java.util.ArrayList<>();
-
-            for (br.ufjf.dcc.dcc025.model.Paciente p : pacientes) {
-                for (br.ufjf.dcc.dcc025.model.valueobjects.Consulta c : p.getConsultas()) {
-                    if (c.getEstadoConsulta() == br.ufjf.dcc.dcc025.model.valueobjects.EstadoConsulta.MARCADA) {
-                        model.addRow(new Object[] { c.getDiaConsulta(), c.getHorarioConsulta(), p.getNome().getNome() + " " + p.getNome().getSobrenome(), c.getNomeMedicoDisplay(), c.getEspecialidadeDisplay() });
-                        mapping.add(new java.util.AbstractMap.SimpleEntry<>(p, c));
-                    }
-                }
-            }
-
-            javax.swing.JTable tabela = new javax.swing.JTable(model);
-            tabela.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-            javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(tabela);
-
-            javax.swing.JButton btnMarcarFalta = new javax.swing.JButton("Marcar falta (Ausente)");
-
-            btnMarcarFalta.addActionListener(ev -> {
-                int row = tabela.getSelectedRow();
-                if (row == -1) {
-                    javax.swing.JOptionPane.showMessageDialog(view, "Selecione uma consulta para marcar falta.");
-                    return;
-                }
-
-                var entry = mapping.get(row);
-                br.ufjf.dcc.dcc025.model.Paciente paciente = entry.getKey();
-                br.ufjf.dcc.dcc025.model.valueobjects.Consulta consulta = entry.getValue();
-
-                int confirm = javax.swing.JOptionPane.showConfirmDialog(view, "Confirmar marcação de falta para " + paciente.getNome().getNome() + " " + paciente.getNome().getSobrenome() + "?", "Confirmar", javax.swing.JOptionPane.YES_NO_OPTION);
-                if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
-
-                // Atualiza consulta para AUSENTE
-                br.ufjf.dcc.dcc025.model.valueobjects.Consulta consultaAtualizada = consulta.novoEstado("Ausente");
-
-                paciente.atualizarConsulta(consulta, consultaAtualizada);
-
-                // Atualiza médico correspondente e adiciona notificação
-                java.util.List<br.ufjf.dcc.dcc025.model.Medico> medicos = br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository.getInstance().getMedicos();
-                String nomeMedico = consulta.getNomeMedicoDisplay();
-                boolean encontradoMedico = false;
-                String alvo = nomeMedico == null ? "" : nomeMedico.trim().toLowerCase();
-                for (br.ufjf.dcc.dcc025.model.Medico m : medicos) {
-                    String nomeCompleto = m.getNome() == null ? "" : m.getNome().toString().trim().toLowerCase();
-                    String sobrenome = m.getNome() == null ? "" : m.getNome().getSobrenome().trim().toLowerCase();
-                    if (nomeCompleto.equals(alvo) || sobrenome.equals(alvo) || nomeCompleto.contains(alvo) || sobrenome.contains(alvo)) {
-                        m.atualizarConsulta(consulta, consultaAtualizada);
-                        String mensagem = "Paciente " + paciente.getNome().getNome() + " " + paciente.getNome().getSobrenome() + " faltou à consulta em " + consulta.getDiaConsulta() + " " + consulta.getHorarioConsulta();
-                        m.adicionarNotificacao(mensagem);
-                        encontradoMedico = true;
-                        break;
-                    }
-                }
-
-                if (!encontradoMedico) {
-                    javax.swing.JOptionPane.showMessageDialog(view, "Médico não encontrado para notificar: " + nomeMedico);
-                }
-
-                br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository.getInstance().salvarPacientes();
-                br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository.getInstance().salvarMedicos();
-
-                javax.swing.JOptionPane.showMessageDialog(view, "Falta marcada e médico notificado.");
-                ((javax.swing.JDialog) javax.swing.SwingUtilities.getWindowAncestor(view)).dispose();
-            });
-
-            javax.swing.JDialog dialog = new javax.swing.JDialog(view, "Verificar faltas", true);
-            dialog.setLayout(new java.awt.BorderLayout());
-            dialog.add(scroll, java.awt.BorderLayout.CENTER);
-            javax.swing.JPanel painelBotoes = new javax.swing.JPanel(new java.awt.FlowLayout());
-            painelBotoes.add(btnMarcarFalta);
-            dialog.add(painelBotoes, java.awt.BorderLayout.SOUTH);
-            dialog.setSize(800, 500);
-            dialog.setLocationRelativeTo(view);
-            dialog.setVisible(true);
         }
     }
 }

@@ -1,0 +1,121 @@
+[
+  {
+    "especialidade": "CLINICO",
+    "agenda": [
+      {
+        "diaTrabalho": "MONDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
+      },
+      {
+        "diaTrabalho": "TUESDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
+      },
+      {
+        "diaTrabalho": "WEDNESDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
+      }
+    ],
+    "consultasSemana": {
+      "MONDAY": [
+        {
+          "diaConsulta": "MONDAY",
+          "horarioConsulta": "13:00:00",
+          "estadoConsulta": "CANCELADA",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        }
+      ],
+      "TUESDAY": [
+        {
+          "diaConsulta": "TUESDAY",
+          "horarioConsulta": "12:00:00",
+          "estadoConsulta": "AUSENTE",
+          "nomePacienteDisplay": "Júlia Campos",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        }
+      ],
+      "WEDNESDAY": [
+        {
+          "diaConsulta": "WEDNESDAY",
+          "horarioConsulta": "17:00:00",
+          "estadoConsulta": "EFETUADA",
+          "avaliacaoSaude": 5,
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        },
+        {
+          "diaConsulta": "WEDNESDAY",
+          "horarioConsulta": "09:00:00",
+          "estadoConsulta": "AUSENTE",
+          "nomePacienteDisplay": "Júlia Campos",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        }
+      ]
+    },
+    "notificacoes": [],
+    "id": "a64fdfc6-3aee-4f6c-9746-ee17124e3771",
+    "nome": {
+      "nome": "Gregory",
+      "sobrenome": "House"
+    },
+    "cpf": {
+      "cpf": "76876809801"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "dr.house@gmail.com"
+    },
+    "ativo": true
+  },
+  {
+    "especialidade": "PEDIATRA",
+    "agenda": [],
+    "consultasSemana": {},
+    "notificacoes": [],
+    "id": "ce8cc87c-e7e0-45ad-8947-00ab19c70ea9",
+    "nome": {
+      "nome": "Carlos",
+      "sobrenome": "Antônio"
+    },
+    "cpf": {
+      "cpf": "32134544331"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "dr.antonio@gmail.com"
+    },
+    "ativo": true
+  },
+  {
+    "especialidade": "CARDIOLOGISTA",
+    "agenda": [],
+    "consultasSemana": {},
+    "notificacoes": [],
+    "id": "ee74f9cf-eb98-4c77-a654-b18f51df753e",
+    "nome": {
+      "nome": "Thiago",
+      "sobrenome": "Loures"
+    },
+    "cpf": {
+      "cpf": "11189209201"
+    },
+    "senha": {
+      "senha": "12341234"
+    },
+    "email": {
+      "email": "dr.loures@gmail.com"
+    },
+    "ativo": true
+  }
+]
