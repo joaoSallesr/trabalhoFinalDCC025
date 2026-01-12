@@ -27,12 +27,21 @@
           "nomePacienteDisplay": "João Salles",
           "nomeMedicoDisplay": "House",
           "especialidadeDisplay": "Clínico"
+        },
+        {
+          "diaConsulta": "MONDAY",
+          "horarioConsulta": "15:00:00",
+          "estadoConsulta": "EFETUADA",
+          "avaliacaoSaude": 5,
+          "nomePacienteDisplay": "Júlia Campos",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
         }
       ],
       "TUESDAY": [
         {
           "diaConsulta": "TUESDAY",
-          "horarioConsulta": "12:00:00",
+          "horarioConsulta": "09:00:00",
           "estadoConsulta": "AUSENTE",
           "nomePacienteDisplay": "Júlia Campos",
           "nomeMedicoDisplay": "House",
@@ -51,8 +60,9 @@
         },
         {
           "diaConsulta": "WEDNESDAY",
-          "horarioConsulta": "09:00:00",
-          "estadoConsulta": "AUSENTE",
+          "horarioConsulta": "12:00:00",
+          "estadoConsulta": "EFETUADA",
+          "avaliacaoSaude": 5,
           "nomePacienteDisplay": "Júlia Campos",
           "nomeMedicoDisplay": "House",
           "especialidadeDisplay": "Clínico"

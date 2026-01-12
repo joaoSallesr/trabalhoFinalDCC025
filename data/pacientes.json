@@ -78,17 +78,43 @@
     ],
     "historicoConsultas": [
       {
-        "diaConsulta": "TUESDAY",
-        "horarioConsulta": "12:00:00",
-        "estadoConsulta": "AUSENTE",
+        "diaConsulta": "MONDAY",
+        "horarioConsulta": "15:00:00",
+        "estadoConsulta": "MARCADA",
         "nomePacienteDisplay": "Júlia Campos",
         "nomeMedicoDisplay": "House",
         "especialidadeDisplay": "Clínico"
       },
       {
         "diaConsulta": "WEDNESDAY",
+        "horarioConsulta": "12:00:00",
+        "estadoConsulta": "MARCADA",
+        "nomePacienteDisplay": "Júlia Campos",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      },
+      {
+        "diaConsulta": "TUESDAY",
         "horarioConsulta": "09:00:00",
         "estadoConsulta": "AUSENTE",
+        "nomePacienteDisplay": "Júlia Campos",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      },
+      {
+        "diaConsulta": "MONDAY",
+        "horarioConsulta": "15:00:00",
+        "estadoConsulta": "EFETUADA",
+        "avaliacaoSaude": 5,
+        "nomePacienteDisplay": "Júlia Campos",
+        "nomeMedicoDisplay": "House",
+        "especialidadeDisplay": "Clínico"
+      },
+      {
+        "diaConsulta": "WEDNESDAY",
+        "horarioConsulta": "12:00:00",
+        "estadoConsulta": "EFETUADA",
+        "avaliacaoSaude": 5,
         "nomePacienteDisplay": "Júlia Campos",
         "nomeMedicoDisplay": "House",
         "especialidadeDisplay": "Clínico"

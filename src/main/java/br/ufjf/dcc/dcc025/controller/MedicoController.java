@@ -305,27 +305,26 @@ public class MedicoController {
 
             int linha = view.getLinhaConsultaSelecionada();
             if (linha == -1) {
-                JOptionPane.showMessageDialog(view, "Selecione uma consulta.");
+                JOptionPane.showMessageDialog(view, "Selecione uma consulta na tabela.");
                 return;
             }
 
             DayOfWeek dia = view.getDiaFiltroConsulta();
-            Consulta consultaAntiga = medico.getConsultasDoDia(dia).get(linha);
 
-            if (consultaAntiga.getEstadoConsulta() != EstadoConsulta.MARCADA) {
-                JOptionPane.showMessageDialog(view, "Esta consulta já foi finalizada ou cancelada.");
-                return;
+            List<Consulta> todasConsultas = medico.getConsultasDoDia(dia);
+
+            List<Consulta> listaMarcadas = new ArrayList<>();
+            for (Consulta c : todasConsultas) {
+                if (c.getEstadoConsulta() == EstadoConsulta.MARCADA) {
+                    listaMarcadas.add(c);
+                }
             }
+
+            Consulta consultaAntiga = listaMarcadas.get(linha);
 
             SpinnerNumberModel model = new SpinnerNumberModel(5, 1, 10, 1);
             JSpinner spinner = new JSpinner(model);
-
-            int opcao = JOptionPane.showConfirmDialog(
-                    view,
-                    spinner,
-                    "Avaliação da saúde (1 a 10)",
-                    JOptionPane.OK_CANCEL_OPTION
-            );
+            int opcao = JOptionPane.showConfirmDialog(view, spinner, "Nota (1-10)", JOptionPane.OK_CANCEL_OPTION);
 
             if (opcao != JOptionPane.OK_OPTION) {
                 return;
@@ -339,7 +338,6 @@ public class MedicoController {
             medico.adicionarConsulta(consultaNova);
 
             Paciente paciente = consultaAntiga.getPaciente();
-
             if (paciente == null) {
                 List<Paciente> todosPacientes = GerenciadorRepository.getInstance().getPacientes();
                 String nomeAlvo = consultaAntiga.getNomePacienteDisplay();
@@ -352,7 +350,6 @@ public class MedicoController {
             }
 
             if (paciente != null) {
-
                 paciente.removerConsulta(consultaAntiga);
                 paciente.adicionarConsulta(consultaNova);
             }
@@ -362,7 +359,7 @@ public class MedicoController {
 
             carregarConsultasDoDia(dia);
 
-            JOptionPane.showMessageDialog(view, "Consulta finalizada com sucesso.");
+            JOptionPane.showMessageDialog(view, "Consulta finalizada com sucesso!");
         }
     }
 
