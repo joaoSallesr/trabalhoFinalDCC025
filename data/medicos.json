@@ -54,6 +54,16 @@
           "nomeMedicoDisplay": "Lennon",
           "especialidadeDisplay": "Cardiologista"
         }
+      ],
+      "TUESDAY": [
+        {
+          "diaConsulta": "TUESDAY",
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "AUSENTE",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "Lennon",
+          "especialidadeDisplay": "Cardiologista"
+        }
       ]
     },
     "notificacoes": [],

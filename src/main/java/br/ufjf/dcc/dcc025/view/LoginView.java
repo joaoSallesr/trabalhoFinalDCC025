@@ -72,7 +72,10 @@ public class LoginView extends JFrame {
         add(criarPainelTitulo(), BorderLayout.NORTH);
         add(criarPainelFormulario(), BorderLayout.CENTER);
         add(criarPainelBotao(), BorderLayout.SOUTH);
-
+        // Permite que a tecla Enter dispare o botão de login
+        if (botaoLogin != null) {
+            getRootPane().setDefaultButton(botaoLogin);
+        }
     }
 
     //painel do título
