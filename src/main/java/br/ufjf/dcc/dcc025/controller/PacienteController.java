@@ -336,6 +336,48 @@ public class PacienteController {
         gerenciarMinhasConsultas();
     }
 
+    private void mostrarHistoricoConsultas() {
+        List<Consulta> consultas = new ArrayList<>(paciente.getConsultas());
+
+        if (consultas.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Nenhuma consulta registrada.");
+            return;
+        }
+
+        String[] colunas = {"Dia", "Hora", "Médico", "Especialidade", "Estado", "Avaliação"};
+
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        consultas.sort((c1, c2) -> {
+            int cmp = c2.getDiaConsulta().compareTo(c1.getDiaConsulta());
+            if (cmp != 0) {
+                return cmp;
+            }
+            return c2.getHorarioConsulta().compareTo(c1.getHorarioConsulta());
+        });
+
+        for (Consulta c : consultas) {
+            model.addRow(new Object[]{
+                c.getDiaConsulta(),
+                c.getHorarioConsulta(),
+                c.getNomeMedicoDisplay(),
+                c.getEspecialidadeDisplay(),
+                c.getEstadoConsulta(),
+                c.getAvaliacaoSaude() == null ? "" : c.getAvaliacaoSaude()
+            });
+        }
+
+        JTable tabela = new JTable(model);
+        JScrollPane scroll = new JScrollPane(tabela);
+
+        view.atualizarPainelCentral(scroll);
+    }
+
     private void mostrarStatusInternacao() {
 
         List<Paciente> hospitalizados = GerenciadorRepository.getInstance().buscarHospitalizados();
@@ -528,46 +570,4 @@ public class PacienteController {
             view.dispose();
         }
     }
-
-    private void mostrarHistoricoConsultas() {
-        List<Consulta> consultas = paciente.getConsultas();
-
-        if (consultas.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Nenhuma consulta registrada.");
-            return;
-        }
-
-        String[] colunas = {"Dia", "Hora", "Médico", "Especialidade", "Estado"};
-
-        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        consultas.sort((c1, c2) -> {
-            int cmp = c2.getDiaConsulta().compareTo(c1.getDiaConsulta());
-            if (cmp != 0) {
-                return cmp;
-            }
-            return c2.getHorarioConsulta().compareTo(c1.getHorarioConsulta());
-        });
-
-        for (Consulta c : consultas) {
-            model.addRow(new Object[]{
-                c.getDiaConsulta(),
-                c.getHorarioConsulta(),
-                c.getNomeMedicoDisplay(),
-                c.getEspecialidadeDisplay(),
-                c.getEstadoConsulta()
-            });
-        }
-
-        JTable tabela = new JTable(model);
-        JScrollPane scroll = new JScrollPane(tabela);
-
-        view.atualizarPainelCentral(scroll);
-    }
-
 }

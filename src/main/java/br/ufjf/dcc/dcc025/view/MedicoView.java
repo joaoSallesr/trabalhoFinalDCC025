@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,6 +44,7 @@ public class MedicoView extends JFrame {
     private JButton btnAgenda;
     private JButton btnDocumento;
     private JButton btnConsulta;
+    private JButton btnConsultasDia;
     private JButton btnStatus;
     private JButton btnNotificacoes;
     private JButton btnSair;
@@ -63,7 +65,6 @@ public class MedicoView extends JFrame {
     private JButton btnFiltrarConsultas;
     private JButton btnFinalizarConsulta;
 
-
     public MedicoView() {
         setTitle("Área do Médico");
         setSize(950, 600);
@@ -83,20 +84,24 @@ public class MedicoView extends JFrame {
 
     private void criarPainelEsquerdo() {
         painelEsquerdo = new JPanel();
-        painelEsquerdo.setLayout(new GridLayout(5, 1, 5, 5));
+        painelEsquerdo.setLayout(new GridLayout(6, 1, 5, 5));
         painelEsquerdo.setBorder(BorderFactory.createTitledBorder("Menu"));
 
         btnAgenda = new JButton("Minha Agenda");
+        btnConsultasDia = new JButton("Consultas do Dia");
+        btnConsulta = new JButton("Histórico Completo");
         btnDocumento = new JButton("Emitir Documento");
-        btnConsulta = new JButton("Histórico");
         btnStatus = new JButton("Gerenciar Pacientes");
         btnNotificacoes = new JButton("Verificar notificações");
+
+        btnConsultasDia.addActionListener(e -> cardLayout.show(painelCentral, "CONSULTAS"));
 
         btnAgenda.addActionListener(e -> cardLayout.show(painelCentral, "AGENDA"));
 
         painelEsquerdo.add(btnAgenda);
-        painelEsquerdo.add(btnDocumento);
+        painelEsquerdo.add(btnConsultasDia);
         painelEsquerdo.add(btnConsulta);
+        painelEsquerdo.add(btnDocumento);
         painelEsquerdo.add(btnStatus);
         painelEsquerdo.add(btnNotificacoes);
     }
@@ -119,6 +124,13 @@ public class MedicoView extends JFrame {
 
         // Exibe Home por padrão
         cardLayout.show(painelCentral, "HOME");
+    }
+
+    public void atualizarPainelCentral(JComponent componente) {
+        painelCentral.add(componente, "DINAMICO");
+        cardLayout.show(painelCentral, "DINAMICO");
+        painelCentral.revalidate();
+        painelCentral.repaint();
     }
 
     private JPanel criarPainelAgenda() {
@@ -176,12 +188,10 @@ public class MedicoView extends JFrame {
         btnFiltrarConsultas = new JButton("Carregar Consultas");
         btnFinalizarConsulta = new JButton("Finalizar Consulta");
 
-
         topPanel.add(new JLabel("Selecione o Dia:"));
         topPanel.add(cbDiaFiltroConsulta);
         topPanel.add(btnFiltrarConsultas);
         topPanel.add(btnFinalizarConsulta);
-
 
         String[] colunas = {"Horário", "Paciente", "Status"};
         tableModelConsultas = new DefaultTableModel(colunas, 0) {
@@ -234,10 +244,29 @@ public class MedicoView extends JFrame {
     }
 
     public void addVerConsultasListener(ActionListener listener) {
-        btnConsulta.addActionListener(e -> {
+        btnConsultasDia.addActionListener(listener);
+    }
+
+    public void addVerHistoricoListener(ActionListener listener) {
+        btnConsulta.addActionListener(listener);
+    }
+
+    // Finalizar consulta
+    public void addFinalizarConsultaListener(ActionListener listener) {
+        btnFinalizarConsulta.addActionListener(listener);
+    }
+
+    // Consultas do dia
+    public void addConsultasDiaListener(ActionListener listener) {
+        btnConsultasDia.addActionListener(e -> {
             cardLayout.show(painelCentral, "CONSULTAS");
             listener.actionPerformed(e);
         });
+    }
+
+    // Documento
+    public void addEmitirDocumentoListener(java.awt.event.ActionListener listener) {
+        btnDocumento.addActionListener(listener);
     }
 
     // Listeners sair
@@ -379,13 +408,5 @@ public class MedicoView extends JFrame {
         dialog.setSize(800, 500);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }
-
-    public void addEmitirDocumentoListener(java.awt.event.ActionListener listener) {
-        btnDocumento.addActionListener(listener);
-    }
-
-    public void addFinalizarConsultaListener(ActionListener listener) {
-        btnFinalizarConsulta.addActionListener(listener);
     }
 }

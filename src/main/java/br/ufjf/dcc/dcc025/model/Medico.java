@@ -119,6 +119,16 @@ public class Medico extends Usuario {
         agendamentosDoDia.add(consulta);
     }
 
+    public void adicionarConsulta(Consulta consulta) {
+        if (consulta == null) {
+            return;
+        }
+
+        DayOfWeek dia = consulta.getDiaConsulta();
+        List<Consulta> lista = getConsultasMap().computeIfAbsent(dia, k -> new ArrayList<>());
+        lista.add(consulta);
+    }
+
     public void removerConsulta(Consulta consulta) {
         if (consulta == null) {
             return;
@@ -128,10 +138,8 @@ public class Medico extends Usuario {
 
         if (getConsultasMap().containsKey(dia)) {
             List<Consulta> listaDia = getConsultasMap().get(dia);
+
             listaDia.remove(consulta);
-            if (listaDia.isEmpty()) {
-                getConsultasMap().remove(dia);
-            }
         }
     }
 
@@ -157,14 +165,28 @@ public class Medico extends Usuario {
         return new ArrayList<>(getConsultasMap().getOrDefault(dia, new ArrayList<>()));
     }
 
+    public List<Consulta> getConsultas() {
+        List<Consulta> todasAsConsultas = new ArrayList<>();
+
+        for (List<Consulta> listaDia : getConsultasMap().values()) {
+            todasAsConsultas.addAll(listaDia);
+        }
+
+        return todasAsConsultas;
+    }
+
     public void atualizarConsulta(Consulta antiga, Consulta nova) {
 
-        if (antiga == null || nova == null) return;
+        if (antiga == null || nova == null) {
+            return;
+        }
 
         DayOfWeek dia = antiga.getDiaConsulta();
 
         List<Consulta> listaDia = consultasSemana.get(dia);
-        if (listaDia == null) return;
+        if (listaDia == null) {
+            return;
+        }
 
         for (int i = 0; i < listaDia.size(); i++) {
             Consulta c = listaDia.get(i);
@@ -179,12 +201,13 @@ public class Medico extends Usuario {
     }
 
     public void finalizarConsulta(Consulta consulta, int avaliacao) {
-        if (consulta == null) return;
+        if (consulta == null) {
+            return;
+        }
 
         Consulta nova = consulta.finalizarConsulta(avaliacao);
         atualizarConsulta(consulta, nova);
     }
-
 
     // Getters
     public Especialidade getEspecialidade() {

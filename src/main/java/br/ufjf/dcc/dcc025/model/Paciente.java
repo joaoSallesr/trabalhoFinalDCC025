@@ -1,6 +1,7 @@
 package br.ufjf.dcc.dcc025.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,8 +20,8 @@ public class Paciente extends Usuario {
     private Endereco endereco;
     private boolean hospitalizado;
     private boolean recebeVisita;
-    private List<DocumentoMedico> documentos = new ArrayList<>();
-    private List<Consulta> historicoConsultas = new ArrayList<>();
+    private final List<DocumentoMedico> documentos = new ArrayList<>();
+    private final List<Consulta> historicoConsultas = new ArrayList<>();
 
     public Paciente(DadosPaciente dados) {
         super(
@@ -39,7 +40,6 @@ public class Paciente extends Usuario {
         );
         this.hospitalizado = false;
         this.recebeVisita = false;
-        this.historicoConsultas = new ArrayList<>();
     }
 
     // Atualização de atributos
@@ -91,56 +91,36 @@ public class Paciente extends Usuario {
 
     // Documentos médicos
     public void adicionarDocumento(DocumentoMedico documento) {
-        if (documentos == null) {
-            documentos = new ArrayList<>();
+        if (documento != null) {
+            documentos.add(documento);
         }
-        documentos.add(documento);
     }
 
     public List<DocumentoMedico> getDocumentos() {
-        if (documentos == null) {
-            documentos = new ArrayList<>();
-        }
-        return documentos;
+        return Collections.unmodifiableList(documentos);
     }
 
     // Consultas
     public void adicionarConsulta(Consulta consulta) {
-        if (this.historicoConsultas == null) {
-            this.historicoConsultas = new ArrayList<>();
+        if (consulta != null) {
+            this.historicoConsultas.add(consulta);
         }
-        this.historicoConsultas.add(consulta);
     }
 
     public void removerConsulta(Consulta consulta) {
-        if (this.historicoConsultas != null) {
+        if (consulta != null) {
             this.historicoConsultas.remove(consulta);
         }
     }
 
     public List<Consulta> getConsultas() {
-        if (this.historicoConsultas == null) {
-            this.historicoConsultas = new ArrayList<>();
-        }
-        return historicoConsultas;
+        return Collections.unmodifiableList(historicoConsultas);
     }
-    
+
     public void atualizarConsulta(Consulta antiga, Consulta nova) {
-        if (historicoConsultas == null) return;
-
-        for (int i = 0; i < historicoConsultas.size(); i++) {
-            Consulta c = historicoConsultas.get(i);
-            boolean mesmoHorario = c.getDiaConsulta() == antiga.getDiaConsulta()
-                    && c.getHorarioConsulta().equals(antiga.getHorarioConsulta());
-            boolean mesmoMedico = c.getNomeMedicoDisplay() != null && antiga.getNomeMedicoDisplay() != null
-                    && c.getNomeMedicoDisplay().equals(antiga.getNomeMedicoDisplay());
-            if (mesmoHorario && (mesmoMedico || c.getNomePacienteDisplay().equals(antiga.getNomePacienteDisplay()))) {
-                historicoConsultas.set(i, nova);
-                return;
-            }
-        }
+        removerConsulta(antiga);
+        adicionarConsulta(nova);
     }
-
 
     // Getters
     public boolean isHospitalizado() {

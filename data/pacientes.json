@@ -40,18 +40,10 @@
     ],
     "historicoConsultas": [
       {
-        "diaConsulta": "MONDAY",
-        "horarioConsulta": "17:00:00",
-        "estadoConsulta": "MARCADA",
-        "nomePacienteDisplay": "João Salles",
-        "nomeMedicoDisplay": "House",
-        "especialidadeDisplay": "Clínico"
-      },
-      {
-        "diaConsulta": "SATURDAY",
+        "diaConsulta": "TUESDAY",
         "horarioConsulta": "10:00:00",
         "estadoConsulta": "EFETUADA",
-        "avaliacaoSaude": 4,
+        "avaliacaoSaude": 5,
         "nomePacienteDisplay": "João Salles",
         "nomeMedicoDisplay": "Lennon",
         "especialidadeDisplay": "Cardiologista"
@@ -127,9 +119,10 @@
     "documentos": [],
     "historicoConsultas": [
       {
-        "diaConsulta": "WEDNESDAY",
-        "horarioConsulta": "11:00:00",
-        "estadoConsulta": "CANCELADA",
+        "diaConsulta": "MONDAY",
+        "horarioConsulta": "08:00:00",
+        "estadoConsulta": "EFETUADA",
+        "avaliacaoSaude": 5,
         "nomePacienteDisplay": "João Salles",
         "nomeMedicoDisplay": "House",
         "especialidadeDisplay": "Clínico"
@@ -144,15 +137,15 @@
       },
       {
         "diaConsulta": "TUESDAY",
-        "horarioConsulta": "08:00:00",
+        "horarioConsulta": "10:00:00",
         "estadoConsulta": "CANCELADA",
         "nomePacienteDisplay": "João Salles",
-        "nomeMedicoDisplay": "House",
-        "especialidadeDisplay": "Clínico"
+        "nomeMedicoDisplay": "Lennon",
+        "especialidadeDisplay": "Cardiologista"
       },
       {
         "diaConsulta": "TUESDAY",
-        "horarioConsulta": "08:00:00",
+        "horarioConsulta": "10:00:00",
         "estadoConsulta": "CANCELADA",
         "nomePacienteDisplay": "João Salles",
         "nomeMedicoDisplay": "House",

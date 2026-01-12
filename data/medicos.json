@@ -39,6 +39,17 @@
           "nomeMedicoDisplay": "Lennon",
           "especialidadeDisplay": "Cardiologista"
         }
+      ],
+      "TUESDAY": [
+        {
+          "diaConsulta": "TUESDAY",
+          "horarioConsulta": "10:00:00",
+          "estadoConsulta": "EFETUADA",
+          "avaliacaoSaude": 5,
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "Lennon",
+          "especialidadeDisplay": "Cardiologista"
+        }
       ]
     },
     "id": "bd24e49f-aa7a-4f0b-882b-deb99bb4a8e3",
@@ -85,18 +96,9 @@
       "MONDAY": [
         {
           "diaConsulta": "MONDAY",
-          "horarioConsulta": "17:00:00",
-          "estadoConsulta": "MARCADA",
-          "nomePacienteDisplay": "João Salles",
-          "nomeMedicoDisplay": "House",
-          "especialidadeDisplay": "Clínico"
-        }
-      ],
-      "WEDNESDAY": [
-        {
-          "diaConsulta": "WEDNESDAY",
-          "horarioConsulta": "11:00:00",
-          "estadoConsulta": "MARCADA",
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "EFETUADA",
+          "avaliacaoSaude": 5,
           "nomePacienteDisplay": "João Salles",
           "nomeMedicoDisplay": "House",
           "especialidadeDisplay": "Clínico"
@@ -113,16 +115,8 @@
         },
         {
           "diaConsulta": "TUESDAY",
-          "horarioConsulta": "08:00:00",
+          "horarioConsulta": "10:00:00",
           "estadoConsulta": "CANCELADA",
-          "nomePacienteDisplay": "João Salles",
-          "nomeMedicoDisplay": "House",
-          "especialidadeDisplay": "Clínico"
-        },
-        {
-          "diaConsulta": "TUESDAY",
-          "horarioConsulta": "08:00:00",
-          "estadoConsulta": "MARCADA",
           "nomePacienteDisplay": "João Salles",
           "nomeMedicoDisplay": "House",
           "especialidadeDisplay": "Clínico"

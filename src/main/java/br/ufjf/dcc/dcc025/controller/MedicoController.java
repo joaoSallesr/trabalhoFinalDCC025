@@ -3,15 +3,18 @@ package br.ufjf.dcc.dcc025.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.DefaultTableModel;
 
 import br.ufjf.dcc.dcc025.model.DocumentoMedico;
 import br.ufjf.dcc.dcc025.model.Medico;
@@ -19,9 +22,9 @@ import br.ufjf.dcc.dcc025.model.Paciente;
 import br.ufjf.dcc.dcc025.model.dto.DadosMedico;
 import br.ufjf.dcc.dcc025.model.repository.GerenciadorRepository;
 import br.ufjf.dcc.dcc025.model.valueobjects.Consulta;
-import br.ufjf.dcc.dcc025.model.valueobjects.EstadoConsulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.Email;
 import br.ufjf.dcc.dcc025.model.valueobjects.Especialidade;
+import br.ufjf.dcc.dcc025.model.valueobjects.EstadoConsulta;
 import br.ufjf.dcc.dcc025.model.valueobjects.HorarioTrabalho;
 import br.ufjf.dcc.dcc025.model.valueobjects.Senha;
 import br.ufjf.dcc.dcc025.view.LoginView;
@@ -46,9 +49,14 @@ public class MedicoController {
             this.view.addRemoverHorarioListener(new RemoverHorarioListener());
             this.view.addNavegarAgendaListener(new NavegarAgendaListener());
             this.view.addEmitirDocumentoListener(new EmitirDocumentoListener());
-            this.view.addVerConsultasListener(new NavegarConsultasListener());
+
+            this.view.addVerConsultasListener(new ConsultasHojeListener());
+            this.view.addConsultasDiaListener(new ConsultasHojeListener());
+
             this.view.addCarregarConsultasListener(new FiltrarConsultasListener());
             this.view.addFinalizarConsultaListener(new FinalizarConsultaListener());
+
+            this.view.addVerHistoricoListener(new HistoricoListener());
 
         }
     }
@@ -204,13 +212,56 @@ public class MedicoController {
     }
 
     // Gerenciador de consultas
-    private class NavegarConsultasListener implements ActionListener {
+    private class HistoricoListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            DayOfWeek diaSelecionado = view.getDiaFiltroConsulta();
-            carregarConsultasDoDia(diaSelecionado);
+            mostrarHistorico();
         }
+    }
+
+    private void mostrarHistorico() {
+        List<Consulta> todas = new ArrayList<>(medico.getConsultas());
+        List<Consulta> efetuadas = new ArrayList<>();
+
+        for (Consulta c : todas) {
+            if (c.getEstadoConsulta() == EstadoConsulta.EFETUADA) {
+                efetuadas.add(c);
+            }
+        }
+
+        if (efetuadas.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Nenhuma consulta efetuada encontrada no histórico.");
+        }
+        efetuadas.sort((c1, c2) -> {
+            int cmp = c2.getDiaConsulta().compareTo(c1.getDiaConsulta());
+            if (cmp != 0) {
+                return cmp;
+            }
+            return c2.getHorarioConsulta().compareTo(c1.getHorarioConsulta());
+        });
+
+        String[] colunas = {"Data", "Hora", "Paciente", "Avaliação"};
+        DefaultTableModel model = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Consulta c : efetuadas) {
+            model.addRow(new Object[]{
+                c.getDiaConsulta(),
+                c.getHorarioConsulta(),
+                c.getNomePacienteDisplay(),
+                c.getAvaliacaoSaude()
+            });
+        }
+
+        JTable tabela = new JTable(model);
+        JScrollPane scroll = new JScrollPane(tabela);
+
+        view.atualizarPainelCentral(scroll);
     }
 
     private class FiltrarConsultasListener implements ActionListener {
@@ -223,8 +274,95 @@ public class MedicoController {
     }
 
     private void carregarConsultasDoDia(DayOfWeek dia) {
-        List<Consulta> consultas = medico.getConsultasDoDia(dia);
-        view.atualizarListaConsultas(consultas);
+        List<Consulta> todasConsultas = medico.getConsultasDoDia(dia);
+
+        List<Consulta> consultasFiltradas = new ArrayList<>();
+
+        for (Consulta c : todasConsultas) {
+            if (c.getEstadoConsulta() == EstadoConsulta.MARCADA) {
+                consultasFiltradas.add(c);
+            }
+
+        }
+
+        view.atualizarListaConsultas(consultasFiltradas);
+    }
+
+    private class ConsultasHojeListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DayOfWeek hoje = LocalDate.now().getDayOfWeek();
+            carregarConsultasDoDia(hoje);
+        }
+    }
+
+    private class FinalizarConsultaListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int linha = view.getLinhaConsultaSelecionada();
+            if (linha == -1) {
+                JOptionPane.showMessageDialog(view, "Selecione uma consulta.");
+                return;
+            }
+
+            DayOfWeek dia = view.getDiaFiltroConsulta();
+            Consulta consultaAntiga = medico.getConsultasDoDia(dia).get(linha);
+
+            if (consultaAntiga.getEstadoConsulta() != EstadoConsulta.MARCADA) {
+                JOptionPane.showMessageDialog(view, "Esta consulta já foi finalizada ou cancelada.");
+                return;
+            }
+
+            SpinnerNumberModel model = new SpinnerNumberModel(5, 1, 10, 1);
+            JSpinner spinner = new JSpinner(model);
+
+            int opcao = JOptionPane.showConfirmDialog(
+                    view,
+                    spinner,
+                    "Avaliação da saúde (1 a 10)",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (opcao != JOptionPane.OK_OPTION) {
+                return;
+            }
+
+            int nota = (int) spinner.getValue();
+
+            Consulta consultaNova = consultaAntiga.finalizarConsulta(nota);
+
+            medico.removerConsulta(consultaAntiga);
+            medico.adicionarConsulta(consultaNova);
+
+            Paciente paciente = consultaAntiga.getPaciente();
+
+            if (paciente == null) {
+                List<Paciente> todosPacientes = GerenciadorRepository.getInstance().getPacientes();
+                String nomeAlvo = consultaAntiga.getNomePacienteDisplay();
+                for (Paciente p : todosPacientes) {
+                    if ((p.getNome().getNome() + " " + p.getNome().getSobrenome()).equals(nomeAlvo)) {
+                        paciente = p;
+                        break;
+                    }
+                }
+            }
+
+            if (paciente != null) {
+
+                paciente.removerConsulta(consultaAntiga);
+                paciente.adicionarConsulta(consultaNova);
+            }
+
+            GerenciadorRepository.getInstance().salvarMedicos();
+            GerenciadorRepository.getInstance().salvarPacientes();
+
+            carregarConsultasDoDia(dia);
+
+            JOptionPane.showMessageDialog(view, "Consulta finalizada com sucesso.");
+        }
     }
 
     // Gerenciador de emissão de documento
@@ -309,87 +447,4 @@ public class MedicoController {
             view.dispose();
         }
     }
-
-    private class FinalizarConsultaListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            int linha = view.getLinhaConsultaSelecionada();
-            if (linha == -1) {
-                JOptionPane.showMessageDialog(view, "Selecione uma consulta.");
-                return;
-            }
-
-            DayOfWeek dia = view.getDiaFiltroConsulta();
-            Consulta consulta = medico.getConsultasDoDia(dia).get(linha);
-
-            if (consulta.getEstadoConsulta() != EstadoConsulta.MARCADA) {
-                JOptionPane.showMessageDialog(view, "Consulta já finalizada.");
-                return;
-            }
-
-            SpinnerNumberModel model = new SpinnerNumberModel(5, 1, 10, 1);
-            JSpinner spinner = new JSpinner(model);
-
-            int opcao = JOptionPane.showConfirmDialog(
-                view,
-                spinner,
-                "Avaliação da saúde (1 a 10)",
-                JOptionPane.OK_CANCEL_OPTION
-            );
-
-            if (opcao != JOptionPane.OK_OPTION) return;
-
-            int nota = (int) spinner.getValue();
-
-            Consulta consultaAtualizada = consulta.finalizarConsulta(nota);
-
-            medico.atualizarConsulta(consulta, consultaAtualizada);
-
-            Paciente paciente = consulta.getPaciente();
-            if (paciente != null) {
-                paciente.atualizarConsulta(consulta, consultaAtualizada);
-
-                boolean encontrado = paciente.getConsultas().stream().anyMatch(c ->
-                        c.getDiaConsulta() == consultaAtualizada.getDiaConsulta()
-                        && c.getHorarioConsulta().equals(consultaAtualizada.getHorarioConsulta())
-                        && c.getNomeMedicoDisplay().equals(consultaAtualizada.getNomeMedicoDisplay())
-                );
-
-                if (!encontrado) {
-                    paciente.adicionarConsulta(consultaAtualizada);
-                }
-            } else {
-                List<Paciente> todosPacientes = GerenciadorRepository.getInstance().getPacientes();
-                String nomePacienteAlvo = consulta.getNomePacienteDisplay();
-                for (Paciente p : todosPacientes) {
-                    if (p.getNome().toString().equals(nomePacienteAlvo)) {
-                        p.atualizarConsulta(consulta, consultaAtualizada);
-
-                        boolean encontrado = p.getConsultas().stream().anyMatch(c ->
-                                c.getDiaConsulta() == consultaAtualizada.getDiaConsulta()
-                                && c.getHorarioConsulta().equals(consultaAtualizada.getHorarioConsulta())
-                                && c.getNomeMedicoDisplay().equals(consultaAtualizada.getNomeMedicoDisplay())
-                        );
-
-                        if (!encontrado) {
-                            p.adicionarConsulta(consultaAtualizada);
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            GerenciadorRepository.getInstance().salvarMedicos();
-            GerenciadorRepository.getInstance().salvarPacientes();
-
-            carregarConsultasDoDia(dia);
-
-            JOptionPane.showMessageDialog(view, "Consulta finalizada com sucesso.");
-        }
-    }
-
-
 }
