@@ -42,7 +42,7 @@
       {
         "diaConsulta": "MONDAY",
         "horarioConsulta": "17:00:00",
-        "estadoConsulta": "MARCADA",
+        "estadoConsulta": "AUSENTE",
         "nomePacienteDisplay": "João Salles",
         "nomeMedicoDisplay": "House",
         "especialidadeDisplay": "Clínico"
@@ -94,7 +94,16 @@
         "data": "2026-01-11"
       }
     ],
-    "historicoConsultas": [],
+    "historicoConsultas": [
+      {
+        "diaConsulta": "MONDAY",
+        "horarioConsulta": "08:00:00",
+        "estadoConsulta": "AUSENTE",
+        "nomePacienteDisplay": "Pedro Marques",
+        "nomeMedicoDisplay": "Lennon",
+        "especialidadeDisplay": "Cardiologista"
+      }
+    ],
     "id": "da2bb4d0-3d8c-4757-b250-cd8186e11891",
     "nome": {
       "nome": "Pedro",
