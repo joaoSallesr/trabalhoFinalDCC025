@@ -243,6 +243,10 @@ public class MedicoView extends JFrame {
         btnFiltrarConsultas.addActionListener(listener);
     }
 
+    public void addNotificacoesListener(ActionListener listener) {
+        btnNotificacoes.addActionListener(listener);
+    }
+
     public void addVerConsultasListener(ActionListener listener) {
         btnConsultasDia.addActionListener(listener);
     }

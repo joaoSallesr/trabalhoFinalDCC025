@@ -44,6 +44,7 @@ public class MedicoController {
             this.view.atualizarTabela(medico.getAgenda());
             this.view.setVisible(true);
             this.view.addSairListener(new SairListener());
+            this.view.addNotificacoesListener(new NotificacoesListener());
             this.view.addGerenciarStatusListener(new GerenciarStatusListener());
             this.view.addAdicionarHorarioListener(new AdicionarHorarioListener());
             this.view.addRemoverHorarioListener(new RemoverHorarioListener());
@@ -428,6 +429,28 @@ public class MedicoController {
         GerenciadorRepository.getInstance().salvarPacientes();
 
         JOptionPane.showMessageDialog(view, "Documento emitido com sucesso.");
+    }
+
+    private class NotificacoesListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<String> notas = medico.getNotificacoes();
+            if (notas == null || notas.isEmpty()) {
+                JOptionPane.showMessageDialog(view, "Nenhuma notificação.");
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (String n : notas) {
+                sb.append("- ").append(n).append("\n");
+            }
+
+            JOptionPane.showMessageDialog(view, sb.toString(), "Notificações", JOptionPane.INFORMATION_MESSAGE);
+
+            medico.limparNotificacoes();
+            GerenciadorRepository.getInstance().salvarMedicos();
+        }
     }
 
     // Sair da janela - voltar para tela de login

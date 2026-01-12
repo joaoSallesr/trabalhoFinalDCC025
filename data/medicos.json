@@ -26,6 +26,11 @@
         "diaTrabalho": "FRIDAY",
         "horarioComeco": "08:00:00",
         "horarioFinal": "18:00:00"
+      },
+      {
+        "diaTrabalho": "THURSDAY",
+        "horarioComeco": "08:00:00",
+        "horarioFinal": "18:00:00"
       }
     ],
     "consultasSemana": {
@@ -40,18 +45,28 @@
           "especialidadeDisplay": "Cardiologista"
         }
       ],
+      "MONDAY": [
+        {
+          "diaConsulta": "MONDAY",
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "AUSENTE",
+          "nomePacienteDisplay": "Pedro Marques",
+          "nomeMedicoDisplay": "Lennon",
+          "especialidadeDisplay": "Cardiologista"
+        }
+      ],
       "TUESDAY": [
         {
           "diaConsulta": "TUESDAY",
-          "horarioConsulta": "10:00:00",
-          "estadoConsulta": "EFETUADA",
-          "avaliacaoSaude": 5,
+          "horarioConsulta": "08:00:00",
+          "estadoConsulta": "AUSENTE",
           "nomePacienteDisplay": "João Salles",
           "nomeMedicoDisplay": "Lennon",
           "especialidadeDisplay": "Cardiologista"
         }
       ]
     },
+    "notificacoes": [],
     "id": "bd24e49f-aa7a-4f0b-882b-deb99bb4a8e3",
     "nome": {
       "nome": "John",
@@ -96,9 +111,18 @@
       "MONDAY": [
         {
           "diaConsulta": "MONDAY",
-          "horarioConsulta": "08:00:00",
-          "estadoConsulta": "EFETUADA",
-          "avaliacaoSaude": 5,
+          "horarioConsulta": "17:00:00",
+          "estadoConsulta": "AUSENTE",
+          "nomePacienteDisplay": "João Salles",
+          "nomeMedicoDisplay": "House",
+          "especialidadeDisplay": "Clínico"
+        }
+      ],
+      "WEDNESDAY": [
+        {
+          "diaConsulta": "WEDNESDAY",
+          "horarioConsulta": "11:00:00",
+          "estadoConsulta": "MARCADA",
           "nomePacienteDisplay": "João Salles",
           "nomeMedicoDisplay": "House",
           "especialidadeDisplay": "Clínico"
@@ -123,6 +147,9 @@
         }
       ]
     },
+    "notificacoes": [
+      "Paciente João Salles faltou à consulta em MONDAY 17:00"
+    ],
     "id": "8617f75a-42eb-4db3-9142-ee1110eab57d",
     "nome": {
       "nome": "Gregory",

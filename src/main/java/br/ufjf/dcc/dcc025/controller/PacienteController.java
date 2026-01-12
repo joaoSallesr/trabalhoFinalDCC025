@@ -168,7 +168,18 @@ public class PacienteController {
                 }
 
                 if (linhasTabela.isEmpty()) {
-                    JOptionPane.showMessageDialog(view, "Nenhum horário encontrado para essa especialidade neste dia.");
+                    // Mensagem de depuração explicando por que nenhum horário foi encontrado
+                    StringBuilder debug = new StringBuilder();
+                    debug.append("Nenhum horário encontrado para essa especialidade neste dia.\n\n");
+                    debug.append("Médicos verificados:\n");
+                    for (Medico medico : todosMedicos) {
+                        if (medico.isAtivo() && medico.getEspecialidade() == esp) {
+                            List<LocalTime> horas = medico.getHorariosDisponiveis(dia);
+                            debug.append("- ").append(medico.getNome().getNome()).append(" ").append(medico.getNome().getSobrenome())
+                                    .append(" -> horários livres: ").append(horas.size()).append("\n");
+                        }
+                    }
+                    JOptionPane.showMessageDialog(view, debug.toString());
                 }
 
                 view.preencherTabelaHorarios(linhasTabela);

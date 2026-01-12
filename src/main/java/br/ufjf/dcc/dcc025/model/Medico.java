@@ -27,6 +27,7 @@ public class Medico extends Usuario {
     private Especialidade especialidade;
     private final List<HorarioTrabalho> agenda;
     private final Map<DayOfWeek, List<Consulta>> consultasSemana;
+    private List<String> notificacoes = new ArrayList<>();
 
     public Medico(DadosMedico dados) {
         super(
@@ -40,6 +41,21 @@ public class Medico extends Usuario {
                 "Especialidade obrigatória.");
         this.agenda = new ArrayList<>();
         this.consultasSemana = new TreeMap<>();
+        this.notificacoes = new ArrayList<>();
+    }
+
+    public void adicionarNotificacao(String mensagem) {
+        if (this.notificacoes == null) this.notificacoes = new ArrayList<>();
+        this.notificacoes.add(mensagem);
+    }
+
+    public List<String> getNotificacoes() {
+        if (this.notificacoes == null) this.notificacoes = new ArrayList<>();
+        return this.notificacoes;
+    }
+
+    public void limparNotificacoes() {
+        if (this.notificacoes != null) this.notificacoes.clear();
     }
 
     // Alteração de atributos

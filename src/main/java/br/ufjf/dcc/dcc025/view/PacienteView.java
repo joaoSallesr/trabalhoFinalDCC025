@@ -145,6 +145,7 @@ public class PacienteView extends JFrame {
 
         JPanel botPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnConfirmarAgendamento = new JButton("Confirmar Agendamento");
+        botPanel.add(btnBuscarHorarios);
         botPanel.add(btnConfirmarAgendamento);
 
         painel.add(filtrosPanel, BorderLayout.NORTH);
